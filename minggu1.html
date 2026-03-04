@@ -81,10 +81,8 @@ border-radius:6px;
 <body>
 
 <header>
-
 <h2>TRYOUT UJIAN TKJ</h2>
 SMKN 7 LUWU
-
 </header>
 
 <div class="container">
@@ -107,7 +105,7 @@ Kelas<br> <select id="kelas">
 
 </div>
 
-<div id="ujian" style="display:none; width:100%; display:flex; gap:30px;">
+<div id="ujian" style="display:none;width:100%;display:flex;gap:30px;">
 
 <div class="soal-area">
 
@@ -137,7 +135,10 @@ Kelas<br> <select id="kelas">
 
 <script>
 
+let scriptURL="https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec"
+
 let soal=[
+
 {t:"Konektor kabel LAN adalah",o:["RJ11","RJ45","BNC","FC","RCA"],a:1},
 {t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
 {t:"Perangkat penguat sinyal jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:1},
@@ -167,9 +168,10 @@ let soal=[
 {t:"Perangkat keamanan jaringan",o:["Firewall","Switch","Hub","Repeater","Bridge"],a:0},
 {t:"Protokol internet",o:["TCP/IP","HTTP","FTP","SMTP","POP3"],a:0},
 {t:"Alamat website",o:["URL","IP","DNS","MAC","FTP"],a:0}
+
 ]
 
-soal = soal.sort(()=>Math.random()-0.5)
+soal=soal.sort(()=>Math.random()-0.5)
 
 let posisi=0
 let jawaban=[]
@@ -178,8 +180,13 @@ let timer
 
 function mulai(){
 
-document.getElementById("login").style.display="none"
-document.getElementById("ujian").style.display="flex"
+if(nama.value==""||kelas.value==""){
+alert("Isi nama dan kelas")
+return
+}
+
+login.style.display="none"
+ujian.style.display="flex"
 
 buatNomor()
 tampil()
@@ -194,7 +201,7 @@ timer=setInterval(function(){
 let m=Math.floor(waktu/60)
 let s=waktu%60
 
-document.getElementById("timer").innerHTML="Sisa waktu : "+m+":"+s
+timer.innerHTML="Sisa waktu : "+m+":"+s
 
 waktu--
 
@@ -217,7 +224,7 @@ html+="<div id='no"+i+"' onclick='lompat("+i+")'>"+(i+1)+"</div>"
 
 }
 
-document.getElementById("nomor").innerHTML=html
+nomor.innerHTML=html
 
 }
 
@@ -225,7 +232,7 @@ function tampil(){
 
 let s=soal[posisi]
 
-document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
+soal.innerHTML=(posisi+1)+". "+s.t
 
 let html=""
 
@@ -240,7 +247,7 @@ ${String.fromCharCode(65+i)}. ${o}
 
 })
 
-document.getElementById("opsi").innerHTML=html
+opsi.innerHTML=html
 
 }
 
@@ -287,6 +294,15 @@ if(jawaban[i]==s.a) benar++
 let nilai=Math.round((benar/soal.length)*100)
 
 alert("Nilai anda : "+nilai)
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+nama:nama.value,
+kelas:kelas.value,
+nilai:nilai
+})
+})
 
 }
 
