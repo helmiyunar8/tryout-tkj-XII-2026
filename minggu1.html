@@ -141,6 +141,7 @@ let soal=[
 {t:"Alamat website",o:["URL","IP","DNS","MAC","FTP"],a:0}
 
 ]
+  soal = soal.sort(() => Math.random() - 0.5);
 
 let posisi=0
 let jawaban=[]
@@ -227,3 +228,18 @@ document.getElementById("opsi").innerHTML=html
 }
 
 function simpan(){
+
+let pilih=document.querySelector('input[name="opsi"]:checked')
+
+if(pilih){
+
+jawaban[posisi]=Number(pilih.value)
+
+let kotak=document.getElementById("nomor").children[posisi]
+
+kotak.style.background="#2e7d32"
+kotak.style.color="white"
+
+}
+
+}
