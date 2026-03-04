@@ -292,20 +292,7 @@ if(jawaban[i]==s.a) benar++
 
 let nilai=Math.round((benar/soal.length)*100)
 
-document.getElementById("ujian").style.display="none"
-
-document.getElementById("hasil").style.display="block"
-
-document.getElementById("hasil").innerHTML=
-
-`
-<h2>HASIL UJIAN</h2>
-
-Nama : ${nama}<br>
-Kelas : ${kelas}<br><br>
-
-Nilai : ${nilai}
-`
+alert("Nilai anda : "+nilai)
 
 fetch("https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec",{
 
@@ -322,6 +309,7 @@ nilai:nilai
 })
 
 }
+
 
 </script>
 
