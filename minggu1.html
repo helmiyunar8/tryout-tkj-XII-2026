@@ -16,7 +16,7 @@ margin:0;
 header{
 background:#2e7d32;
 color:white;
-padding:15px;
+padding:20px;
 text-align:center;
 }
 
@@ -50,11 +50,6 @@ border-radius:4px;
 cursor:pointer;
 }
 
-.aktif{
-background:#2e7d32;
-color:white;
-}
-
 button{
 background:#2e7d32;
 color:white;
@@ -84,9 +79,8 @@ SMKN 7 LUWU
 
 Nama<br> <input id="nama"><br><br>
 
-Kelas<br>
+Kelas<br> <select id="kelas">
 
-<select id="kelas">
 <option value="">Pilih kelas</option>
 <option>X TKJ</option>
 <option>XI TKJ</option>
@@ -96,23 +90,6 @@ Kelas<br>
 <br><br>
 
 <button onclick="mulai()">Mulai Ujian</button>
-  function mulai(){
-
-nama=document.getElementById("nama").value
-kelas=document.getElementById("kelas").value
-
-if(nama==""||kelas==""){
-alert("Isi nama dan kelas")
-return
-}
-
-document.getElementById("login").style.display="none"
-document.getElementById("ujian").style.display="block"
-
-buatNomor()
-tampil()
-
-}
 
 </div>
 
@@ -132,203 +109,19 @@ tampil()
 
 </div>
 
-<div id="hasil" style="display:none"></div>
-
 </div>
 
 <script>
 
+let nama=""
+let kelas=""
+
 let waktu=55*60
 
-let timer=setInterval(function(){
-
-let m=Math.floor(waktu/60)
-let s=waktu%60
-
-document.getElementById("timer").innerHTML=
-"Sisa waktu : "+m+":"+s
-
-waktu--
-
-if(waktu<0){
-clearInterval(timer)
-selesai()
-}
-
-},1000)
+let timer
 
 let soal=[
-  let soal=[ ... ];
 
-soal = soal.sort(() => Math.random() - 0.5);
+{t:"Konektor kabel LAN adalah",o:["RJ11","RJ45","BNC","FC","RCA"],a:1},
 
-{t:"Apa yang dimaksud routing?",o:["Jumlah perangkat jaringan","Perangkat penghubung jaringan","Cara perangkat dalam jaringan terhubung","Jenis koneksi jaringan","Perangkat server"],a:2},
-
-{t:"Peralatan jaringan yang menghubungkan komputer adalah",o:["Bridge","Hub","Router","Switch","Access Point"],a:3},
-
-{t:"Perangkat PCB yang mengirim data jaringan adalah",o:["Hub","NIC","Access Point","Modem","Bridge"],a:1},
-
-{t:"Perangkat keras jaringan kecuali",o:["Router","Switch","Hub","Gateway","Bridge"],a:3},
-
-{t:"Perangkat yang memproses dan meneruskan data adalah",o:["Access Point","Bridge","Gateway","Router","Switch"],a:3},
-
-{t:"Perangkat yang menyalurkan data hanya ke tujuan adalah",o:["Access Point","Bridge","Gateway","Router","Switch"],a:4},
-
-{t:"Cara kerja server dan client disebut",o:["Client","Server","Client Server","Modem","Switch"],a:2},
-
-{t:"Berikut perangkat jaringan",o:["Router","Hub","Switch","Access Point","Bridge"],a:2},
-
-{t:"Jumlah layer OSI adalah",o:["5","6","7","8","9"],a:2},
-
-{t:"Urutan warna kabel jaringan",o:["Merah orange","Merah hijau","Putih orange orange putih hijau hijau putih coklat coklat putih biru biru","Putih orange orange putih hijau biru putih biru hijau putih coklat coklat","Merah putih biru"],a:2},
-
-{t:"Konektor kabel LAN",o:["RJ11","RJ45","BNC","BNC RCA","FC"],a:1},
-
-{t:"Gerbang antara jaringan lokal dan internet",o:["Server","Proxy server","Telnet server","Virtual server","Web server"],a:1},
-
-{t:"Perangkat jaringan pada gambar biasanya",o:["CPU","Switch","Hub","Router","Access Point"],a:1},
-
-{t:"Nama perangkat jaringan",o:["Switch","Modem","Router","Hub","Access Point"],a:0},
-
-{t:"Penguat sinyal jaringan",o:["Modem","Repeater","Router","Switch","Access Point"],a:1},
-
-{t:"Internet sebagai media informasi",o:["Media informasi","Alat komunikasi","Pendidikan","Hiburan","Protocol"],a:0},
-
-{t:"Dampak negatif HP",o:["Ganggu konsentrasi","Konten pornografi","Informasi cepat","Bisnis","Kemandirian"],a:0},
-
-{t:"Telekomunikasi menggunakan kabel",o:["Satelit","Modem","Wireless","Wireline","Firewall"],a:3},
-
-{t:"Perawatan hardware VoIP",o:["Periksa piranti","Manajemen log","Debu CPU","Pemasangan peripheral","A C D benar"],a:4},
-
-{t:"Penyimpanan website di internet",o:["Web hosting","Hosting","Web server","Web mail","Server"],a:0},
-
-{t:"Data yang disimpan pada hosting",o:["Google drive HTML","Youtube HTML","Database drive","Database HTML","Web server"],a:3},
-
-{t:"Bagian domain SLD",o:["blogspot",".com","bilacilasila","https://","https"],a:2},
-
-{t:"Bagian domain TLD",o:["blogspot",".com","manisbangetinna","https://","https"],a:1},
-
-{t:"Domain adalah",o:["Website","Domain","Blogspot","Hosting","Niagahoster"],a:1},
-
-{t:"Shared hosting adalah",o:["Dedicated","VPS","Shared hosting","Free hosting","Server"],a:2}
-
-]
-
-let posisi=0
-let jawaban=[]
-
-function mulai(){
-
-nama=document.getElementById("nama").value
-kelas=document.getElementById("kelas").value
-
-if(nama==""||kelas==""){
-alert("Isi nama dan kelas")
-return
-}
-
-document.getElementById("login").style.display="none"
-document.getElementById("ujian").style.display="block"
-
-buatNomor()
-tampil()
-
-}
-
-function buatNomor(){
-
-let html=""
-
-for(let i=0;i<soal.length;i++){
-html+="<div onclick='lompat("+i+")'>"+(i+1)+"</div>"
-}
-
-document.getElementById("nomor").innerHTML=html
-
-}
-
-function tampil(){
-
-let s=soal[posisi]
-
-document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
-
-let html=""
-
-let pilihan = s.o.map((text, index) => ({text, index}));
-pilihan = pilihan.sort(() => Math.random() - 0.5);
-
-pilihan.forEach((item,i)=>{
-
-html+=`
-<label>
-<input type="radio" name="opsi" value="${item.index}" ${jawaban[posisi]==item.index?"checked":""}>
-${String.fromCharCode(65+i)}. ${item.text}
-</label><br>
-`
-
-})
-
-document.getElementById("opsi").innerHTML=html
-
-}
-
-function simpan(){
-
-let pilih=document.querySelector('input[name="opsi"]:checked')
-
-if(pilih) jawaban[posisi]=Number(pilih.value)
-
-}
-
-function next(){
-simpan()
-if(posisi<soal.length-1){posisi++;tampil()}else{selesai()}
-}
-
-function prev(){
-simpan()
-if(posisi>0){posisi--;tampil()}
-}
-
-function lompat(i){
-simpan()
-posisi=i
-tampil()
-}
-
-function selesai(){
-
-simpan()
-
-let benar=0
-
-soal.forEach((s,i)=>{
-if(jawaban[i]==s.a) benar++
-})
-
-let nilai=Math.round((benar/soal.length)*100)
-
-alert("Nilai anda : "+nilai)
-
-fetch("https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec",{
-
-method:"POST",
-
-body:JSON.stringify({
-
-nama:nama,
-kelas:kelas,
-nilai:nilai
-
-})
-
-})
-
-}
-
-
-</script>
-
-</body>
-</html>
+{t:"Perangkat jaringan yang mengh
