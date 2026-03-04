@@ -285,22 +285,33 @@ tampil()
 
 function selesai(){
 
-let benar=0
+let benar = 0
 
 soal.forEach((s,i)=>{
-if(jawaban[i]==s.a) benar++
+if(jawaban[i] == s.a) benar++
 })
 
-let nilai=Math.round((benar/soal.length)*100)
+let salah = soal.length - benar
 
-alert("Nilai anda : "+nilai)
+let nilai = Math.round((benar/soal.length)*100)
+
+alert(
+"HASIL UJIAN\n\n"+
+"Nama : " + nama.value + "\n"+
+"Kelas : " + kelas.value + "\n\n"+
+"Benar : " + benar + "\n"+
+"Salah : " + salah + "\n\n"+
+"Nilai : " + nilai
+)
 
 fetch(scriptURL,{
 method:"POST",
-body:JSON.stringify({
-nama:nama.value,
-kelas:kelas.value,
-nilai:nilai
+body: JSON.stringify({
+nama: nama.value,
+kelas: kelas.value,
+benar: benar,
+salah: salah,
+nilai: nilai
 })
 })
 
