@@ -96,6 +96,23 @@ Kelas<br>
 <br><br>
 
 <button onclick="mulai()">Mulai Ujian</button>
+  function mulai(){
+
+nama=document.getElementById("nama").value
+kelas=document.getElementById("kelas").value
+
+if(nama==""||kelas==""){
+alert("Isi nama dan kelas")
+return
+}
+
+document.getElementById("login").style.display="none"
+document.getElementById("ujian").style.display="block"
+
+buatNomor()
+tampil()
+
+}
 
 </div>
 
