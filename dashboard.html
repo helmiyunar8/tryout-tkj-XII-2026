@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DASHBOARD NILAI TRYOUT TKJ</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef5ee;
+text-align:center;
+margin:0;
+padding:40px;
+}
+
+h1{
+color:#2e7d32;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:90%;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:10px;
+}
+
+th{
+background:#2e7d32;
+color:white;
+}
+
+#chart{
+width:80%;
+margin:auto;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>DASHBOARD NILAI TRYOUT TKJ</h1>
+SMKN 7 LUWU
+
+<br><br>
+
+<table id="tabel">
+
+<tr>
+<th>Ranking</th>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Benar</th>
+<th>Salah</th>
+<th>Nilai</th>
+</tr>
+
+</table>
+
+<canvas id="chart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let sheetURL="https://opensheet.elk.sh/1TPjmE7bTmHYs-iX_UWdA48mdRJdpu8DzIh1st4KebiE/Sheet1"
+
+fetch(sheetURL)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+data.sort((a,b)=>b.nilai-a.nilai)
+
+let html=""
+
+let nama=[]
+let nilai=[]
+
+data.forEach((s,i)=>{
+
+html+=`
+<tr>
+<td>${i+1}</td>
+<td>${s.nama}</td>
+<td>${s.kelas}</td>
+<td>${s.benar}</td>
+<td>${s.salah}</td>
+<td>${s.nilai}</td>
+</tr>
+`
+
+nama.push(s.nama)
+nilai.push(Number(s.nilai))
+
+})
+
+document.getElementById("tabel").innerHTML+=html
+
+buatGrafik(nama,nilai)
+
+})
+
+function buatGrafik(nama,nilai){
+
+new Chart(document.getElementById("chart"),{
+
+type:"bar",
+
+data:{
+labels:nama,
+datasets:[{
+label:"Nilai Siswa",
+data:nilai
+}]
+}
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
