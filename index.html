@@ -3,44 +3,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TRYOUT UJIAN TKJ</title>
+<title>TRYOUT TKJ</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#e8f5e9;
+background:#eef5ee;
 text-align:center;
-margin:0;
+padding-top:100px;
 }
 
-header{
-background:#2e7d32;
-color:white;
-padding:20px;
-}
-
-.container{
-background:white;
-width:500px;
-margin:80px auto;
-padding:30px;
-border-radius:10px;
+h1{
+color:#2e7d32;
 }
 
 button{
 background:#2e7d32;
 color:white;
 border:none;
-padding:15px 25px;
+padding:15px 30px;
 margin:10px;
-font-size:16px;
-border-radius:5px;
+font-size:18px;
+border-radius:8px;
 cursor:pointer;
 }
 
 .lock{
-background:#9e9e9e;
+background:gray;
 cursor:not-allowed;
 }
 
@@ -50,30 +40,20 @@ cursor:not-allowed;
 
 <body>
 
-<header>
-
 <h1>TRYOUT UJIAN TKJ</h1>
 SMKN 7 LUWU
 
-</header>
-
-<div class="container">
-
-<h3>Pilih Ujian</h3>
-
-<br>
+<br><br>
 
 <a href="minggu1.html">
-<button>MULAI TRYOUT MINGGU 1</button>
+<button>TRYOUT MINGGU 1</button>
 </a>
 
 <br>
 
-<button class="lock">TRYOUT MINGGU 2 🔒</button>
-
-<p>Ujian minggu 2 belum dibuka</p>
-
-</div>
+<button class="lock" onclick="alert('Ujian minggu 2 belum dibuka guru')">
+TRYOUT MINGGU 2 🔒
+</button>
 
 </body>
 </html>
