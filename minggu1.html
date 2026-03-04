@@ -6,9 +6,10 @@
 <title>TRYOUT UJIAN TKJ</title>
 
 <style>
+
 body{
 font-family:Arial;
-background:#e8f5e9;
+background:#eef5ee;
 margin:0;
 }
 
@@ -20,7 +21,7 @@ text-align:center;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 background:white;
 padding:20px;
@@ -31,7 +32,7 @@ border-radius:10px;
 .timer{
 color:red;
 font-weight:bold;
-text-align:right;
+float:right;
 }
 
 .nomor{
@@ -49,15 +50,21 @@ border-radius:4px;
 cursor:pointer;
 }
 
+.aktif{
+background:#2e7d32 !important;
+color:white;
+}
+
 button{
 background:#2e7d32;
 color:white;
 border:none;
-padding:10px 15px;
+padding:10px 16px;
 margin-top:10px;
 cursor:pointer;
-border-radius:5px;
+border-radius:6px;
 }
+
 </style>
 
 </head>
@@ -116,6 +123,7 @@ let soal=[
 {t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
 {t:"Perangkat penghubung jaringan",o:["Router","Keyboard","Mouse","Printer","Scanner"],a:0},
 {t:"Perangkat untuk membagi jaringan",o:["Hub","Switch","Monitor","CPU","Speaker"],a:1},
+
 {t:"Kepanjangan LAN",o:["Local Area Network","Large Area Net","Line Area Network","Link Area Net","Long Area Net"],a:0},
 {t:"Kepanjangan WAN",o:["Wide Area Network","World Area Net","Web Area Network","Wire Area Net","Wide Area Net"],a:0},
 {t:"Media transmisi kabel",o:["UTP","WiFi","Bluetooth","Infrared","Satelit"],a:0},
@@ -136,27 +144,23 @@ let soal=[
 
 {t:"Sistem operasi jaringan",o:["Linux Server","Windows","Android","MacOS","IOS"],a:0},
 {t:"Media transmisi tanpa kabel",o:["Wireless","UTP","STP","Coaxial","Fiber"],a:0},
-{t:"Perangkat untuk keamanan jaringan",o:["Firewall","Switch","Hub","Repeater","Bridge"],a:0},
+{t:"Perangkat keamanan jaringan",o:["Firewall","Switch","Hub","Repeater","Bridge"],a:0},
 {t:"Protokol internet",o:["TCP/IP","HTTP","FTP","SMTP","POP3"],a:0},
 {t:"Alamat website",o:["URL","IP","DNS","MAC","FTP"],a:0}
 
 ]
-  soal = soal.sort(() => Math.random() - 0.5);
+
+soal = soal.sort(()=>Math.random()-0.5)
 
 let posisi=0
 let jawaban=[]
-
-let nama=""
-let kelas=""
-
 let waktu=55*60
-
 let timer
 
 function mulai(){
 
-nama=document.getElementById("nama").value
-kelas=document.getElementById("kelas").value
+let nama=document.getElementById("nama").value
+let kelas=document.getElementById("kelas").value
 
 if(nama==""||kelas==""){
 alert("Isi nama dan kelas")
@@ -197,7 +201,9 @@ function buatNomor(){
 let html=""
 
 for(let i=0;i<soal.length;i++){
-html+="<div onclick='lompat("+i+")'>"+(i+1)+"</div>"
+
+html+="<div id='no"+i+"' onclick='lompat("+i+")'>"+(i+1)+"</div>"
+
 }
 
 document.getElementById("nomor").innerHTML=html
@@ -216,7 +222,7 @@ s.o.forEach((o,i)=>{
 
 html+=`
 <label>
-<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
+<input type="radio" name="opsi" value="${i}" onchange="jawab(${i})" ${jawaban[posisi]==i?"checked":""}>
 ${String.fromCharCode(65+i)}. ${o}
 </label><br>
 `
@@ -227,19 +233,78 @@ document.getElementById("opsi").innerHTML=html
 
 }
 
-function simpan(){
+function jawab(i){
 
-let pilih=document.querySelector('input[name="opsi"]:checked')
+jawaban[posisi]=i
 
-if(pilih){
+document.getElementById("no"+posisi).classList.add("aktif")
 
-jawaban[posisi]=Number(pilih.value)
+}
 
-let kotak=document.getElementById("nomor").children[posisi]
+function next(){
 
-kotak.style.background="#2e7d32"
-kotak.style.color="white"
+if(posisi<soal.length-1){
+
+posisi++
+tampil()
+
+}else{
+
+selesai()
 
 }
 
 }
+
+function prev(){
+
+if(posisi>0){
+
+posisi--
+tampil()
+
+}
+
+}
+
+function lompat(i){
+
+posisi=i
+tampil()
+
+}
+
+function selesai(){
+
+let benar=0
+
+soal.forEach((s,i)=>{
+
+if(jawaban[i]==s.a) benar++
+
+})
+
+let nilai=Math.round((benar/soal.length)*100)
+
+alert("Nilai anda : "+nilai)
+
+fetch("https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec",{
+
+method:"POST",
+
+body:JSON.stringify({
+
+nama:document.getElementById("nama").value,
+kelas:document.getElementById("kelas").value,
+nilai:nilai
+
+})
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
