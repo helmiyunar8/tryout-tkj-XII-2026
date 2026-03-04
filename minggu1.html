@@ -141,6 +141,9 @@ selesai()
 },1000)
 
 let soal=[
+  let soal=[ ... ];
+
+soal = soal.sort(() => Math.random() - 0.5);
 
 {t:"Apa yang dimaksud routing?",o:["Jumlah perangkat jaringan","Perangkat penghubung jaringan","Cara perangkat dalam jaringan terhubung","Jenis koneksi jaringan","Perangkat server"],a:2},
 
@@ -235,12 +238,15 @@ document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
 
 let html=""
 
-s.o.forEach((o,i)=>{
+let pilihan = s.o.map((text, index) => ({text, index}));
+pilihan = pilihan.sort(() => Math.random() - 0.5);
+
+pilihan.forEach((item,i)=>{
 
 html+=`
 <label>
-<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
-${String.fromCharCode(65+i)}. ${o}
+<input type="radio" name="opsi" value="${item.index}" ${jawaban[posisi]==item.index?"checked":""}>
+${String.fromCharCode(65+i)}. ${item.text}
 </label><br>
 `
 
