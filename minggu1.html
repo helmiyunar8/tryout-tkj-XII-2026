@@ -6,7 +6,6 @@
 <title>TRYOUT UJIAN TKJ</title>
 
 <style>
-
 body{
 font-family:Arial;
 background:#e8f5e9;
@@ -35,21 +34,6 @@ font-weight:bold;
 text-align:right;
 }
 
-.nomor{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:5px;
-margin-top:20px;
-}
-
-.nomor div{
-padding:8px;
-background:#c8e6c9;
-text-align:center;
-border-radius:4px;
-cursor:pointer;
-}
-
 button{
 background:#2e7d32;
 color:white;
@@ -59,7 +43,6 @@ margin-top:10px;
 cursor:pointer;
 border-radius:5px;
 }
-
 </style>
 
 </head>
@@ -67,10 +50,8 @@ border-radius:5px;
 <body>
 
 <header>
-
 <h2>TRYOUT UJIAN TKJ</h2>
 SMKN 7 LUWU
-
 </header>
 
 <div class="container">
@@ -105,77 +86,23 @@ Kelas<br> <select id="kelas">
 
 <button onclick="prev()">Sebelumnya</button> <button onclick="next()">Selanjutnya</button>
 
-<div class="nomor" id="nomor"></div>
-
 </div>
 
 </div>
 
 <script>
 
-let nama=""
-let kelas=""
-
-let waktu=55*60
-
-let timer
-
 let soal=[
-
 {t:"Konektor kabel LAN adalah",o:["RJ11","RJ45","BNC","FC","RCA"],a:1},
-
-{t:"Perangkat jaringan yang menghubungkan komputer",o:["Bridge","Hub","Router","Switch","Access Point"],a:3},
-
-{t:"Perangkat PCB pengirim data jaringan",o:["Hub","NIC","Access Point","Modem","Bridge"],a:1},
-
-{t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
-
-{t:"Penguat sinyal jaringan",o:["Modem","Repeater","Router","Switch","Access Point"],a:1},
-
-{t:"Gerbang jaringan internet",o:["Server","Proxy server","Gateway","Web server","Telnet"],a:2},
-
-{t:"Perangkat jaringan yang mengatur paket data",o:["Router","Switch","Hub","Bridge","Access Point"],a:0},
-
-{t:"Cara kerja server dan client",o:["Client","Server","Client Server","Switch","Hub"],a:2},
-
-{t:"Perangkat untuk menyambung jaringan",o:["Router","Hub","Switch","Access Point","Bridge"],a:2},
-
-{t:"Internet sebagai media",o:["Informasi","Televisi","Radio","Cetak","Offline"],a:0},
-
-{t:"Dampak negatif HP",o:["Ganggu konsentrasi","Belajar cepat","Komunikasi","Bisnis","Hiburan"],a:0},
-
-{t:"Telekomunikasi kabel",o:["Satelit","Wireless","Wireline","Firewall","Server"],a:2},
-
-{t:"Hosting website disebut",o:["Web hosting","Web mail","Web server","Server","Drive"],a:0},
-
-{t:"Data website disimpan pada",o:["Hosting","Email","Drive","Youtube","Browser"],a:0},
-
-{t:"Domain .com digunakan untuk",o:["Komersial","Pemerintah","Pendidikan","Organisasi","Militer"],a:0},
-
-{t:"Domain .edu untuk",o:["Pendidikan","Militer","Organisasi","Komersial","Bisnis"],a:0},
-
-{t:"Shared hosting berarti",o:["Server bersama","Server pribadi","Server gratis","Server cloud","Server lokal"],a:0},
-
-{t:"Firewall berfungsi",o:["Keamanan jaringan","Menghapus data","Menambah RAM","Mempercepat CPU","Menghapus virus"],a:0},
-
-{t:"Gateway berarti",o:["Gerbang jaringan","Router statis","Alamat IP","Server","Switch"],a:0},
-
-{t:"QoS adalah",o:["Quality of Service","Quick Service","Queue System","Query Service","Quality System"],a:0},
-
-{t:"Load balancing",o:["Membagi trafik jaringan","Firewall","Router statis","DNS","Gateway"],a:0},
-
-{t:"Google Sheets adalah",o:["Spreadsheet online","Word online","Editor gambar","Video editor","Browser"],a:0},
-
-{t:"VLAN adalah",o:["Virtual LAN","Virus LAN","Virtual Net","Virtual Node","Virtual Link"],a:0},
-
-{t:"Routing manual disebut",o:["Static routing","Dynamic routing","Bridge routing","LAN routing","WAN routing"],a:0},
-
-{t:"Mematikan komputer dengan benar",o:["Shutdown","Cabut listrik","Tekan power","Restart","Sleep"],a:0}
-
+{t:"Perangkat penguat sinyal jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:1},
+{t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2}
 ]
 
 let posisi=0
 let jawaban=[]
+
+let nama=""
+let kelas=""
 
 function mulai(){
 
@@ -190,48 +117,7 @@ return
 document.getElementById("login").style.display="none"
 document.getElementById("ujian").style.display="block"
 
-startTimer()
-
-buatNomor()
-
 tampil()
-
-}
-
-function startTimer(){
-
-timer=setInterval(function(){
-
-let m=Math.floor(waktu/60)
-let s=waktu%60
-
-document.getElementById("timer").innerHTML="Sisa waktu : "+m+":"+s
-
-waktu--
-
-if(waktu<0){
-
-clearInterval(timer)
-
-selesai()
-
-}
-
-},1000)
-
-}
-
-function buatNomor(){
-
-let html=""
-
-for(let i=0;i<soal.length;i++){
-
-html+="<div onclick='lompat("+i+")'>"+(i+1)+"</div>"
-
-}
-
-document.getElementById("nomor").innerHTML=html
 
 }
 
@@ -247,7 +133,7 @@ s.o.forEach((o,i)=>{
 
 html+=`
 <label>
-<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
+<input type="radio" name="opsi" value="${i}">
 ${String.fromCharCode(65+i)}. ${o}
 </label><br>
 `
@@ -258,66 +144,21 @@ document.getElementById("opsi").innerHTML=html
 
 }
 
-function simpan(){
-
-let pilih=document.querySelector('input[name="opsi"]:checked')
-
-if(pilih) jawaban[posisi]=Number(pilih.value)
-
-}
-
 function next(){
-
-simpan()
-
 if(posisi<soal.length-1){
-
 posisi++
-
 tampil()
-
-}else{
-
-selesai()
-
 }
-
 }
 
 function prev(){
-
-simpan()
-
 if(posisi>0){
-
 posisi--
-
 tampil()
-
+}
 }
 
-}
+</script>
 
-function lompat(i){
-
-simpan()
-
-posisi=i
-
-tampil()
-
-}
-
-function selesai(){
-
-simpan()
-
-let benar=0
-
-soal.forEach((s,i)=>{
-
-if(jawaban[i]==s.a) benar++
-
-})
-
-let nilai=Mat
+</body>
+</html>
