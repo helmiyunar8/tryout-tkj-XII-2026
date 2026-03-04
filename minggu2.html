@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TRYOUT UJIAN TKJ</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#e8f5e9;
+margin:0;
+}
+
+header{
+background:#2e7d32;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:20px;
+margin-top:20px;
+border-radius:10px;
+}
+
+.timer{
+color:red;
+font-weight:bold;
+text-align:right;
+}
+
+.nomor{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:5px;
+margin-top:20px;
+}
+
+.nomor div{
+padding:8px;
+background:#c8e6c9;
+text-align:center;
+border-radius:4px;
+cursor:pointer;
+}
+
+button{
+background:#2e7d32;
+color:white;
+border:none;
+padding:10px 15px;
+margin-top:10px;
+cursor:pointer;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>TRYOUT UJIAN TKJ</h2>
+SMKN 7 LUWU
+
+</header>
+
+<div class="container">
+
+<div class="timer" id="timer"></div>
+
+<h3 id="soal"></h3>
+
+<div id="opsi"></div>
+
+<br>
+
+<button onclick="prev()">Sebelumnya</button> <button onclick="next()">Selanjutnya</button>
+
+<div class="nomor" id="nomor"></div>
+
+</div>
+
+<script>
+
+let waktu=55*60
+
+let timer=setInterval(function(){
+
+let m=Math.floor(waktu/60)
+let s=waktu%60
+
+document.getElementById("timer").innerHTML=
+"Sisa waktu : "+m+":"+s
+
+waktu--
+
+if(waktu<0){
+clearInterval(timer)
+selesai()
+}
+
+},1000)
+
+let soal=[
+
+{t:"Jenis layanan hosting server bersama disebut",o:["Dedicated","VPS","Shared hosting","Free hosting","Cloud"],a:2},
+
+{t:"Hosting dengan server di data center disebut",o:["Proxy","Colocation hosting","Cloud hosting","Gateway","Gatekeeper"],a:1},
+
+{t:"Control panel hosting adalah",o:["Plesk","Linux","Apache","HTML","DNS"],a:0},
+
+{t:"Domain .gov digunakan untuk",o:["Militer","Organisasi","Pemerintah","Komersial","Televisi"],a:2},
+
+{t:"Domain .edu digunakan untuk",o:["Pendidikan","Organisasi","Pemerintah","Komersial","Televisi"],a:0},
+
+{t:"VLAN adalah",o:["Virus LAN","Virtual LAN","Virus Net","Virtual Net","Virtual Lokasi"],a:1},
+
+{t:"VLAN untuk membawa data user disebut",o:["VLAN management","VLAN default","Native VLAN","VLAN data","VLAN voice"],a:3},
+
+{t:"VLAN untuk manajemen switch disebut",o:["VLAN management","VLAN default","Native VLAN","VLAN data","VLAN voice"],a:0},
+
+{t:"Routing yang dikonfigurasi manual disebut",o:["Static routing","Dynamic routing","Gateway","Default route","Bridge"],a:0},
+
+{t:"Router yang membuat tabel routing otomatis disebut",o:["Static router","Dynamic router","Hub","Bridge","Switch"],a:1},
+
+{t:"Gateway adalah",o:["Gerbang jaringan","Router statis","Router dinamis","Proses routing","Alamat tujuan"],a:0},
+
+{t:"Firewall berfungsi",o:["Memudahkan internet","Keamanan jaringan","Router dinamis","Routing data","Alamat tujuan"],a:1},
+
+{t:"QoS adalah",o:["Quality Services","Quality of Service","Question Service","Queue Service","Quick Service"],a:1},
+
+{t:"Load balancing adalah",o:["Membagi trafik jaringan","Firewall","Router dinamis","Routing paket","Alamat tujuan"],a:0},
+
+{t:"Fungsi firewall",o:["Desain","Kontrol trafik","Efek cahaya","Upgrade OS","A dan D"],a:1},
+
+{t:"Google Sheets adalah",o:["Spreadsheet online","Aplikasi surat","Pengolah teks","Editor kata","Presentasi"],a:0},
+
+{t:"Cost reduction VLAN berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device","Manajemen jaringan","Gabung user"],a:0},
+
+{t:"High performance VLAN berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:1},
+
+{t:"Broadcast storm mitigation berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:2},
+
+{t:"Improved IT staff efficiency berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:3},
+
+{t:"VLAN security berarti",o:["Segmen keamanan","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:0},
+
+{t:"Normal range VLAN digunakan untuk",o:["Jaringan kecil","Token ring","Default VLAN","Database VLAN","Manajemen VLAN"],a:0},
+
+{t:"VLAN berdasarkan MAC address disebut",o:["Port based","MAC based","Protocol based","IP based","Auth based"],a:1},
+
+{t:"VLAN berdasarkan protokol disebut",o:["Port based","MAC based","Protocol based","IP based","Auth based"],a:2},
+
+{t:"Cara mematikan komputer yang benar",o:["Cabut listrik","Tekan power","Shutdown","Power monitor","Power CPU"],a:2}
+
+]
+
+let posisi=0
+let jawaban=[]
+
+function buatNomor(){
+
+let html=""
+
+for(let i=0;i<soal.length;i++){
+html+="<div onclick='lompat("+i+")'>"+(i+1)+"</div>"
+}
+
+document.getElementById("nomor").innerHTML=html
+
+}
+
+buatNomor()
+
+function tampil(){
+
+let s=soal[posisi]
+
+document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
+
+let html=""
+
+s.o.forEach((o,i)=>{
+
+html+=`
+<label>
+<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
+${String.fromCharCode(65+i)}. ${o}
+</label><br>
+`
+
+})
+
+document.getElementById("opsi").innerHTML=html
+
+}
+
+tampil()
+
+function simpan(){
+
+let pilih=document.querySelector('input[name="opsi"]:checked')
+
+if(pilih) jawaban[posisi]=Number(pilih.value)
+
+}
+
+function next(){
+simpan()
+if(posisi<soal.length-1){posisi++;tampil()}else{selesai()}
+}
+
+function prev(){
+simpan()
+if(posisi>0){posisi--;tampil()}
+}
+
+function lompat(i){
+simpan()
+posisi=i
+tampil()
+}
+
+function selesai(){
+
+simpan()
+
+let benar=0
+
+soal.forEach((s,i)=>{
+if(jawaban[i]==s.a) benar++
+})
+
+let nilai=Math.round((benar/soal.length)*100)
+
+alert("Nilai anda : "+nilai)
+
+}
+
+</script>
+
+</body>
+</html>
