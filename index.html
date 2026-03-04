@@ -6,269 +6,74 @@
 <title>TRYOUT UJIAN TKJ</title>
 
 <style>
+
 body{
-font-family: Arial;
-background:#f2f2f2;
+font-family:Arial;
+background:#e8f5e9;
+text-align:center;
+margin:0;
+}
+
+header{
+background:#2e7d32;
+color:white;
 padding:20px;
 }
 
 .container{
 background:white;
-padding:20px;
+width:500px;
+margin:80px auto;
+padding:30px;
 border-radius:10px;
-max-width:700px;
-margin:auto;
-}
-
-h1{
-text-align:center;
 }
 
 button{
-padding:10px 20px;
-background:#2196F3;
+background:#2e7d32;
 color:white;
 border:none;
+padding:15px 25px;
+margin:10px;
+font-size:16px;
 border-radius:5px;
 cursor:pointer;
 }
 
-.nomor{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:5px;
-margin-top:20px;
+.lock{
+background:#9e9e9e;
+cursor:not-allowed;
 }
 
-.nomor div{
-padding:8px;
-background:#ddd;
-text-align:center;
-border-radius:4px;
-}
-
-.answered{
-background:#4CAF50;
-color:white;
-}
-
-.timer{
-font-size:18px;
-color:red;
-text-align:right;
-}
 </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
 <h1>TRYOUT UJIAN TKJ</h1>
-<p style="text-align:center">SMKN 7 LUWU</p>
+SMKN 7 LUWU
 
-<div id="login">
+</header>
 
-Nama:<br> <input id="nama"><br><br>
+<div class="container">
 
-Kelas:<br>
-
-<select id="kelas">
-
-<option value="">Pilih Kelas</option>
-<option>X TKJ</option>
-<option>XI TKJ</option>
-<option>XII TKJ</option>
-
-</select>
-
-<br><br>
-
-<button onclick="mulai()">Mulai Ujian</button>
-
-</div>
-
-<div id="ujian" style="display:none">
-
-<div class="timer" id="timer"></div>
-
-<h3 id="soal"></h3>
-
-<div id="opsi"></div>
+<h3>Pilih Ujian</h3>
 
 <br>
 
-<button onclick="sebelum()">Sebelumnya</button> <button onclick="lanjut()">Selanjutnya</button>
+<a href="minggu1.html">
+<button>MULAI TRYOUT MINGGU 1</button>
+</a>
 
-<div class="nomor" id="nomor"></div>
+<br>
+
+<button class="lock">TRYOUT MINGGU 2 🔒</button>
+
+<p>Ujian minggu 2 belum dibuka</p>
 
 </div>
-
-<div id="hasil" style="display:none"></div>
-
-</div>
-
-<script>
-
-let waktu=55*60
-let timer=setInterval(function(){
-
-let m=Math.floor(waktu/60)
-let s=waktu%60
-
-document.getElementById("timer").innerHTML=
-"Sisa waktu : "+m+":"+s
-
-waktu--
-
-if(waktu<0){
-clearInterval(timer)
-selesai()
-}
-
-},1000)
-
-let soal=[
-{
-t:"Apa yang dimaksud routing?",
-o:["Jumlah perangkat jaringan","Perangkat penghubung jaringan","Cara perangkat dalam jaringan terhubung","Jenis koneksi jaringan","Perangkat server"],
-a:2
-},
-{
-t:"Konektor kabel LAN adalah",
-o:["RJ11","RJ45","BNC","FC","RCA"],
-a:1
-},
-{
-t:"Jumlah layer OSI adalah",
-o:["5","6","7","8","9"],
-a:2
-}
-]
-
-soal=soal.sort(()=>Math.random()-0.5)
-
-let jawaban=[]
-let posisi=0
-
-function mulai(){
-
-nama=document.getElementById("nama").value
-kelas=document.getElementById("kelas").value
-
-if(nama==""||kelas==""){
-alert("Isi nama dan kelas")
-return
-}
-
-document.getElementById("login").style.display="none"
-document.getElementById("ujian").style.display="block"
-
-tampil()
-
-}
-
-function tampil(){
-
-let s=soal[posisi]
-
-document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
-
-let html=""
-
-s.o.forEach((o,i)=>{
-
-html+=`
-<label>
-<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
-${String.fromCharCode(65+i)}. ${o}
-</label><br>
-`
-
-})
-
-document.getElementById("opsi").innerHTML=html
-
-}
-
-function simpan(){
-
-let pilih=document.querySelector('input[name="opsi"]:checked')
-
-if(pilih) jawaban[posisi]=Number(pilih.value)
-
-}
-
-function lanjut(){
-
-simpan()
-
-if(posisi<soal.length-1){
-posisi++
-tampil()
-}else{
-selesai()
-}
-
-}
-
-function sebelum(){
-
-simpan()
-
-if(posisi>0){
-posisi--
-tampil()
-}
-
-}
-
-function selesai(){
-
-simpan()
-
-let benar=0
-
-soal.forEach((s,i)=>{
-if(jawaban[i]==s.a) benar++
-})
-
-let nilai=Math.round((benar/soal.length)*100)
-
-document.getElementById("ujian").style.display="none"
-
-document.getElementById("hasil").style.display="block"
-
-document.getElementById("hasil").innerHTML=
-
-`
-<h2>HASIL UJIAN</h2>
-
-Nama : ${nama}<br>
-Kelas : ${kelas}<br><br>
-
-Nilai : ${nilai}
-`
-
-fetch("https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec",{
-
-method:"POST",
-
-body:JSON.stringify({
-
-nama:nama,
-kelas:kelas,
-nilai:nilai
-
-})
-
-})
-
-}
-
-</script>
 
 </body>
 </html>
-
