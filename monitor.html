@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MONITOR UJIAN REALTIME</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef5ee;
+text-align:center;
+padding:40px;
+}
+
+h1{
+color:#2e7d32;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:90%;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:10px;
+}
+
+th{
+background:#2e7d32;
+color:white;
+}
+
+.status-ujian{
+color:orange;
+font-weight:bold;
+}
+
+.status-selesai{
+color:green;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>MONITOR UJIAN TRYOUT TKJ</h1>
+SMKN 7 LUWU
+
+<br><br>
+
+<table id="tabel">
+
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Status</th>
+<th>Nilai</th>
+</tr>
+
+</table>
+
+<script>
+
+let sheetURL="https://opensheet.elk.sh/1TPjmE7bTmHYs-iX_UWdA48mdRJdpu8DzIh1st4KebiE/Sheet1"
+
+function loadData(){
+
+fetch(sheetURL)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html=""
+
+data.forEach((s,i)=>{
+
+let status="Selesai"
+
+html+=`
+<tr>
+<td>${i+1}</td>
+<td>${s.nama}</td>
+<td>${s.kelas}</td>
+<td class="status-selesai">${status}</td>
+<td>${s.nilai}</td>
+</tr>
+`
+
+})
+
+document.getElementById("tabel").innerHTML=`
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Status</th>
+<th>Nilai</th>
+</tr>
+` + html
+
+})
+
+}
+
+loadData()
+
+setInterval(loadData,5000)
+
+</script>
+
+</body>
+</html>
