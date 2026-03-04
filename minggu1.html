@@ -111,7 +111,7 @@ Kelas<br> <select id="kelas">
 
 <div class="timer" id="timer"></div>
 
-<h3 id="soal"></h3>
+<h3 id="pertanyaan"></h3>
 
 <div id="opsi"></div>
 
@@ -137,41 +137,41 @@ Kelas<br> <select id="kelas">
 
 let scriptURL="https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec"
 
-let soal=[
+let dataSoal=[
 
-{t:"Konektor kabel LAN adalah",o:["RJ11","RJ45","BNC","FC","RCA"],a:1},
+{t:"Perangkat penghubung jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:0},
+{t:"Alamat website disebut",o:["URL","IP","DNS","MAC","FTP"],a:0},
 {t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
-{t:"Perangkat penguat sinyal jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:1},
-{t:"Perangkat penghubung jaringan",o:["Router","Keyboard","Mouse","Printer","Scanner"],a:0},
-{t:"Perangkat untuk membagi jaringan",o:["Hub","Switch","Monitor","CPU","Speaker"],a:1},
+{t:"Media transmisi kabel",o:["UTP","Wifi","Bluetooth","Infrared","Satelit"],a:0},
+{t:"Kepanjangan LAN",o:["Local Area Network","Line Area Net","Long Area Net","Link Area Net","Large Area Net"],a:0},
 
-{t:"Kepanjangan LAN",o:["Local Area Network","Large Area Net","Line Area Network","Link Area Net","Long Area Net"],a:0},
-{t:"Kepanjangan WAN",o:["Wide Area Network","World Area Net","Web Area Network","Wire Area Net","Wide Area Net"],a:0},
-{t:"Media transmisi kabel",o:["UTP","WiFi","Bluetooth","Infrared","Satelit"],a:0},
-{t:"Perangkat penghubung internet",o:["Modem","Mouse","Printer","Scanner","Keyboard"],a:0},
-{t:"Perangkat penyebar sinyal WiFi",o:["Access Point","Monitor","CPU","Speaker","Keyboard"],a:0},
-
-{t:"Alamat unik komputer jaringan",o:["IP Address","MAC Address","Hostname","DNS","Gateway"],a:0},
-{t:"Lapisan OSI ke-1",o:["Physical","Network","Session","Transport","Application"],a:0},
-{t:"Lapisan OSI ke-3",o:["Network","Transport","Session","Presentation","Physical"],a:0},
-{t:"Lapisan OSI ke-4",o:["Transport","Network","Session","Physical","Application"],a:0},
-{t:"Lapisan OSI ke-7",o:["Application","Session","Transport","Network","Data link"],a:0},
-
-{t:"Perangkat untuk routing jaringan",o:["Router","Switch","Hub","Bridge","NIC"],a:0},
-{t:"NIC adalah",o:["Network Interface Card","Network Internal Card","Node Internet Card","Net Interface Cable","Network Input Card"],a:0},
-{t:"Topologi jaringan berbentuk bintang",o:["Star","Bus","Ring","Tree","Mesh"],a:0},
-{t:"Topologi jaringan satu jalur",o:["Bus","Star","Ring","Mesh","Tree"],a:0},
+{t:"Perangkat penyebar wifi",o:["Access Point","Monitor","CPU","Speaker","Keyboard"],a:0},
+{t:"Lapisan OSI pertama",o:["Physical","Network","Session","Transport","Application"],a:0},
+{t:"Topologi berbentuk bintang",o:["Star","Bus","Ring","Mesh","Tree"],a:0},
+{t:"Topologi satu jalur",o:["Bus","Star","Ring","Mesh","Tree"],a:0},
 {t:"Topologi melingkar",o:["Ring","Star","Bus","Mesh","Tree"],a:0},
 
-{t:"Sistem operasi jaringan",o:["Linux Server","Windows","Android","MacOS","IOS"],a:0},
+{t:"NIC adalah",o:["Network Interface Card","Node Interface Card","Network Internal Card","Net Interface Cable","Network Input Card"],a:0},
+{t:"Perangkat keamanan jaringan",o:["Firewall","Hub","Switch","Repeater","Bridge"],a:0},
+{t:"Perangkat routing jaringan",o:["Router","Hub","Switch","Bridge","NIC"],a:0},
 {t:"Media transmisi tanpa kabel",o:["Wireless","UTP","STP","Coaxial","Fiber"],a:0},
-{t:"Perangkat keamanan jaringan",o:["Firewall","Switch","Hub","Repeater","Bridge"],a:0},
-{t:"Protokol internet",o:["TCP/IP","HTTP","FTP","SMTP","POP3"],a:0},
-{t:"Alamat website",o:["URL","IP","DNS","MAC","FTP"],a:0}
+{t:"Sistem operasi jaringan",o:["Linux Server","Windows","Android","MacOS","IOS"],a:0},
+
+{t:"Protokol internet",o:["TCP/IP","FTP","SMTP","POP3","HTTP"],a:0},
+{t:"Perangkat penguat sinyal",o:["Repeater","Router","Switch","Bridge","Hub"],a:0},
+{t:"Perangkat pembagi jaringan",o:["Switch","Monitor","CPU","Speaker","Keyboard"],a:0},
+{t:"Alamat unik komputer jaringan",o:["IP Address","Hostname","DNS","MAC","Gateway"],a:0},
+{t:"Konektor kabel LAN",o:["RJ45","RJ11","BNC","USB","VGA"],a:0},
+
+{t:"Lapisan OSI ke-4",o:["Transport","Network","Session","Physical","Application"],a:0},
+{t:"Lapisan OSI ke-7",o:["Application","Session","Transport","Network","Data link"],a:0},
+{t:"Perangkat modem digunakan untuk",o:["Internet","Print","Scan","Copy","Audio"],a:0},
+{t:"Switch bekerja pada layer",o:["Data Link","Network","Session","Transport","Application"],a:0},
+{t:"DNS berfungsi untuk",o:["Menerjemahkan domain ke IP","Mengirim email","Transfer file","Mengatur IP","Keamanan jaringan"],a:0}
 
 ]
 
-soal=soal.sort(()=>Math.random()-0.5)
+dataSoal=dataSoal.sort(()=>Math.random()-0.5)
 
 let posisi=0
 let jawaban=[]
@@ -201,7 +201,7 @@ timer=setInterval(function(){
 let m=Math.floor(waktu/60)
 let s=waktu%60
 
-timer.innerHTML="Sisa waktu : "+m+":"+s
+document.getElementById("timer").innerHTML="Sisa waktu : "+m+":"+s
 
 waktu--
 
@@ -218,7 +218,7 @@ function buatNomor(){
 
 let html=""
 
-for(let i=0;i<soal.length;i++){
+for(let i=0;i<dataSoal.length;i++){
 
 html+="<div id='no"+i+"' onclick='lompat("+i+")'>"+(i+1)+"</div>"
 
@@ -230,9 +230,9 @@ nomor.innerHTML=html
 
 function tampil(){
 
-let s=soal[posisi]
+let s=dataSoal[posisi]
 
-soal.innerHTML=(posisi+1)+". "+s.t
+pertanyaan.innerHTML=(posisi+1)+". "+s.t
 
 let html=""
 
@@ -260,7 +260,7 @@ document.getElementById("no"+posisi).classList.add("aktif")
 
 function next(){
 
-if(posisi<soal.length-1){
+if(posisi<dataSoal.length-1){
 posisi++
 tampil()
 }
@@ -285,33 +285,32 @@ tampil()
 
 function selesai(){
 
-let benar = 0
+let benar=0
 
-soal.forEach((s,i)=>{
-if(jawaban[i] == s.a) benar++
+dataSoal.forEach((s,i)=>{
+if(jawaban[i]==s.a) benar++
 })
 
-let salah = soal.length - benar
-
-let nilai = Math.round((benar/soal.length)*100)
+let salah=dataSoal.length-benar
+let nilai=Math.round((benar/dataSoal.length)*100)
 
 alert(
 "HASIL UJIAN\n\n"+
-"Nama : " + nama.value + "\n"+
-"Kelas : " + kelas.value + "\n\n"+
-"Benar : " + benar + "\n"+
-"Salah : " + salah + "\n\n"+
-"Nilai : " + nilai
+"Nama : "+nama.value+"\n"+
+"Kelas : "+kelas.value+"\n\n"+
+"Benar : "+benar+"\n"+
+"Salah : "+salah+"\n\n"+
+"Nilai : "+nilai
 )
 
 fetch(scriptURL,{
 method:"POST",
-body: JSON.stringify({
-nama: nama.value,
-kelas: kelas.value,
-benar: benar,
-salah: salah,
-nilai: nilai
+body:JSON.stringify({
+nama:nama.value,
+kelas:kelas.value,
+benar:benar,
+salah:salah,
+nilai:nilai
 })
 })
 
