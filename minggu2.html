@@ -236,7 +236,6 @@ if(jawab[i]==s.a) benar++
 })
 
 let salah=25-benar
-
 let nilai=Math.round((benar/25)*100)
 
 localStorage.setItem("hasil_tryout",JSON.stringify({
@@ -255,8 +254,10 @@ kelas:kelas.value,
 nilai:nilai
 })
 })
-
+.then(res=>res.text())
+.then(data=>{
 window.location="hasil_minggu2.html"
+})
 
 }
 
