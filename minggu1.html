@@ -341,37 +341,47 @@ nilai:nilai
 function buatSertifikat(nama,nilai){
 
 var canvas=document.createElement("canvas")
-canvas.width=1000
-canvas.height=600
+canvas.width=1200
+canvas.height=700
 
 var ctx=canvas.getContext("2d")
 
+// background
 ctx.fillStyle="#ffffff"
-ctx.fillRect(0,0,1000,600)
+ctx.fillRect(0,0,1200,700)
 
+// border emas
 ctx.strokeStyle="#d4af37"
-ctx.lineWidth=10
-ctx.strokeRect(20,20,960,560)
+ctx.lineWidth=12
+ctx.strokeRect(30,30,1140,640)
 
+// judul
 ctx.textAlign="center"
+ctx.fillStyle="#000"
 
-ctx.font="bold 45px Arial"
-ctx.fillText("SERTIFIKAT TRYOUT TKJ",500,120)
+ctx.font="bold 50px Arial"
+ctx.fillText("SERTIFIKAT TRYOUT TKJ",600,150)
 
-ctx.font="20px Arial"
-ctx.fillText("Diberikan kepada",500,200)
+// teks
+ctx.font="24px Arial"
+ctx.fillText("Diberikan kepada",600,240)
 
-ctx.font="bold 35px Arial"
-ctx.fillText(nama,500,260)
+// nama siswa
+ctx.font="bold 40px Arial"
+ctx.fillText(nama,600,310)
 
-ctx.font="22px Arial"
-ctx.fillText("Telah menyelesaikan Tryout TKJ",500,320)
+// keterangan
+ctx.font="24px Arial"
+ctx.fillText("Telah menyelesaikan Tryout TKJ",600,380)
 
 ctx.font="bold 30px Arial"
-ctx.fillText("Nilai : "+nilai,500,380)
+ctx.fillText("Nilai : "+nilai,600,440)
 
-ctx.fillText("SMKN 7 LUWU",500,450)
+// sekolah
+ctx.font="24px Arial"
+ctx.fillText("SMKN 7 LUWU",600,520)
 
+// download
 var link=document.createElement("a")
 link.download="sertifikat_tryout.png"
 link.href=canvas.toDataURL()
@@ -379,6 +389,7 @@ link.href=canvas.toDataURL()
 link.click()
 
 }
+
 
 
 </script>
