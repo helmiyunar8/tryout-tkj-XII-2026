@@ -285,6 +285,8 @@ tampil()
 
 function selesai(){
 
+clearInterval(timer)
+
 let benar=0
 
 dataSoal.forEach((s,i)=>{
@@ -294,14 +296,35 @@ if(jawaban[i]==s.a) benar++
 let salah=dataSoal.length-benar
 let nilai=Math.round((benar/dataSoal.length)*100)
 
-alert(
-"HASIL UJIAN\n\n"+
-"Nama : "+nama.value+"\n"+
-"Kelas : "+kelas.value+"\n\n"+
-"Benar : "+benar+"\n"+
-"Salah : "+salah+"\n\n"+
-"Nilai : "+nilai
-)
+ujian.innerHTML=`
+
+<div style="text-align:center;padding:40px">
+
+<h2>HASIL TRYOUT TKJ</h2>
+
+<h3>${nama.value}</h3>
+<p>${kelas.value}</p>
+
+<br>
+
+<p>Benar : ${benar}</p>
+<p>Salah : ${salah}</p>
+
+<h2>Nilai : ${nilai}</h2>
+
+<br>
+
+<button onclick="buatSertifikat('${nama.value}',${nilai})">
+Download Sertifikat
+</button>
+
+<br><br>
+
+<a href="ranking_tryout.html">Lihat Ranking</a>
+
+</div>
+
+`
 
 fetch(scriptURL,{
 method:"POST",
@@ -315,6 +338,48 @@ nilai:nilai
 })
 
 }
+function buatSertifikat(nama,nilai){
+
+var canvas=document.createElement("canvas")
+canvas.width=1000
+canvas.height=600
+
+var ctx=canvas.getContext("2d")
+
+ctx.fillStyle="#ffffff"
+ctx.fillRect(0,0,1000,600)
+
+ctx.strokeStyle="#d4af37"
+ctx.lineWidth=10
+ctx.strokeRect(20,20,960,560)
+
+ctx.textAlign="center"
+
+ctx.font="bold 45px Arial"
+ctx.fillText("SERTIFIKAT TRYOUT TKJ",500,120)
+
+ctx.font="20px Arial"
+ctx.fillText("Diberikan kepada",500,200)
+
+ctx.font="bold 35px Arial"
+ctx.fillText(nama,500,260)
+
+ctx.font="22px Arial"
+ctx.fillText("Telah menyelesaikan Tryout TKJ",500,320)
+
+ctx.font="bold 30px Arial"
+ctx.fillText("Nilai : "+nilai,500,380)
+
+ctx.fillText("SMKN 7 LUWU",500,450)
+
+var link=document.createElement("a")
+link.download="sertifikat_tryout.png"
+link.href=canvas.toDataURL()
+
+link.click()
+
+}
+
 
 </script>
 
