@@ -110,6 +110,10 @@ Kelas<br> <select id="kelas" style="width:100%">
 
 <div class="nav">
 <button onclick="prev()">Sebelumnya</button>
+  function lompat(i){
+pos=i
+tampil()
+}
 <button onclick="next()">Selanjutnya</button>
 </div>
 
@@ -178,7 +182,7 @@ let html=""
 
 for(let i=0;i<25;i++){
 
-html+="<div>"+(i+1)+"</div>"
+html+=`<div onclick="lompat(${i})">${i+1}</div>`
 
 }
 
@@ -214,6 +218,10 @@ if(pos<24){pos++; tampil()}
 }
 
 function prev(){
+  function lompat(i){
+pos=i
+tampil()
+}
 if(pos>0){pos--; tampil()}
 }
 
