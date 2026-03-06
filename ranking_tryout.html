@@ -16,7 +16,8 @@ padding:40px;
 table{
 margin:auto;
 border-collapse:collapse;
-width:500px;
+width:600px;
+background:white;
 }
 
 th,td{
@@ -37,12 +38,62 @@ color:white;
 
 <h2>🏆 Ranking Tryout TKJ</h2>
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQzDMdaC8pbL27aa0kWfNkG73AZg120HUUGiJA7X5oPn1xKrQUEKuRAShEgJrUtiKOn5ky5Fv2A5LKy/pubhtml?gid=0&single=true"
-width="600" height="400"></iframe>
+<table id="ranking">
+<tr>
+<th>Rank</th>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Nilai</th>
+</tr>
+</table>
 
-<br><br>
+<br>
+<a href="minggu1.html">⬅ Kembali ke Tryout</a>
 
-<a href="minggu1.html">⬅ Kembali</a>
+<script>
+
+let url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQZDMdaC8pbL27aaOkWfNKG73AZg120HUUGiJA7X5oPn1xKrQUEKuRAShEgJrUtikOn5ky5Fv2A5LKy/pub?gid=0&single=true&output=csv"
+
+fetch(url)
+.then(res=>res.text())
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let siswa=[]
+
+rows.forEach(r=>{
+
+let c=r.split(",")
+
+siswa.push({
+nama:c[1],
+kelas:c[2],
+nilai:parseInt(c[5])
+})
+
+})
+
+siswa.sort((a,b)=>b.nilai-a.nilai)
+
+let table=document.getElementById("ranking")
+
+siswa.forEach((s,i)=>{
+
+table.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${s.nama}</td>
+<td>${s.kelas}</td>
+<td>${s.nilai}</td>
+</tr>
+`
+
+})
+
+})
+
+</script>
 
 </body>
 </html>
