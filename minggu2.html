@@ -68,6 +68,7 @@ background:#c8e6c9;
 padding:8px;
 text-align:center;
 border-radius:4px;
+cursor:pointer;
 }
 
 </style>
@@ -110,10 +111,6 @@ Kelas<br> <select id="kelas" style="width:100%">
 
 <div class="nav">
 <button onclick="prev()">Sebelumnya</button>
-  function lompat(i){
-pos=i
-tampil()
-}
 <button onclick="next()">Selanjutnya</button>
 </div>
 
@@ -181,9 +178,7 @@ function buatNomor(){
 let html=""
 
 for(let i=0;i<25;i++){
-
 html+=`<div onclick="lompat(${i})">${i+1}</div>`
-
 }
 
 nomor.innerHTML=html
@@ -214,15 +209,22 @@ opsi.innerHTML=html
 }
 
 function next(){
-if(pos<24){pos++; tampil()}
+if(pos<24){
+pos++
+tampil()
+}
 }
 
 function prev(){
-  function lompat(i){
-pos=i
+if(pos>0){
+pos--
 tampil()
 }
-if(pos>0){pos--; tampil()}
+}
+
+function lompat(i){
+pos=i
+tampil()
 }
 
 function selesai(){
