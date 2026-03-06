@@ -68,6 +68,11 @@ text-align:center;
 border-radius:4px;
 cursor:pointer;
 }
+  .nomor div.jawab{
+background:#2e7d32;
+color:white;
+font-weight:bold;
+}
 </style>
 
 </head>
@@ -270,22 +275,43 @@ pertanyaan.innerHTML=(pos+1)+". "+s.t +
 let html=""
 
 s.o.forEach((o,i)=>{
+
 html+=`
 <label>
-<input type="radio" name="opsi" value="${i}" onchange="jawab[pos]=${i}">
+<input type="radio" name="opsi" value="${i}"
+${jawab[pos]==i?"checked":""}
+onchange="pilih(${i})">
 ${String.fromCharCode(65+i)}. ${o}
-</label><br>`
+</label><br>
+`
+
 })
 
 opsi.innerHTML=html
 }
+function pilih(i){
+jawab[pos]=i
 
+let kotak=document.querySelectorAll("#nomor div")
+kotak[pos].classList.add("jawab")
+}
 function next(){ if(pos<39){pos++; tampil()} }
 function prev(){ if(pos>0){pos--; tampil()} }
 
 function lompat(i){ pos=i; tampil() }
 
 function selesai(){
+
+let belum=0
+
+for(let i=0;i<soal.length;i++){
+if(jawab[i]==undefined) belum++
+}
+
+if(belum>0){
+let lanjut=confirm("Masih ada "+belum+" soal belum dijawab.\nYakin ingin menyelesaikan ujian?")
+if(!lanjut){return}
+}
 
 let benar=0
 
@@ -316,7 +342,6 @@ nilai:nilai
 .then(data=>{
 window.location="hasil_minggu2.html"
 })
-
 }
 </script>
 
