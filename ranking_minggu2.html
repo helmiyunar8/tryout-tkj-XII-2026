@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Ranking Tryout TKJ</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef5ee;
+text-align:center;
+padding:40px;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:600px;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:10px;
+}
+
+th{
+background:#2e7d32;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>🏆 Ranking Tryout TKJ</h2>
+
+<table id="ranking">
+
+<tr>
+<th>Rank</th>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Nilai</th>
+</tr>
+
+</table>
+
+<br>
+
+<a href="minggu2.html">⬅ Kembali ke Tryout</a>
+
+<script>
+
+let url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRdV-1HI9fjOTONt0DwarFqdOlhlGBOCNIPWy9zoX0KxH98yFwmFIvvEBZtwLpRBwGBByl8gmK6KZ4S/pub?gid=1828634055&single=true&output=csv"
+
+fetch(url)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let siswa=[]
+
+rows.forEach(r=>{
+
+let c=r.split(",")
+
+siswa.push({
+nama:c[1],
+kelas:c[2],
+nilai:parseInt(c[3])
+})
+
+})
+
+siswa.sort((a,b)=>b.nilai-a.nilai)
+
+let table=document.getElementById("ranking")
+
+siswa.forEach((s,i)=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${s.nama}</td>
+
+<td>${s.kelas}</td>
+
+<td>${s.nilai}</td>
+
+</tr>
+
+`
+
+})
+
+})
+
+</script>
+
+</body>
+
+</html>
