@@ -235,9 +235,17 @@ soal.forEach((s,i)=>{
 if(jawab[i]==s.a) benar++
 })
 
+let salah=25-benar
+
 let nilai=Math.round((benar/25)*100)
 
-alert("Nilai kamu : "+nilai)
+localStorage.setItem("hasil_tryout",JSON.stringify({
+nama:nama.value,
+kelas:kelas.value,
+benar:benar,
+salah:salah,
+nilai:nilai
+}))
 
 fetch(scriptURL,{
 method:"POST",
@@ -247,6 +255,8 @@ kelas:kelas.value,
 nilai:nilai
 })
 })
+
+window.location="hasil_minggu2.html"
 
 }
 
