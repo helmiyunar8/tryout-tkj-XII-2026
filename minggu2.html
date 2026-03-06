@@ -3,61 +3,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TRYOUT UJIAN TKJ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TRYOUT TKJ MINGGU 2</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#e8f5e9;
 margin:0;
+background:#eef5ee;
 }
 
 header{
 background:#2e7d32;
 color:white;
-padding:15px;
 text-align:center;
+padding:15px;
 }
 
 .container{
-max-width:900px;
+max-width:500px;
 margin:auto;
+padding:15px;
+}
+
+.card{
 background:white;
-padding:20px;
-margin-top:20px;
-border-radius:10px;
+padding:15px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
 
 .timer{
 color:red;
 font-weight:bold;
-text-align:right;
-}
-
-.nomor{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:5px;
-margin-top:20px;
-}
-
-.nomor div{
-padding:8px;
-background:#c8e6c9;
-text-align:center;
-border-radius:4px;
-cursor:pointer;
+margin-bottom:10px;
 }
 
 button{
 background:#2e7d32;
 color:white;
 border:none;
-padding:10px 15px;
+padding:10px;
+border-radius:6px;
 margin-top:10px;
-cursor:pointer;
-border-radius:5px;
+width:100%;
+}
+
+.nav{
+display:flex;
+gap:10px;
+}
+
+.nomor{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:6px;
+margin-top:15px;
+}
+
+.nomor div{
+background:#c8e6c9;
+padding:8px;
+text-align:center;
+border-radius:4px;
 }
 
 </style>
@@ -67,125 +77,120 @@ border-radius:5px;
 <body>
 
 <header>
-
-<h2>TRYOUT UJIAN TKJ</h2>
+<h3>TRYOUT TKJ</h3>
 SMKN 7 LUWU
-
 </header>
 
 <div class="container">
 
+<div id="login" class="card">
+
+Nama<br> <input id="nama" style="width:100%"><br><br>
+
+Kelas<br> <select id="kelas" style="width:100%">
+
+<option>X TKJ</option>
+<option>XI TKJ</option>
+<option>XII TKJ</option>
+</select>
+
+<button onclick="mulai()">Mulai Ujian</button>
+
+</div>
+
+<div id="ujian" style="display:none">
+
+<div class="card">
+
 <div class="timer" id="timer"></div>
 
-<h3 id="soal"></h3>
+<h3 id="pertanyaan"></h3>
 
 <div id="opsi"></div>
 
-<br>
+<div class="nav">
+<button onclick="prev()">Sebelumnya</button>
+<button onclick="next()">Selanjutnya</button>
+</div>
 
-<button onclick="prev()">Sebelumnya</button> <button onclick="next()">Selanjutnya</button>
+<button onclick="selesai()">Selesai Ujian</button>
 
-<div class="nomor" id="nomor"></div>
+</div>
+
+<div class="card nomor" id="nomor"></div>
+
+</div>
 
 </div>
 
 <script>
 
-let waktu=55*60
+let scriptURL="PASTE_SCRIPT_URL"
 
-let timer=setInterval(function(){
+let soal=[
+{t:"Topologi berbentuk bintang",o:["Star","Bus","Ring","Mesh","Tree"],a:0},
+{t:"Alamat website disebut",o:["URL","IP","DNS","FTP","HTTP"],a:0},
+{t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
+{t:"Media transmisi kabel",o:["UTP","Wifi","Bluetooth","Infrared","Satelit"],a:0},
+{t:"Kepanjangan LAN",o:["Local Area Network","Line Area Net","Long Area Net","Link Area Net","Large Area Net"],a:0}
+]
+
+while(soal.length<25){
+soal=soal.concat(soal)
+}
+
+soal=soal.slice(0,25)
+
+let pos=0
+let jawab=[]
+let waktu=60*60
+
+function mulai(){
+login.style.display="none"
+ujian.style.display="block"
+buatNomor()
+tampil()
+timer()
+}
+
+function timer(){
+
+setInterval(function(){
 
 let m=Math.floor(waktu/60)
 let s=waktu%60
 
-document.getElementById("timer").innerHTML=
-"Sisa waktu : "+m+":"+s
+document.getElementById("timer").innerHTML="Sisa waktu : "+m+":"+s
 
 waktu--
 
 if(waktu<0){
-clearInterval(timer)
 selesai()
 }
 
 },1000)
 
-let soal=[
-
-{t:"Jenis layanan hosting server bersama disebut",o:["Dedicated","VPS","Shared hosting","Free hosting","Cloud"],a:2},
-
-{t:"Hosting dengan server di data center disebut",o:["Proxy","Colocation hosting","Cloud hosting","Gateway","Gatekeeper"],a:1},
-
-{t:"Control panel hosting adalah",o:["Plesk","Linux","Apache","HTML","DNS"],a:0},
-
-{t:"Domain .gov digunakan untuk",o:["Militer","Organisasi","Pemerintah","Komersial","Televisi"],a:2},
-
-{t:"Domain .edu digunakan untuk",o:["Pendidikan","Organisasi","Pemerintah","Komersial","Televisi"],a:0},
-
-{t:"VLAN adalah",o:["Virus LAN","Virtual LAN","Virus Net","Virtual Net","Virtual Lokasi"],a:1},
-
-{t:"VLAN untuk membawa data user disebut",o:["VLAN management","VLAN default","Native VLAN","VLAN data","VLAN voice"],a:3},
-
-{t:"VLAN untuk manajemen switch disebut",o:["VLAN management","VLAN default","Native VLAN","VLAN data","VLAN voice"],a:0},
-
-{t:"Routing yang dikonfigurasi manual disebut",o:["Static routing","Dynamic routing","Gateway","Default route","Bridge"],a:0},
-
-{t:"Router yang membuat tabel routing otomatis disebut",o:["Static router","Dynamic router","Hub","Bridge","Switch"],a:1},
-
-{t:"Gateway adalah",o:["Gerbang jaringan","Router statis","Router dinamis","Proses routing","Alamat tujuan"],a:0},
-
-{t:"Firewall berfungsi",o:["Memudahkan internet","Keamanan jaringan","Router dinamis","Routing data","Alamat tujuan"],a:1},
-
-{t:"QoS adalah",o:["Quality Services","Quality of Service","Question Service","Queue Service","Quick Service"],a:1},
-
-{t:"Load balancing adalah",o:["Membagi trafik jaringan","Firewall","Router dinamis","Routing paket","Alamat tujuan"],a:0},
-
-{t:"Fungsi firewall",o:["Desain","Kontrol trafik","Efek cahaya","Upgrade OS","A dan D"],a:1},
-
-{t:"Google Sheets adalah",o:["Spreadsheet online","Aplikasi surat","Pengolah teks","Editor kata","Presentasi"],a:0},
-
-{t:"Cost reduction VLAN berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device","Manajemen jaringan","Gabung user"],a:0},
-
-{t:"High performance VLAN berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:1},
-
-{t:"Broadcast storm mitigation berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:2},
-
-{t:"Improved IT staff efficiency berarti",o:["Hemat biaya","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:3},
-
-{t:"VLAN security berarti",o:["Segmen keamanan","Kurangi broadcast","Kurangi device broadcast","Manajemen jaringan","Gabung user"],a:0},
-
-{t:"Normal range VLAN digunakan untuk",o:["Jaringan kecil","Token ring","Default VLAN","Database VLAN","Manajemen VLAN"],a:0},
-
-{t:"VLAN berdasarkan MAC address disebut",o:["Port based","MAC based","Protocol based","IP based","Auth based"],a:1},
-
-{t:"VLAN berdasarkan protokol disebut",o:["Port based","MAC based","Protocol based","IP based","Auth based"],a:2},
-
-{t:"Cara mematikan komputer yang benar",o:["Cabut listrik","Tekan power","Shutdown","Power monitor","Power CPU"],a:2}
-
-]
-
-let posisi=0
-let jawaban=[]
+}
 
 function buatNomor(){
 
 let html=""
 
-for(let i=0;i<soal.length;i++){
-html+="<div onclick='lompat("+i+")'>"+(i+1)+"</div>"
-}
+for(let i=0;i<25;i++){
 
-document.getElementById("nomor").innerHTML=html
+html+="<div>"+(i+1)+"</div>"
 
 }
 
-buatNomor()
+nomor.innerHTML=html
+
+}
 
 function tampil(){
 
-let s=soal[posisi]
+let s=soal[pos]
 
-document.getElementById("soal").innerHTML=(posisi+1)+". "+s.t
+pertanyaan.innerHTML=(pos+1)+". "+s.t
 
 let html=""
 
@@ -193,56 +198,45 @@ s.o.forEach((o,i)=>{
 
 html+=`
 <label>
-<input type="radio" name="opsi" value="${i}" ${jawaban[posisi]==i?"checked":""}>
+<input type="radio" name="opsi" value="${i}" onchange="jawab[pos]=${i}">
 ${String.fromCharCode(65+i)}. ${o}
 </label><br>
 `
 
 })
 
-document.getElementById("opsi").innerHTML=html
-
-}
-
-tampil()
-
-function simpan(){
-
-let pilih=document.querySelector('input[name="opsi"]:checked')
-
-if(pilih) jawaban[posisi]=Number(pilih.value)
+opsi.innerHTML=html
 
 }
 
 function next(){
-simpan()
-if(posisi<soal.length-1){posisi++;tampil()}else{selesai()}
+if(pos<24){pos++; tampil()}
 }
 
 function prev(){
-simpan()
-if(posisi>0){posisi--;tampil()}
-}
-
-function lompat(i){
-simpan()
-posisi=i
-tampil()
+if(pos>0){pos--; tampil()}
 }
 
 function selesai(){
 
-simpan()
-
 let benar=0
 
 soal.forEach((s,i)=>{
-if(jawaban[i]==s.a) benar++
+if(jawab[i]==s.a) benar++
 })
 
-let nilai=Math.round((benar/soal.length)*100)
+let nilai=Math.round((benar/25)*100)
 
-alert("Nilai anda : "+nilai)
+alert("Nilai kamu : "+nilai)
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+nama:nama.value,
+kelas:kelas.value,
+nilai:nilai
+})
+})
 
 }
 
