@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Hasil Tryout TKJ</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef5ee;
+text-align:center;
+padding:40px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:10px;
+max-width:500px;
+margin:auto;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+}
+
+h2{
+margin-bottom:20px;
+}
+
+.nilai{
+font-size:28px;
+font-weight:bold;
+margin:20px;
+}
+
+button{
+background:#2e7d32;
+color:white;
+border:none;
+padding:12px;
+border-radius:6px;
+margin:8px;
+width:200px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>HASIL TRYOUT TKJ</h2>
+
+<p id="nama"></p>
+<p id="kelas"></p>
+
+<br>
+
+<p id="benar"></p>
+<p id="salah"></p>
+
+<div class="nilai" id="nilai"></div>
+
+<button onclick="sertifikat()">Download Sertifikat</button>
+
+<br>
+
+<a href="ranking_minggu2.html">Lihat Ranking</a>
+
+</div>
+
+<script>
+
+let data=JSON.parse(localStorage.getItem("hasil_tryout"))
+
+document.getElementById("nama").innerHTML="Nama : "+data.nama
+document.getElementById("kelas").innerHTML="Kelas : "+data.kelas
+
+document.getElementById("benar").innerHTML="Benar : "+data.benar
+document.getElementById("salah").innerHTML="Salah : "+data.salah
+
+document.getElementById("nilai").innerHTML="Nilai : "+data.nilai
+
+function sertifikat(){
+
+let text=`
+SERTIFIKAT TRYOUT TKJ
+
+SMKN 7 LUWU
+
+Diberikan kepada
+
+${data.nama}
+
+Nilai : ${data.nilai}
+
+Tanggal : ${new Date().toLocaleDateString()}
+`
+
+let blob=new Blob([text],{type:"text/plain"})
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+a.download="sertifikat_tryout.txt"
+
+a.click()
+
+}
+
+</script>
+
+</body>
+
+</html>
