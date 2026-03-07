@@ -87,27 +87,54 @@ document.getElementById("nilai").innerHTML="Nilai : "+data.nilai
 
 function sertifikat(){
 
-let text=`
-SERTIFIKAT TRYOUT TKJ
+let canvas=document.createElement("canvas")
+canvas.width=1000
+canvas.height=600
 
-SMKN 7 LUWU
+let ctx=canvas.getContext("2d")
 
-Diberikan kepada
+// background
+ctx.fillStyle="#ffffff"
+ctx.fillRect(0,0,1000,600)
 
-${data.nama}
+// border
+ctx.strokeStyle="#2e7d32"
+ctx.lineWidth=8
+ctx.strokeRect(20,20,960,560)
 
-Nilai : ${data.nilai}
+// judul
+ctx.fillStyle="#2e7d32"
+ctx.font="bold 40px Arial"
+ctx.textAlign="center"
+ctx.fillText("SERTIFIKAT TRYOUT TKJ",500,120)
 
-Tanggal : ${new Date().toLocaleDateString()}
-`
+// sekolah
+ctx.font="24px Arial"
+ctx.fillText("SMKN 7 LUWU",500,160)
 
-let blob=new Blob([text],{type:"text/plain"})
-let a=document.createElement("a")
+// isi sertifikat
+ctx.fillStyle="#000"
+ctx.font="26px Arial"
 
-a.href=URL.createObjectURL(blob)
-a.download="sertifikat_tryout.txt"
+ctx.fillText("Nama : "+data.nama,500,260)
+ctx.fillText("Kelas : "+data.kelas,500,320)
 
-a.click()
+ctx.fillStyle="#2e7d32"
+ctx.font="bold 40px Arial"
+ctx.fillText("Nilai : "+data.nilai,500,420)
+
+// tanggal
+let tgl=new Date().toLocaleDateString()
+
+ctx.fillStyle="#000"
+ctx.font="20px Arial"
+ctx.fillText("Tanggal : "+tgl,500,500)
+
+// download PNG
+let link=document.createElement("a")
+link.download="sertifikat_tryout.png"
+link.href=canvas.toDataURL("image/png")
+link.click()
 
 }
 
