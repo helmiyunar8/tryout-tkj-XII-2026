@@ -102,9 +102,14 @@ ttd.src="gambar/ttd.png"
 
 bg.onload=function(){
 
+logo.onload=function(){
+
+ttd.onload=function(){
+
+// background
 ctx.drawImage(bg,0,0,1000,700)
 
-// logo
+// logo sekolah
 ctx.drawImage(logo,80,80,120,120)
 
 ctx.fillStyle="#2e7d32"
@@ -125,6 +130,7 @@ ctx.fillStyle="#2e7d32"
 ctx.font="bold 40px Arial"
 ctx.fillText("Nilai : "+data.nilai,500,450)
 
+// tanda tangan
 ctx.drawImage(ttd,720,500,200,100)
 
 ctx.font="20px Arial"
@@ -140,6 +146,9 @@ link.click()
 
 }
 
+}
+
+}
 
 </script>
 
