@@ -39,6 +39,7 @@ color:white;
 <body>
 
 <h2>🏆 Ranking Tryout TKJ</h2>
+  <div id="statistik" style="margin-bottom:20px;font-size:18px;"></div>
 
 <table id="ranking">
 
@@ -82,7 +83,20 @@ nilai:parseInt(c[3])
 })
 
 siswa.sort((a,b)=>b.nilai-a.nilai)
+let total=0
 
+siswa.forEach(s=>{
+total+=s.nilai
+})
+
+let rata=Math.round(total/siswa.length)
+
+let tertinggi=siswa[0].nilai
+
+document.getElementById("statistik").innerHTML=
+"📊 Peserta : "+siswa.length+
+" | 📈 Rata-rata : "+rata+
+" | 🥇 Nilai tertinggi : "+tertinggi
 let table=document.getElementById("ranking")
 
 siswa.forEach((s,i)=>{
