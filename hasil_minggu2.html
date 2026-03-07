@@ -96,18 +96,17 @@ let bg=new Image()
 let logo=new Image()
 let ttd=new Image()
 
-bg.src="background.png"
-logo.src="logo.png"
-ttd.src="ttd.png"
+bg.src="gambar/background.png"
+logo.src="gambar/logo.png"
+ttd.src="gambar/ttd.png"
 
 bg.onload=function(){
 
 ctx.drawImage(bg,0,0,1000,700)
 
-// logo sekolah
-ctx.drawImage(logo,80,80,100,100)
+// logo
+ctx.drawImage(logo,80,80,120,120)
 
-// judul
 ctx.fillStyle="#2e7d32"
 ctx.font="bold 42px Arial"
 ctx.textAlign="center"
@@ -116,7 +115,6 @@ ctx.fillText("SERTIFIKAT TRYOUT TKJ",500,150)
 ctx.font="24px Arial"
 ctx.fillText("SMKN 7 LUWU",500,190)
 
-// isi
 ctx.fillStyle="#000"
 ctx.font="28px Arial"
 
@@ -127,21 +125,21 @@ ctx.fillStyle="#2e7d32"
 ctx.font="bold 40px Arial"
 ctx.fillText("Nilai : "+data.nilai,500,450)
 
-// tanda tangan
 ctx.drawImage(ttd,720,500,200,100)
 
-ctx.font="18px Arial"
+ctx.font="20px Arial"
 ctx.fillStyle="#000"
 ctx.fillText("Helmi Yunar",820,620)
 
-// download
 let link=document.createElement("a")
 link.download="sertifikat_tryout.png"
 link.href=canvas.toDataURL("image/png")
 link.click()
 
 }
+
 }
+
 
 </script>
 
