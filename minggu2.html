@@ -234,6 +234,7 @@ let bankSoal=[
 
 bankSoal.sort(()=>Math.random()-0.5)
 let soal=bankSoal.slice(0,40)
+soal.forEach(s=>acakPilihan(s))
 
 let pos=0
 let jawab=[]
@@ -264,7 +265,16 @@ html+=`<div onclick="lompat(${i})">${i+1}</div>`
 }
 nomor.innerHTML=html
 }
+function acakPilihan(soal){
 
+let arr=soal.o.map((opsi,i)=>({text:opsi,benar:(i==soal.a)}))
+
+arr.sort(()=>Math.random()-0.5)
+
+soal.o=arr.map(x=>x.text)
+soal.a=arr.findIndex(x=>x.benar)
+
+}
 function tampil(){
 
 let s=soal[pos]
