@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ranking Tryout TKJ</title>
 
 <style>
-  <style>
 
 body{
 font-family:Arial;
-background:#0f2a44;
-color:white;
+background:#eef5ee;
 text-align:center;
-padding:40px;
+margin:0;
+padding:20px;
 }
 
 /* NAVBAR */
@@ -39,10 +40,27 @@ border-radius:6px;
 background:#1e5b37;
 }
 
+/* JUDUL */
+
+h2{
+margin-top:30px;
+}
+
+/* STATISTIK */
+
+#statistik{
+margin-top:10px;
+margin-bottom:25px;
+font-size:18px;
+}
+
+/* TABEL */
+
 table{
 margin:auto;
 border-collapse:collapse;
 width:420px;
+background:white;
 }
 
 th,td{
@@ -55,11 +73,29 @@ background:#2e7d32;
 color:white;
 }
 
+/* TOMBOL */
+
+.btn{
+display:inline-block;
+margin-top:20px;
+padding:10px 18px;
+background:#2e7d32;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-size:15px;
+}
+
+.btn:hover{
+background:#1b5e20;
+}
+
 </style>
 
 </head>
 
 <body>
+
 <!-- NAVBAR -->
 
 <div class="navbar">
@@ -72,8 +108,10 @@ color:white;
 <a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
 
 </div>
+
 <h2>🏆 Ranking Tryout TKJ</h2>
-  <div id="statistik" style="margin-bottom:20px;font-size:18px;"></div>
+
+<div id="statistik"></div>
 
 <table id="ranking">
 
@@ -88,10 +126,13 @@ color:white;
 
 <br>
 
-<a href="/tryout-tkj-XII-2026/minggu2.html">⬅ Kembali ke Tryout</a>
+<a href="/tryout-tkj-XII-2026/minggu2.html" class="btn">
+⬅ Kembali ke Tryout
+</a>
+
 <br><br>
 
-<a href="/index.html" class="btn-home">
+<a href="/index.html" class="btn">
 🏠 Kembali ke Beranda LMS
 </a>
 
@@ -100,9 +141,7 @@ color:white;
 let url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRdV-1HI9fjOTONt0DwarFqdOlhlGBOCNIPWy9zoX0KxH98yFwmFIvvEBZtwLpRBwGBByl8gmK6KZ4S/pub?gid=1828634055&single=true&output=csv"
 
 fetch(url)
-
 .then(res=>res.text())
-
 .then(data=>{
 
 let rows=data.split("\n").slice(1)
@@ -122,6 +161,7 @@ nilai:parseInt(c[3])
 })
 
 siswa.sort((a,b)=>b.nilai-a.nilai)
+
 let total=0
 
 siswa.forEach(s=>{
@@ -136,6 +176,7 @@ document.getElementById("statistik").innerHTML=
 "📊 Peserta : "+siswa.length+
 " | 📈 Rata-rata : "+rata+
 " | 🥇 Nilai tertinggi : "+tertinggi
+
 let table=document.getElementById("ranking")
 
 siswa.forEach((s,i)=>{
@@ -145,11 +186,8 @@ table.innerHTML+=`
 <tr>
 
 <td>${i+1}</td>
-
 <td>${s.nama}</td>
-
 <td>${s.kelas}</td>
-
 <td>${s.nilai}</td>
 
 </tr>
