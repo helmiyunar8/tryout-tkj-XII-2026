@@ -1,59 +1,155 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>TRYOUT TKJ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Ujian TKJ - SMKN 7 LUWU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --gold: #D4AF37;
+            --white: #ffffff;
+            --bg-soft: #f4f7f6;
+        }
 
-<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-body{
-font-family:Arial;
-background:#eef5ee;
-text-align:center;
-padding-top:100px;
-}
+        body {
+            background-color: var(--bg-soft);
+            background: linear-gradient(135deg, #f4f7f6 0%, #e8f5e9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-h1{
-color:#2e7d32;
-}
+        .portal-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(46, 125, 50, 0.1);
+            text-align: center;
+            border: 1px solid rgba(46, 125, 50, 0.05);
+        }
 
-button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:15px 30px;
-margin:10px;
-font-size:18px;
-border-radius:8px;
-cursor:pointer;
-}
+        .header-portal i {
+            font-size: 60px;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
 
-.lock{
-background:gray;
-cursor:not-allowed;
-}
+        h1 {
+            color: var(--dark-green);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
 
-</style>
+        .school-name {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            display: block;
+        }
 
+        .btn-exam {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 18px 25px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+        }
+
+        /* Tombol Aktif */
+        .btn-open {
+            background: var(--primary-green);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.2);
+        }
+        .btn-open:hover {
+            background: var(--dark-green);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Tombol Terkunci */
+        .btn-lock {
+            background: #eceff1;
+            color: #90a4ae;
+            cursor: not-allowed;
+            border: 1px dashed #cfd8dc;
+        }
+
+        .footer-portal {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Animasi masuk */
+        .portal-card {
+            animation: slideUp 0.6s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>TRYOUT UJIAN TKJ</h1>
-SMKN 7 LUWU
+    <div class="portal-card">
+        <div class="header-portal">
+            <i class="fas fa-laptop-code"></i>
+            <h1>TRYOUT UJIAN TKJ</h1>
+            <span class="school-name">SMKN 7 LUWU</span>
+        </div>
 
-<br><br>
+        <a href="minggu1.html" class="btn-exam btn-open">
+            <span><i class="fas fa-file-alt" style="margin-right: 10px;"></i> MINGGU 1</span>
+            <i class="fas fa-chevron-right"></i>
+        </a>
 
-<a href="minggu1.html">
-<button>TRYOUT MINGGU 1</button>
-</a>
+        <button class="btn-exam btn-lock" onclick="alert('Maaf, Ujian Minggu 2 belum diaktifkan oleh Pak Helmi Yunar.')">
+            <span><i class="fas fa-lock" style="margin-right: 10px;"></i> MINGGU 2</span>
+            <i class="fas fa-times-circle"></i>
+        </button>
 
-<br>
+        <a href="../menu-utama-TKJ/tryout.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali ke Dashboard Utama
+        </a>
 
-<button class="lock" onclick="alert('Ujian minggu 2 belum dibuka guru')">
-TRYOUT MINGGU 2 🔒
-</button>
+        <div class="footer-portal">
+            Portal Ujian Digital &copy; 2026<br>
+            Developed by <b>Helmi Yunar</b>
+        </div>
+    </div>
 
 </body>
 </html>
