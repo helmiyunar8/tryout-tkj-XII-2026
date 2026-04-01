@@ -1,137 +1,273 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>MONITOR UJIAN REALTIME</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Ujian Realtime - SMKN 7 LUWU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --accent: #D4AF37;
+            --dark: #121212;
+            --card-bg: #ffffff;
+            --text: #333;
+        }
 
-<style>
-.navbar{
-background:#2e7d32;
-padding:12px;
-margin-bottom:20px;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:10px;
-font-weight:bold;
-}
-body{
-font-family:Arial;
-background:#eef5ee;
-text-align:center;
-padding:40px;
-}
+        body { 
+            background-color: #f0f4f1; 
+            color: var(--text);
+            min-height: 100vh;
+        }
 
-h1{
-color:#2e7d32;
-}
+        /* NAVBAR */
+        .navbar {
+            background: var(--primary);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-table{
-margin:auto;
-border-collapse:collapse;
-width:90%;
-background:white;
-}
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-th,td{
-border:1px solid #ccc;
-padding:10px;
-}
+        .navbar a:hover { color: var(--accent); }
 
-th{
-background:#2e7d32;
-color:white;
-}
+        /* HEADER & STATS */
+        .header-admin {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
 
-.status-ujian{
-color:orange;
-font-weight:bold;
-}
+        .header-admin h1 { color: var(--primary); font-size: 28px; font-weight: 800; }
 
-.status-selesai{
-color:green;
-font-weight:bold;
-}
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-top: 10px;
+        }
 
-</style>
+        .dot {
+            height: 10px; width: 10px;
+            background-color: #2e7d32;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
 
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: -30px auto 30px;
+            padding: 0 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .stat-card i { font-size: 24px; color: var(--accent); margin-bottom: 10px; }
+        .stat-card h3 { font-size: 28px; color: var(--primary); }
+        .stat-card p { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 700; }
+
+        /* TABLE */
+        .table-container {
+            max-width: 1100px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+
+        tr:hover td { background-color: #f9fff9; }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        
+        .score-box {
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .low-score { color: #d32f2f; }
+        .high-score { color: #2e7d32; }
+
+        @media (max-width: 600px) {
+            th:nth-child(3), td:nth-child(3) { display: none; } /* Sembunyikan kolom Kelas di HP */
+            .header-admin h1 { font-size: 20px; }
+        }
+    </style>
 </head>
-
 <body>
-<div class="navbar">
-<a href="/index.html">🏠 Beranda LMS</a>
-<a href="/menu-utama-TKJ/tryout.html">📝 Menu Tryout</a>
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
-</div>
-<h1>MONITOR UJIAN TRYOUT Minggu 1 XII TKJ</h1>
-SMKN 7 LUWU
 
-<br><br>
+    <nav class="navbar">
+        <a href="/index.html"><i class="fas fa-home"></i> BERANDA</a>
+        <a href="/menu-utama-TKJ/tryout.html"><i class="fas fa-edit"></i> MENU TRYOUT</a>
+        <a href="/tryout-tkj-XII-2026/ranking_minggu2.html"><i class="fas fa-trophy"></i> RANKING</a>
+    </nav>
 
-<table id="tabel">
+    <div class="header-admin">
+        <h1>MONITORING REAL-TIME</h1>
+        <p style="color: #666; font-weight: 600;">Tryout Minggu 1 • XII TKJ • SMKN 7 LUWU</p>
+        <div class="live-indicator">
+            <span class="dot"></span> SISTEM PEMANTAU AKTIF
+        </div>
+    </div>
 
-<tr>
-<th>No</th>
-<th>Nama</th>
-<th>Kelas</th>
-<th>Status</th>
-<th>Nilai</th>
-</tr>
+    <div class="stats-container">
+        <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3 id="total-peserta">0</h3>
+            <p>Total Peserta</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-chart-line"></i>
+            <h3 id="rata-rata">0</h3>
+            <p>Rata-rata Nilai</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <h3 id="last-update">-</h3>
+            <p>Update Terakhir</p>
+        </div>
+    </div>
 
-</table>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Status</th>
+                    <th>Skor</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-body">
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 50px; color: #888;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 10px;"></i><br>
+                        Sedang menyinkronkan data...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<script>
+    <script>
+        const sheetURL = "https://opensheet.elk.sh/1TPjmE7bTmHYs-iX_UWdA48mdRJdpu8DzIh1st4KebiE/Sheet1";
 
-let sheetURL="https://opensheet.elk.sh/1TPjmE7bTmHYs-iX_UWdA48mdRJdpu8DzIh1st4KebiE/Sheet1"
+        function loadData() {
+            fetch(sheetURL)
+                .then(res => res.json())
+                .then(data => {
+                    let html = "";
+                    let totalNilai = 0;
+                    
+                    data.forEach((s, i) => {
+                        let nilai = parseInt(s.nilai) || 0;
+                        totalNilai += nilai;
+                        
+                        // Cek skor untuk warna
+                        let scoreClass = nilai < 70 ? "low-score" : "high-score";
 
-function loadData(){
+                        html += `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td style="font-weight: 600; color: #2c3e50;">${s.nama.toUpperCase()}</td>
+                                <td><span style="color: #666;">${s.kelas}</span></td>
+                                <td><span class="badge badge-success"><i class="fas fa-check"></i> Selesai</span></td>
+                                <td class="score-box ${scoreClass}">${nilai}</td>
+                            </tr>
+                        `;
+                    });
 
-fetch(sheetURL)
+                    // Update Tabel
+                    document.getElementById("tabel-body").innerHTML = html;
 
-.then(res=>res.json())
+                    // Update Statistik
+                    document.getElementById("total-peserta").innerText = data.length;
+                    let rata = data.length > 0 ? (totalNilai / data.length).toFixed(1) : 0;
+                    document.getElementById("rata-rata").innerText = rata;
+                    
+                    let now = new Date();
+                    document.getElementById("last-update").innerText = now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes();
+                })
+                .catch(err => {
+                    console.error("Gagal memuat data:", err);
+                });
+        }
 
-.then(data=>{
+        // Load pertama kali
+        loadData();
 
-let html=""
-
-data.forEach((s,i)=>{
-
-let status="Selesai"
-
-html+=`
-<tr>
-<td>${i+1}</td>
-<td>${s.nama}</td>
-<td>${s.kelas}</td>
-<td class="status-selesai">${status}</td>
-<td>${s.nilai}</td>
-</tr>
-`
-
-})
-
-document.getElementById("tabel").innerHTML=`
-<tr>
-<th>No</th>
-<th>Nama</th>
-<th>Kelas</th>
-<th>Status</th>
-<th>Nilai</th>
-</tr>
-` + html
-
-})
-
-}
-
-loadData()
-
-setInterval(loadData,5000)
-
-</script>
+        // Refresh otomatis setiap 5 detik (Sesuai keinginan Bapak)
+        setInterval(loadData, 5000);
+    </script>
 
 </body>
 </html>
