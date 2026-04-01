@@ -9,136 +9,203 @@
     <style>
         :root {
             --gold: #D4AF37;
-            --primary-green: #2e7d32;
-            --dark-green: #1b5e20;
             --white: #ffffff;
             --bg-soft: #f4f7f6;
+            --text-main: #333;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-soft); color: var(--text-main); min-height: 100vh; display: flex; overflow-x: hidden; }
 
-        body { background-color: var(--bg-soft); color: #333; min-height: 100vh; }
-
-        /* NAVBAR */
-        .navbar {
-            background: var(--white); padding: 12px 5%; display: flex;
-            justify-content: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky; top: 0; z-index: 1000;
+        /* OVERLAY GELAP SMKN 7 */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
-        .navbar a { color: var(--primary-green); text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 15px; border-radius: 8px; transition: 0.3s; }
-        .navbar a:hover { background: var(--primary-green); color: white; }
+        .sidebar-overlay.active { display: block; }
 
-        /* HEADER */
-        header { background: var(--primary-green); color: white; padding: 20px; text-align: center; }
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--white); height: 100vh;
+            position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
+            z-index: 1001; display: flex; flex-direction: column;
+        }
+        
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
+        }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .sidebar-header { 
+            padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
+        }
+        /* PEMANGGILAN LOGO SESUAI STRUKTUR BARU */
+        .sidebar-header img { width: 75px; margin-bottom: 12px; }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
+
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
+        .nav-item {
+            display: flex; align-items: center; padding: 18px 25px;
+            color: #444; text-decoration: none; font-size: 18px; font-weight: 600; transition: 0.3s;
+        }
+        .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; color: #777; }
+        .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 6px solid var(--gold); }
+
+        /* CONTENT AREA */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 0; width: 100%; transition: 0.3s; }
+
+        .topbar {
+            background: var(--white); padding: 20px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999;
+        }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); margin-right: 15px; }
+
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 
         /* CARD STYLE */
-        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; }
+        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; border-top: 5px solid var(--gold); }
 
         /* LOGIN BOX */
-        #login-box { max-width: 400px; margin: 50px auto; text-align: center; border-top: 6px solid var(--gold); }
-        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; font-size: 16px; }
+        #login-box { max-width: 450px; margin: 50px auto; text-align: center; }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s; }
+        .input-field:focus { border-color: var(--gold); }
 
         /* UJIAN LAYOUT */
-        #ujian-section { display: none; gap: 20px; flex-wrap: wrap; }
-
+        #ujian-section { display: none; gap: 25px; flex-wrap: wrap; }
         .soal-area { flex: 3; min-width: 300px; }
         .nomor-area { flex: 1; min-width: 250px; position: sticky; top: 100px; height: fit-content; }
 
         .timer-box { 
-            background: #fff5f5; color: #d32f2f; padding: 10px 20px; border-radius: 50px; 
-            font-weight: 800; border: 1px solid #ffcdd2; margin-bottom: 20px; display: inline-block;
+            background: #fffcf0; color: var(--gold); padding: 12px 25px; border-radius: 50px; 
+            font-weight: 800; border: 1px solid #f1e0ac; margin-bottom: 25px; display: inline-block;
         }
 
-        #pertanyaan-text { font-size: 19px; line-height: 1.6; color: var(--dark-green); margin-bottom: 25px; font-weight: 600; }
-        
-        .soal-img { max-width: 100%; border-radius: 15px; margin-bottom: 20px; border: 1px solid #ddd; padding: 5px; background: white; }
+        #pertanyaan-text { font-size: 19px; line-height: 1.6; color: #444; margin-bottom: 25px; font-weight: 700; }
+        .soal-img { max-width: 100%; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; padding: 10px; background: white; }
 
         /* OPTIONS */
-        .options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
         .option-label {
-            display: flex; align-items: center; padding: 15px 20px; background: #f9f9f9; 
-            border: 2px solid #eee; border-radius: 12px; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; padding: 18px 25px; background: #fdfdfd; 
+            border: 2px solid #eee; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 500;
         }
-        .option-label:hover { border-color: var(--gold); background: #fffdf5; }
-        .option-label.selected { border-color: var(--primary-green); background: #f0f7f0; font-weight: 700; }
-        .option-label input { margin-right: 15px; transform: scale(1.3); }
+        .option-label:hover { border-color: var(--gold); background: #fffcf5; }
+        .option-label.selected { border-color: var(--gold); background: #fffcf0; font-weight: 800; }
+        .option-label input { margin-right: 15px; transform: scale(1.3); accent-color: var(--gold); }
 
         /* NOMOR NAVIGATION */
-        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
         .no-btn {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background: #eee; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
+            background: #f0f0f0; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; transition: 0.2s;
         }
-        .no-btn.active { background: var(--gold) !important; color: white; border: 2px solid #b8860b; }
-        .no-btn.filled { background: var(--primary-green); color: white; }
+        .no-btn.active { background: var(--gold) !important; color: white; border: 2px solid #b8860b; transform: scale(1.1); }
+        .no-btn.filled { background: #333; color: white; }
 
         /* BUTTONS */
-        .nav-footer { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
-        .btn { padding: 12px 25px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-prev { background: #6c757d; color: white; }
-        .btn-next { background: var(--primary-green); color: white; }
-        .btn-done { background: #d32f2f; color: white; width: 100%; margin-top: 15px; }
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
+        .btn { padding: 15px 30px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-prev { background: #eee; color: #666; }
+        .btn-next { background: var(--gold); color: white; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .btn-done { background: #d32f2f; color: white; width: 100%; margin-top: 20px; }
 
-        @media (max-width: 768px) { .nomor-area { position: static; order: 2; } .soal-area { order: 1; } }
+        @media (max-width: 768px) {
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; }
+            .nomor-area { position: static; order: 2; }
+            .soal-area { order: 1; }
+            .title-top { font-size: 14px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <a href="/index.html">🏠 BERANDA</a>
-        <a href="/materi/index.html">📚 MATERI</a>
-        <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
-    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <header>
-        <h2>TRYOUT TKJ MINGGU 2</h2>
-        <p style="font-size: 13px; opacity: 0.9;">SMKN 7 LUWU • Computer Network & Telecom</p>
-    </header>
+    <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <div class="sidebar-header">
+            <img src="gambar/logo.png" alt="Logo SMKN 7" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
+            <h3>LMS TKJ</h3>
+            <p>SMKN 7 LUWU</p>
+        </div>
+        <div class="nav-menu">
+            <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book"></i> Materi</a>
+            <a href="index.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
+        </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
+        </div>
+    </nav>
 
-    <div class="container">
-        <div id="login-box" class="card">
-            <i class="fas fa-user-edit" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
-            <h3>Identitas Peserta</h3>
-            <input type="text" id="nama_user" class="input-field" placeholder="Nama Lengkap">
-            <select id="kelas_user" class="input-field">
-                <option value="X TKJ">X TKJ</option>
-                <option value="XI TKJ">XI TKJ</option>
-                <option value="XII TKJ" selected>XII TKJ</option>
-            </select>
-            <button class="btn btn-next" style="width: 100%; margin-top: 10px;" onclick="mulaiUjian()">MULAI UJIAN</button>
+    <div class="main-content">
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 20px;" class="title-top">SMKN 7 LUWU</div>
+            </div>
+            <div style="font-size: 14px; font-weight: 700; color: #555;">TRYOUT MINGGU 2</div>
         </div>
 
-        <div id="ujian-section">
-            <div class="soal-area">
-                <div class="card">
-                    <div class="timer-box" id="timer_label">Sisa waktu : 60:00</div>
-                    <div id="pertanyaan-container">
-                        <h3 id="pertanyaan-text"></h3>
-                        <div id="img-container"></div>
-                        <div id="opsi-container" class="options-grid"></div>
-                    </div>
-                    <div class="nav-footer">
-                        <button class="btn btn-prev" onclick="prev()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
-                        <button class="btn btn-next" onclick="next()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
+        <div class="container">
+            <div id="login-box" class="card">
+                <i class="fas fa-user-shield" style="font-size: 45px; color: var(--gold); margin-bottom: 20px;"></i>
+                <h3 style="margin-bottom: 20px;">Konfirmasi Peserta</h3>
+                <input type="text" id="nama_user" class="input-field" placeholder="Nama Lengkap Sesuai Absen">
+                <select id="kelas_user" class="input-field">
+                    <option value="X TKJ">KELAS X TKJ</option>
+                    <option value="XI TKJ">KELAS XI TKJ</option>
+                    <option value="XII TKJ" selected>KELAS XII TKJ</option>
+                </select>
+                <button class="btn btn-next" style="width: 100%; margin-top: 15px;" onclick="mulaiUjian()">MULAI UJIAN SEKARANG</button>
             </div>
 
-            <div class="nomor-area">
-                <div class="card">
-                    <h4 style="font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">DAFTAR SOAL</h4>
-                    <div class="nomor-grid" id="nomor-grid"></div>
-                    <button class="btn btn-done" onclick="selesai()">SELESAI UJIAN</button>
+            <div id="ujian-section">
+                <div class="soal-area">
+                    <div class="card">
+                        <div class="timer-box" id="timer_label">Sisa waktu : 60:00</div>
+                        <div id="pertanyaan-container">
+                            <h3 id="pertanyaan-text"></h3>
+                            <div id="img-container"></div>
+                            <div id="opsi-container" class="options-grid"></div>
+                        </div>
+                        <div class="nav-footer">
+                            <button class="btn btn-prev" onclick="prev()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
+                            <button class="btn btn-next" onclick="next()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nomor-area">
+                    <div class="card">
+                        <h4 style="font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; font-weight: 800; color: var(--gold);">NAVIGASI SOAL</h4>
+                        <div class="nomor-grid" id="nomor-grid"></div>
+                        <button class="btn btn-done" onclick="selesai()">SELESAI UJIAN</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // TETAP MENGGUNAKAN LOGIKA ASLI IBU HELMI
         const scriptURL = "https://script.google.com/macros/s/AKfycbRNmacavBedzKd5gGVXfeW0_4nydnlqWOexH9WOXt2b04oO6jKqX89ne6kf37815xsbg/exec";
-
         const bankSoal = [
             {t:"Apa yang dimaksud routing",img:"",o:["Jumlah perangkat dalam jaringan","Perangkat menghubungkan dua jaringan","Cara perangkat terhubung","Jenis koneksi jaringan","Jenis perangkat server"],a:1},
             {t:"Perangkat yang menghubungkan komputer dalam jaringan",img:"",o:["Bridge","Hub","Router","Switch","Access Point"],a:3},
@@ -192,7 +259,6 @@
             {t:"Cara mematikan komputer",img:"gambar/pc.png",o:["Cabut listrik","Cabut kabel","Shutdown","Power monitor","Power CPU"],a:2}
         ];
 
-        // LOGIKA ACAK SOAL & PILIHAN
         function acakPilihan(item) {
             let options = item.o.map((text, i) => ({ text, isCorrect: i === item.a }));
             options.sort(() => Math.random() - 0.5);
@@ -210,7 +276,7 @@
         let timerInterval;
 
         function mulaiUjian() {
-            if(!document.getElementById("nama_user").value) return alert("Isi Nama Lengkap!");
+            if(!document.getElementById("nama_user").value) return alert("Wajib Isi Nama Lengkap!");
             document.getElementById("login-box").style.display = "none";
             document.getElementById("ujian-section").style.display = "flex";
             generateNomor();
@@ -240,7 +306,6 @@
             let s = soalAktif[pos];
             document.getElementById("pertanyaan-text").innerHTML = `${pos + 1}. ${s.t}`;
             document.getElementById("img-container").innerHTML = s.img ? `<img src="${s.img}" class="soal-img">` : "";
-            
             let html = "";
             s.o.forEach((opsi, i) => {
                 let isChecked = jawabanSiswa[pos] === i ? "checked" : "";
@@ -253,8 +318,6 @@
                 `;
             });
             document.getElementById("opsi-container").innerHTML = html;
-
-            // Update Navigasi
             document.querySelectorAll(".no-btn").forEach(el => el.classList.remove("active"));
             document.getElementById(`no-${pos}`).classList.add("active");
         }
@@ -272,36 +335,32 @@
         function selesai() {
             let kosong = 40 - jawabanSiswa.filter(x => x !== undefined).length;
             if(kosong > 0 && sisaWaktu > 0) {
-                if(!confirm(`Masih ada ${kosong} soal belum dijawab. Yakin selesai?`)) return;
+                if(!confirm(`Ada ${kosong} soal belum dijawab. Yakin ingin selesai?`)) return;
             }
-
             clearInterval(timerInterval);
             let benar = 0;
             soalAktif.forEach((s, i) => { if(jawabanSiswa[i] === s.a) benar++; });
-            
             let nilai = Math.round((benar / 40) * 100);
-            
-            // Simpan hasil ke localStorage
             localStorage.setItem("hasil_tryout", JSON.stringify({
                 nama: document.getElementById("nama_user").value,
                 kelas: document.getElementById("kelas_user").value,
-                benar: benar,
-                salah: 40 - benar,
-                nilai: nilai
+                benar: benar, salah: 40 - benar, nilai: nilai
             }));
-
-            // Kirim ke Google Sheets
             fetch(scriptURL, {
-                method: "POST",
-                mode: "no-cors",
+                method: "POST", mode: "no-cors",
                 body: JSON.stringify({
                     nama: document.getElementById("nama_user").value,
                     kelas: document.getElementById("kelas_user").value,
                     nilai: nilai
                 })
-            }).then(() => {
-                window.location = "hasil_minggu2.html";
-            });
+            }).then(() => { window.location = "hasil_minggu2.html"; });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
 </body>
