@@ -1,205 +1,294 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Tryout TKJ - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --gold: #D4AF37;
+            --white: #ffffff;
+            --bg-soft: #f0f4f1;
+        }
 
-<title>Hasil Tryout TKJ</title>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-<style>
-.navbar{
-background:#2e7d32;
-padding:12px;
-margin-bottom:20px;
-}
-/* NAVBAR */
+        body {
+            background-color: var(--bg-soft);
+            color: #333;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
 
-.navbar{
-background:#2c7a4b;
-padding:12px;
-text-align:center;
-}
+        /* NAVBAR MEWAH */
+        .navbar {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin-bottom: 40px;
+        }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:6px;
-padding:8px 12px;
-display:inline-block;
-font-size:14px;
-border-radius:6px;
-}
+        .navbar a {
+            color: var(--primary-green);
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
 
-.navbar a:hover{
-background:#1e5b37;
-}
+        .navbar a:hover { background: var(--primary-green); color: white; }
 
-table{
-margin:auto;
-border-collapse:collapse;
-width:420px;
-}
-.navbar a{
-color:white;
-text-decoration:none;
-margin:10px;
-font-weight:bold;
-}
-body{
-font-family:Arial;
-background:#eef5ee;
-text-align:center;
-padding:40px;
-}
+        /* RESULT CARD */
+        .result-card {
+            background: var(--white);
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(46, 125, 50, 0.1);
+        }
 
-.card{
-background:white;
-padding:30px;
-border-radius:10px;
-max-width:500px;
-margin:auto;
-box-shadow:0 3px 8px rgba(0,0,0,0.2);
-}
+        .result-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, var(--primary-green), var(--gold));
+        }
 
-h2{
-margin-bottom:20px;
-}
+        .icon-success {
+            font-size: 60px;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
 
-.nilai{
-font-size:28px;
-font-weight:bold;
-margin:20px;
-}
+        h2 { color: var(--dark-green); font-size: 26px; font-weight: 800; margin-bottom: 30px; }
 
-button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:12px;
-border-radius:6px;
-margin:8px;
-width:200px;
-cursor:pointer;
-}
+        .student-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+        }
 
-</style>
+        .student-info p { font-size: 16px; margin: 5px 0; color: #666; }
+        .student-info b { color: var(--dark-green); font-size: 18px; }
 
+        /* SCORE BOX */
+        .score-box {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .stat-item { flex: 1; }
+        .stat-item span { display: block; font-size: 12px; text-transform: uppercase; color: #999; font-weight: 700; }
+        .stat-item b { font-size: 24px; color: #444; }
+        .stat-item.correct b { color: #2e7d32; }
+        .stat-item.wrong b { color: #c62828; }
+
+        .final-score {
+            background: var(--primary-green);
+            color: white;
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.2);
+        }
+
+        .final-score span { font-size: 14px; opacity: 0.8; font-weight: 600; }
+        .final-score h1 { font-size: 60px; font-weight: 900; line-height: 1; }
+
+        /* BUTTONS */
+        .btn-group { display: flex; flex-direction: column; gap: 12px; }
+        
+        .btn {
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-serti { background: var(--gold); color: #444; }
+        .btn-rank { background: #eee; color: #555; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        @media (max-width: 600px) {
+            .result-card { width: 92%; padding: 25px; }
+        }
+    </style>
 </head>
-
 <body>
-<!-- NAVBAR -->
 
-<div class="navbar">
+    <nav class="navbar">
+        <a href="/index.html">🏠 BERANDA</a>
+        <a href="/materi/index.html">📚 MATERI</a>
+        <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
+        <a href="/lkpd/index.html">📄 LKPD</a>
+        <a href="/absen/index.html">📷 ABSEN</a>
+    </nav>
 
-<a href="/index.html">🏠 Beranda</a>
-<a href="/materi/index.html">📚 Materi</a>
-<a href="/menu-utama-TKJ/tryout.html">📝 Tryout</a>
-<a href="/lkpd/index.html">📄 LKPD</a>
-<a href="/absen/index.html">📷 Absen</a>
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
+    <div class="result-card">
+        <div class="icon-success"><i class="fas fa-award"></i></div>
+        <h2>HASIL TRYOUT TKJ</h2>
 
-</div>
-<div class="card">
+        <div class="student-info">
+            <p>Nama: <b id="nama">-</b></p>
+            <p>Kelas: <b id="kelas">-</b></p>
+        </div>
 
-<h2>HASIL TRYOUT TKJ</h2>
+        <div class="score-box">
+            <div class="stat-item correct">
+                <span>Benar</span>
+                <b id="benar">0</b>
+            </div>
+            <div class="stat-item wrong">
+                <span>Salah</span>
+                <b id="salah">0</b>
+            </div>
+        </div>
 
-<p id="nama"></p>
-<p id="kelas"></p>
+        <div class="final-score">
+            <span>NILAI AKHIR</span>
+            <h1 id="nilai">0</h1>
+        </div>
 
-<br>
+        <div class="btn-group">
+            <button class="btn btn-serti" onclick="sertifikat()">
+                <i class="fas fa-certificate"></i> DOWNLOAD SERTIFIKAT
+            </button>
+            <a href="ranking_minggu2.html" class="btn btn-rank">
+                <i class="fas fa-trophy"></i> LIHAT RANKING SAYA
+            </a>
+        </div>
+    </div>
 
-<p id="benar"></p>
-<p id="salah"></p>
+    <script>
+        // Ambil data dari LocalStorage
+        let storageData = localStorage.getItem("hasil_tryout");
+        let data = storageData ? JSON.parse(storageData) : {nama: "Siswa", kelas: "-", benar: 0, salah: 0, nilai: 0};
 
-<div class="nilai" id="nilai"></div>
+        document.getElementById("nama").innerHTML = data.nama;
+        document.getElementById("kelas").innerHTML = data.kelas;
+        document.getElementById("benar").innerHTML = data.benar;
+        document.getElementById("salah").innerHTML = data.salah;
+        document.getElementById("nilai").innerHTML = data.nilai;
 
-<button onclick="sertifikat()">Download Sertifikat</button>
+        function sertifikat() {
+            let canvas = document.createElement("canvas");
+            canvas.width = 1000;
+            canvas.height = 700;
+            let ctx = canvas.getContext("2d");
 
-<br>
+            let bg = new Image();
+            let logo = new Image();
+            let ttd = new Image();
 
-<a href="ranking_minggu2.html">Lihat Ranking</a>
+            // Sesuai folder Bapak: gambar/
+            bg.src = "gambar/background.png";
+            logo.src = "gambar/logo.png";
+            ttd.src = "gambar/ttd.png";
 
-</div>
+            let imagesLoaded = 0;
+            const totalImages = 3;
 
-<script>
+            function checkAllLoaded() {
+                imagesLoaded++;
+                if (imagesLoaded === totalImages) {
+                    drawSertifikat();
+                }
+            }
 
-let data=JSON.parse(localStorage.getItem("hasil_tryout"))
+            bg.onload = checkAllLoaded;
+            logo.onload = checkAllLoaded;
+            ttd.onload = checkAllLoaded;
 
-document.getElementById("nama").innerHTML="Nama : "+data.nama
-document.getElementById("kelas").innerHTML="Kelas : "+data.kelas
+            // Penanganan jika gambar tidak ditemukan
+            bg.onerror = logo.onerror = ttd.onerror = function() {
+                alert("Gagal memuat gambar aset sertifikat. Pastikan file ada di folder 'gambar/'");
+            }
 
-document.getElementById("benar").innerHTML="Benar : "+data.benar
-document.getElementById("salah").innerHTML="Salah : "+data.salah
+            function drawSertifikat() {
+                // background
+                ctx.drawImage(bg, 0, 0, 1000, 700);
 
-document.getElementById("nilai").innerHTML="Nilai : "+data.nilai
+                // logo sekolah
+                ctx.drawImage(logo, 80, 80, 120, 120);
 
-function sertifikat(){
+                // Judul Sertifikat
+                ctx.fillStyle = "#2e7d32";
+                ctx.font = "bold 46px Georgia";
+                ctx.textAlign = "center";
+                ctx.fillText("SERTIFIKAT HASIL TRYOUT", 500, 150);
 
-let canvas=document.createElement("canvas")
-canvas.width=1000
-canvas.height=700
-let ctx=canvas.getContext("2d")
+                ctx.font = "24px Arial";
+                ctx.fillStyle = "#444";
+                ctx.fillText("SMKN 7 LUWU", 500, 195);
 
-let bg=new Image()
-let logo=new Image()
-let ttd=new Image()
+                // Konten Nama
+                ctx.fillStyle = "#000";
+                ctx.font = "italic 24px Arial";
+                ctx.fillText("Diberikan kepada:", 500, 280);
 
-bg.src="gambar/background.png"
-logo.src="gambar/logo.png"
-ttd.src="gambar/ttd.png"
+                ctx.font = "bold 42px Arial";
+                ctx.fillStyle = "#2e7d32";
+                ctx.fillText(data.nama.toUpperCase(), 500, 340);
 
-bg.onload=function(){
+                ctx.font = "22px Arial";
+                ctx.fillStyle = "#555";
+                ctx.fillText("Kelas: " + data.kelas, 500, 390);
 
-logo.onload=function(){
+                // Kotak Nilai
+                ctx.fillStyle = "#f9f9f9";
+                ctx.fillRect(400, 430, 200, 100);
+                ctx.strokeStyle = "#d4af37";
+                ctx.strokeRect(400, 430, 200, 100);
 
-ttd.onload=function(){
+                ctx.fillStyle = "#2e7d32";
+                ctx.font = "bold 60px Arial";
+                ctx.fillText(data.nilai, 500, 500);
 
-// background
-ctx.drawImage(bg,0,0,1000,700)
+                // Tanda Tangan
+                ctx.drawImage(ttd, 700, 510, 220, 100);
+                ctx.fillStyle = "#000";
+                ctx.font = "bold 22px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("Helmi Yunar", 810, 640);
+                ctx.font = "16px Arial";
+                ctx.fillText("Guru Pengampu", 810, 665);
 
-// logo sekolah
-ctx.drawImage(logo,80,80,120,120)
-
-ctx.fillStyle="#2e7d32"
-ctx.font="bold 42px Arial"
-ctx.textAlign="center"
-ctx.fillText("SERTIFIKAT TRYOUT TKJ",500,150)
-
-ctx.font="24px Arial"
-ctx.fillText("SMKN 7 LUWU",500,190)
-
-ctx.fillStyle="#000"
-ctx.font="28px Arial"
-
-ctx.fillText("Nama : "+data.nama,500,320)
-ctx.fillText("Kelas : "+data.kelas,500,370)
-
-ctx.fillStyle="#2e7d32"
-ctx.font="bold 40px Arial"
-ctx.fillText("Nilai : "+data.nilai,500,450)
-
-// tanda tangan
-ctx.drawImage(ttd,720,500,200,100)
-
-ctx.font="20px Arial"
-ctx.fillStyle="#000"
-ctx.fillText("Helmi Yunar",820,620)
-
-let link=document.createElement("a")
-link.download="sertifikat_tryout.png"
-link.href=canvas.toDataURL("image/png")
-link.click()
-
-}
-
-}
-
-}
-
-}
-
-</script>
-
+                // Download Action
+                let link = document.createElement("a");
+                link.download = "Sertifikat_Tryout_" + data.nama + ".png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
+        }
+    </script>
 </body>
-
 </html>
