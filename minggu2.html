@@ -1,409 +1,308 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRYOUT TKJ MINGGU 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Tryout Minggu 2 - SMKN 7 LUWU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --white: #ffffff;
+            --bg-soft: #f4f7f6;
+        }
 
-<style>
-body{
-font-family:Arial;
-margin:0;
-background:#eef5ee;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-body{
-font-family:Arial;
-margin:0;
-background:#eef5ee;
-color:black;
-}
-/* NAVBAR */
+        body { background-color: var(--bg-soft); color: #333; min-height: 100vh; }
 
-.navbar{
-background:#2c7a4b;
-padding:12px;
-text-align:center;
-}
+        /* NAVBAR */
+        .navbar {
+            background: var(--white); padding: 12px 5%; display: flex;
+            justify-content: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .navbar a { color: var(--primary-green); text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 15px; border-radius: 8px; transition: 0.3s; }
+        .navbar a:hover { background: var(--primary-green); color: white; }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:6px;
-padding:8px 12px;
-display:inline-block;
-font-size:14px;
-border-radius:6px;
-}
+        /* HEADER */
+        header { background: var(--primary-green); color: white; padding: 20px; text-align: center; }
 
-.navbar a:hover{
-background:#1e5b37;
-}
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
 
-table{
-margin:auto;
-border-collapse:collapse;
-width:420px;
-}
-header{
-background:#2e7d32;
-color:white;
-text-align:center;
-padding:15px;
-}
+        /* CARD STYLE */
+        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; }
 
-.container{
- max-width:500px;
-margin:auto;
-padding:15px;
-text-align:left;
-}
-max-width:500px;
-margin:auto;
-padding:15px;
-}
+        /* LOGIN BOX */
+        #login-box { max-width: 400px; margin: 50px auto; text-align: center; border-top: 6px solid var(--gold); }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; font-size: 16px; }
 
-.card{
-background:white;
-padding:15px;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,0.2);
-margin-bottom:15px;
-}
+        /* UJIAN LAYOUT */
+        #ujian-section { display: none; gap: 20px; flex-wrap: wrap; }
 
-.timer{
-color:red;
-font-weight:bold;
-margin-bottom:10px;
-}
+        .soal-area { flex: 3; min-width: 300px; }
+        .nomor-area { flex: 1; min-width: 250px; position: sticky; top: 100px; height: fit-content; }
 
-button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
-width:100%;
-}
+        .timer-box { 
+            background: #fff5f5; color: #d32f2f; padding: 10px 20px; border-radius: 50px; 
+            font-weight: 800; border: 1px solid #ffcdd2; margin-bottom: 20px; display: inline-block;
+        }
 
-.nav{
-display:flex;
-gap:10px;
-}
+        #pertanyaan-text { font-size: 19px; line-height: 1.6; color: var(--dark-green); margin-bottom: 25px; font-weight: 600; }
+        
+        .soal-img { max-width: 100%; border-radius: 15px; margin-bottom: 20px; border: 1px solid #ddd; padding: 5px; background: white; }
 
-.nomor{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:6px;
-margin-top:15px;
-}
+        /* OPTIONS */
+        .options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .option-label {
+            display: flex; align-items: center; padding: 15px 20px; background: #f9f9f9; 
+            border: 2px solid #eee; border-radius: 12px; cursor: pointer; transition: 0.2s;
+        }
+        .option-label:hover { border-color: var(--gold); background: #fffdf5; }
+        .option-label.selected { border-color: var(--primary-green); background: #f0f7f0; font-weight: 700; }
+        .option-label input { margin-right: 15px; transform: scale(1.3); }
 
-.nomor div{
-background:#c8e6c9;
-padding:8px;
-text-align:center;
-border-radius:4px;
-cursor:pointer;
-}
-  .nomor div.jawab{
-background:#2e7d32;
-color:white;
-font-weight:bold;
-}
-</style>
+        /* NOMOR NAVIGATION */
+        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .no-btn {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background: #eee; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
+        }
+        .no-btn.active { background: var(--gold) !important; color: white; border: 2px solid #b8860b; }
+        .no-btn.filled { background: var(--primary-green); color: white; }
 
+        /* BUTTONS */
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
+        .btn { padding: 12px 25px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-prev { background: #6c757d; color: white; }
+        .btn-next { background: var(--primary-green); color: white; }
+        .btn-done { background: #d32f2f; color: white; width: 100%; margin-top: 15px; }
+
+        @media (max-width: 768px) { .nomor-area { position: static; order: 2; } .soal-area { order: 1; } }
+    </style>
 </head>
-
 <body>
-<!-- NAVBAR -->
 
-<div class="navbar">
-
-<a href="/index.html">🏠 Beranda</a>
-<a href="/materi/index.html">📚 Materi</a>
-<a href="/menu-utama-TKJ/tryout.html">📝 Tryout</a>
-<a href="/lkpd/index.html">📄 LKPD</a>
-<a href="/absen/index.html">📷 Absen</a>
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
-
-</div>
-<header>
-<h3>TRYOUT TKJ</h3>
-SMKN 7 LUWU
-</header>
-
-<div class="container">
-
-<div id="login" class="card">
-Nama<br>
-<input id="nama" style="width:100%"><br><br>
-
-Kelas<br> <select id="kelas" style="width:100%">
-
-<option>X TKJ</option>
-<option>XI TKJ</option>
-<option>XII TKJ</option>
-</select>
-
-<button onclick="mulai()">Mulai Ujian</button>
-
-</div>
-
-<div id="ujian" style="display:none">
-
-<div class="card">
-<div class="timer" id="timer"></div>
-<h3 id="pertanyaan"></h3>
-<div id="opsi"></div>
-
-<div class="nav">
-<button onclick="prev()">Sebelumnya</button>
-<button onclick="next()">Selanjutnya</button>
-</div>
-
-<button onclick="selesai()">Selesai Ujian</button>
-
-</div>
-
-<div class="card nomor" id="nomor"></div>
-
-</div>
-</div>
-
-<script>
-
-let scriptURL="https://script.google.com/macros/s/AKfycbzRNmacavBedzKd5gGVXfeW0_4nydnlqWOexH9WOXt2b04oO6jKqX89ne6kf37815xsbg/exec"
-
-let bankSoal=[
-
-{t:"Apa yang dimaksud routing",img:"",o:["Jumlah perangkat dalam jaringan","Perangkat menghubungkan dua jaringan","Cara perangkat terhubung","Jenis koneksi jaringan","Jenis perangkat server"],a:1},
-
-{t:"Perangkat yang menghubungkan komputer dalam jaringan",img:"",o:["Bridge","Hub","Router","Switch","Access Point"],a:3},
-
-{t:"Perangkat PCB untuk koneksi jaringan",img:"",o:["HUB","NIC","Access Point","Modem","Bridge"],a:1},
-
-{t:"Perangkat yang bukan hardware jaringan",img:"",o:["Router","Switch","Hub","Gateway","Bridge"],a:3},
-
-{t:"Perangkat yang meneruskan paket data",img:"",o:["Access Point","Bridge","Gateway","Router","Switch"],a:3},
-
-{t:"Perangkat menyalurkan data ke tujuan saja",img:"",o:["Access Point","Bridge","Gateway","Router","Switch"],a:4},
-
-{t:"Cara kerja server melayani client disebut",img:"gambar/clientserver.png",o:["Client","Server","Client Server","Modem","Switch"],a:2},
-
-{t:"Perangkat jaringan pada gambar berikut",img:"gambar/router.png",o:["Router","Hub","Switch","Access Point","Bridge"],a:0},
-
-{t:"Jumlah layer OSI",img:"",o:["5","6","7","8","9"],a:2},
-
-{t:"Urutan warna kabel UTP",img:"",o:["Merah kuning hijau","Putih orange orange putih hijau biru putih biru hijau putih coklat coklat","Merah biru kuning","Putih merah biru","Orange biru"],a:1},
-
-{t:"Konektor kabel LAN",img:"gambar/rj45.png",o:["RJ11","RJ45","BNC","BNC-RCA","FC"],a:1},
-
-{t:"Server pembatas akses internet",img:"",o:["Server","Proxy server","Telnet","Virtual server","Web server"],a:1},
-
-{t:"Perangkat pada gambar",img:"gambar/switch.png",o:["CPU","Switch","Hub","Router","Access Point"],a:1},
-
-{t:"Perangkat jaringan pada gambar",img:"gambar/modem.png",o:["Switch","Modem","Router","Hub","Access point"],a:1},
-
-{t:"Penguat sinyal jaringan",img:"",o:["Modem","Repeater","Router","Switch","Access point"],a:1},
-
-{t:"Internet sebagai media informasi",img:"",o:["Media informasi","Komunikasi","Pendidikan","Hiburan","Protocol"],a:0},
-
-{t:"Dampak negatif internet",img:"",o:["Ganggu belajar","Konten negatif","Akses informasi","Bisnis","Mandiri"],a:1},
-
-{t:"Jaringan menggunakan kabel disebut",img:"",o:["Satelit","Modem","Wireless","Wireline","Firewall"],a:3},
-
-{t:"Perawatan hardware VoIP",img:"",o:["Cek perangkat","Log","Debu","Cek periferal","A,C,D benar"],a:4},
-
-{t:"Layanan penyimpanan website",img:"",o:["Web hosting","Hosting","Web server","Web Mail","Server"],a:0},
-
-{t:"Data hosting website",img:"",o:["Drive","Youtube","Database drive","Database HTML","Server"],a:3},
-
-{t:"SLD blog bilacilasila.blogspot.com",img:"",o:["blogspot","com","bilacilasila","https","http"],a:2},
-
-{t:"TLD pada blogspot.com",img:"",o:["blogspot","com","nama","https","http"],a:1},
-
-{t:"Struktur domain blogspot",img:"",o:["A","B","C","D","E"],a:3},
-
-{t:"Pengertian domain",img:"",o:["Website","Domain","Blogspot","Hosting","Niagahoster"],a:1},
-
-{t:"Hosting satu server banyak domain",img:"",o:["Dedicated","VPS","Shared hosting","Free hosting","Cloud"],a:2},
-
-{t:"Server dititip di data center",img:"",o:["Proxy","Colocation","Cloud","Gateway","Gatekeeper"],a:1},
-
-{t:"Fungsi plesk",img:"",o:["Control panel","Linux Windows","Kelola hosting","Automasi","A,B,D benar"],a:4},
-
-{t:"Domain .gov",img:"",o:["Militer","Organisasi","Pemerintah","Komersial","Televisi"],a:2},
-
-{t:"Domain .edu",img:"",o:["Pendidikan","Organisasi","Pemerintah","Komersial","Televisi"],a:0},
-
-{t:"VLAN",img:"",o:["Virus LAN","Virtual LAN","Virus LAN Net","Virtual LANs","Lokasi"],a:1},
-
-{t:"VLAN untuk data user",img:"",o:["Management","Default","Native","Data","Voice"],a:3},
-
-{t:"VLAN manajemen switch",img:"",o:["Management","Default","Native","Data","Voice"],a:0},
-
-{t:"Routing statis",img:"",o:["Manual","Jaringan besar","Proses routing","Alamat tujuan","Gateway"],a:0},
-
-{t:"Dynamic routing",img:"",o:["Manual","Router buat tabel","Proses routing","Alamat tujuan","Gateway"],a:1},
-
-{t:"Gateway adalah",img:"",o:["Gerbang jaringan","Routing manual","Router tabel","Proses routing","Alamat tujuan"],a:0},
-
-{t:"Firewall adalah",img:"",o:["Internet","Keamanan jaringan","Router","Routing","Alamat"],a:1},
-
-{t:"QoS",img:"",o:["Quality of Services","Quality of Service","Quality service","Survey","Service question"],a:1},
-
-{t:"Load balancing",img:"",o:["Distribusi trafik","Firewall","Router","Routing","Alamat"],a:0},
-
-{t:"Fungsi firewall",img:"",o:["Desain","Filter trafik","Grafik","Background","A dan D"],a:1},
-
-{t:"Google Sheets",img:"",o:["Spreadsheet online","Word processor","Text editor","Pengolah teks","Presentasi"],a:0},
-
-{t:"VLAN cost reduction",img:"",o:["Hemat biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:0},
-
-{t:"VLAN high performance",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:1},
-
-{t:"Broadcast storm mitigation",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:1},
-
-{t:"IT staff efficiency",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:3},
-
-{t:"VLAN security",img:"",o:["Keamanan data","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:0},
-
-{t:"Range VLAN",img:"",o:["Skala kecil","Token ring","Default","Database","Manajemen"],a:0},
-
-{t:"MAC based VLAN",img:"",o:["Port","MAC","Protocol","IP subnet","Auth"],a:1},
-
-{t:"Protocol based VLAN",img:"",o:["Port","MAC","Protocol","IP subnet","Auth"],a:2},
-
-{t:"Cara mematikan komputer",img:"gambar/pc.png",o:["Cabut listrik","Cabut kabel","Shutdown","Power monitor","Power CPU"],a:2}
-
-]
-
-/* RANDOM 40 SOAL */
-
-bankSoal.sort(()=>Math.random()-0.5)
-let soal=bankSoal.slice(0,40)
-soal.forEach(s=>acakPilihan(s))
-
-let pos=0
-let jawab=[]
-let waktu=60*60
-
-function mulai(){
-login.style.display="none"
-ujian.style.display="block"
-buatNomor()
-tampil()
-timer()
-}
-
-function timer(){
-setInterval(function(){
-let m=Math.floor(waktu/60)
-let s=waktu%60
-timer.innerHTML="Sisa waktu : "+m+":"+s
-waktu--
-if(waktu<0){selesai()}
-},1000)
-}
-
-function buatNomor(){
-let html=""
-for(let i=0;i<40;i++){
-html+=`<div onclick="lompat(${i})">${i+1}</div>`
-}
-nomor.innerHTML=html
-}
-function acakPilihan(soal){
-
-let arr=soal.o.map((opsi,i)=>({text:opsi,benar:(i==soal.a)}))
-
-arr.sort(()=>Math.random()-0.5)
-
-soal.o=arr.map(x=>x.text)
-soal.a=arr.findIndex(x=>x.benar)
-
-}
-function tampil(){
-
-let s=soal[pos]
-
-pertanyaan.innerHTML=(pos+1)+". "+s.t +
-(s.img ? `<br><img src="${s.img}" style="max-width:100%;margin-top:10px;">` : "")
-
-let html=""
-
-s.o.forEach((o,i)=>{
-
-html+=`
-<label>
-<input type="radio" name="opsi" value="${i}"
-${jawab[pos]==i?"checked":""}
-onchange="pilih(${i})">
-${String.fromCharCode(65+i)}. ${o}
-</label><br>
-`
-
-})
-
-opsi.innerHTML=html
-}
-function pilih(i){
-jawab[pos]=i
-
-let kotak=document.querySelectorAll("#nomor div")
-kotak[pos].classList.add("jawab")
-}
-function next(){ if(pos<39){pos++; tampil()} }
-function prev(){ if(pos>0){pos--; tampil()} }
-
-function lompat(i){ pos=i; tampil() }
-
-function selesai(){
-
-let belum=0
-
-for(let i=0;i<soal.length;i++){
-if(jawab[i]==undefined) belum++
-}
-
-if(belum>0){
-let lanjut=confirm("Masih ada "+belum+" soal belum dijawab.\nYakin ingin menyelesaikan ujian?")
-if(!lanjut){return}
-}
-
-let benar=0
-
-soal.forEach((s,i)=>{
-if(jawab[i]==s.a) benar++
-})
-
-let salah=40-benar
-let nilai=Math.round((benar/40)*100)
-
-localStorage.setItem("hasil_tryout",JSON.stringify({
-nama:nama.value,
-kelas:kelas.value,
-benar:benar,
-salah:salah,
-nilai:nilai
-}))
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify({
-nama:nama.value,
-kelas:kelas.value,
-nilai:nilai
-})
-})
-.then(res=>res.text())
-.then(data=>{
-window.location="hasil_minggu2.html"
-})
-}
-</script>
-
+    <div class="navbar">
+        <a href="/index.html">🏠 BERANDA</a>
+        <a href="/materi/index.html">📚 MATERI</a>
+        <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
+    </div>
+
+    <header>
+        <h2>TRYOUT TKJ MINGGU 2</h2>
+        <p style="font-size: 13px; opacity: 0.9;">SMKN 7 LUWU • Computer Network & Telecom</p>
+    </header>
+
+    <div class="container">
+        <div id="login-box" class="card">
+            <i class="fas fa-user-edit" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h3>Identitas Peserta</h3>
+            <input type="text" id="nama_user" class="input-field" placeholder="Nama Lengkap">
+            <select id="kelas_user" class="input-field">
+                <option value="X TKJ">X TKJ</option>
+                <option value="XI TKJ">XI TKJ</option>
+                <option value="XII TKJ" selected>XII TKJ</option>
+            </select>
+            <button class="btn btn-next" style="width: 100%; margin-top: 10px;" onclick="mulaiUjian()">MULAI UJIAN</button>
+        </div>
+
+        <div id="ujian-section">
+            <div class="soal-area">
+                <div class="card">
+                    <div class="timer-box" id="timer_label">Sisa waktu : 60:00</div>
+                    <div id="pertanyaan-container">
+                        <h3 id="pertanyaan-text"></h3>
+                        <div id="img-container"></div>
+                        <div id="opsi-container" class="options-grid"></div>
+                    </div>
+                    <div class="nav-footer">
+                        <button class="btn btn-prev" onclick="prev()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
+                        <button class="btn btn-next" onclick="next()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nomor-area">
+                <div class="card">
+                    <h4 style="font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">DAFTAR SOAL</h4>
+                    <div class="nomor-grid" id="nomor-grid"></div>
+                    <button class="btn btn-done" onclick="selesai()">SELESAI UJIAN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbRNmacavBedzKd5gGVXfeW0_4nydnlqWOexH9WOXt2b04oO6jKqX89ne6kf37815xsbg/exec";
+
+        const bankSoal = [
+            {t:"Apa yang dimaksud routing",img:"",o:["Jumlah perangkat dalam jaringan","Perangkat menghubungkan dua jaringan","Cara perangkat terhubung","Jenis koneksi jaringan","Jenis perangkat server"],a:1},
+            {t:"Perangkat yang menghubungkan komputer dalam jaringan",img:"",o:["Bridge","Hub","Router","Switch","Access Point"],a:3},
+            {t:"Perangkat PCB untuk koneksi jaringan",img:"",o:["HUB","NIC","Access Point","Modem","Bridge"],a:1},
+            {t:"Perangkat yang bukan hardware jaringan",img:"",o:["Router","Switch","Hub","Gateway","Bridge"],a:3},
+            {t:"Perangkat yang meneruskan paket data",img:"",o:["Access Point","Bridge","Gateway","Router","Switch"],a:3},
+            {t:"Perangkat menyalurkan data ke tujuan saja",img:"",o:["Access Point","Bridge","Gateway","Router","Switch"],a:4},
+            {t:"Cara kerja server melayani client disebut",img:"gambar/clientserver.png",o:["Client","Server","Client Server","Modem","Switch"],a:2},
+            {t:"Perangkat jaringan pada gambar berikut",img:"gambar/router.png",o:["Router","Hub","Switch","Access Point","Bridge"],a:0},
+            {t:"Jumlah layer OSI",img:"",o:["5","6","7","8","9"],a:2},
+            {t:"Urutan warna kabel UTP",img:"",o:["Merah kuning hijau","Putih orange orange putih hijau biru putih biru hijau putih coklat coklat","Merah biru kuning","Putih merah biru","Orange biru"],a:1},
+            {t:"Konektor kabel LAN",img:"gambar/rj45.png",o:["RJ11","RJ45","BNC","BNC-RCA","FC"],a:1},
+            {t:"Server pembatas akses internet",img:"",o:["Server","Proxy server","Telnet","Virtual server","Web server"],a:1},
+            {t:"Perangkat pada gambar",img:"gambar/switch.png",o:["CPU","Switch","Hub","Router","Access Point"],a:1},
+            {t:"Perangkat jaringan pada gambar",img:"gambar/modem.png",o:["Switch","Modem","Router","Hub","Access point"],a:1},
+            {t:"Penguat sinyal jaringan",img:"",o:["Modem","Repeater","Router","Switch","Access point"],a:1},
+            {t:"Internet sebagai media informasi",img:"",o:["Media informasi","Komunikasi","Pendidikan","Hiburan","Protocol"],a:0},
+            {t:"Dampak negatif internet",img:"",o:["Ganggu belajar","Konten negatif","Akses informasi","Bisnis","Mandiri"],a:1},
+            {t:"Jaringan menggunakan kabel disebut",img:"",o:["Satelit","Modem","Wireless","Wireline","Firewall"],a:3},
+            {t:"Perawatan hardware VoIP",img:"",o:["Cek perangkat","Log","Debu","Cek periferal","A,C,D benar"],a:4},
+            {t:"Layanan penyimpanan website",img:"",o:["Web hosting","Hosting","Web server","Web Mail","Server"],a:0},
+            {t:"Data hosting website",img:"",o:["Drive","Youtube","Database drive","Database HTML","Server"],a:3},
+            {t:"SLD blog bilacilasila.blogspot.com",img:"",o:["blogspot","com","bilacilasila","https","http"],a:2},
+            {t:"TLD pada blogspot.com",img:"",o:["blogspot","com","nama","https","http"],a:1},
+            {t:"Struktur domain blogspot",img:"",o:["A","B","C","D","E"],a:3},
+            {t:"Pengertian domain",img:"",o:["Website","Domain","Blogspot","Hosting","Niagahoster"],a:1},
+            {t:"Hosting satu server banyak domain",img:"",o:["Dedicated","VPS","Shared hosting","Free hosting","Cloud"],a:2},
+            {t:"Server dititip di data center",img:"",o:["Proxy","Colocation","Cloud","Gateway","Gatekeeper"],a:1},
+            {t:"Fungsi plesk",img:"",o:["Control panel","Linux Windows","Kelola hosting","Automasi","A,B,D benar"],a:4},
+            {t:"Domain .gov",img:"",o:["Militer","Organisasi","Pemerintah","Komersial","Televisi"],a:2},
+            {t:"Domain .edu",img:"",o:["Pendidikan","Organisasi","Pemerintah","Komersial","Televisi"],a:0},
+            {t:"VLAN",img:"",o:["Virus LAN","Virtual LAN","Virus LAN Net","Virtual LANs","Lokasi"],a:1},
+            {t:"VLAN untuk data user",img:"",o:["Management","Default","Native","Data","Voice"],a:3},
+            {t:"VLAN manajemen switch",img:"",o:["Management","Default","Native","Data","Voice"],a:0},
+            {t:"Routing statis",img:"",o:["Manual","Jaringan besar","Proses routing","Alamat tujuan","Gateway"],a:0},
+            {t:"Dynamic routing",img:"",o:["Manual","Router buat tabel","Proses routing","Alamat tujuan","Gateway"],a:1},
+            {t:"Gateway adalah",img:"",o:["Gerbang jaringan","Routing manual","Router tabel","Proses routing","Alamat tujuan"],a:0},
+            {t:"Firewall adalah",img:"",o:["Internet","Keamanan jaringan","Router","Routing","Alamat"],a:1},
+            {t:"QoS",img:"",o:["Quality of Services","Quality of Service","Quality service","Survey","Service question"],a:1},
+            {t:"Load balancing",img:"",o:["Distribusi trafik","Firewall","Router","Routing","Alamat"],a:0},
+            {t:"Fungsi firewall",img:"",o:["Desain","Filter trafik","Grafik","Background","A dan D"],a:1},
+            {t:"Google Sheets",img:"",o:["Spreadsheet online","Word processor","Text editor","Pengolah teks","Presentasi"],a:0},
+            {t:"VLAN cost reduction",img:"",o:["Hemat biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:0},
+            {t:"VLAN high performance",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:1},
+            {t:"Broadcast storm mitigation",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:1},
+            {t:"IT staff efficiency",img:"",o:["Biaya","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:3},
+            {t:"VLAN security",img:"",o:["Keamanan data","Broadcast kecil","Kurangi device","Manajemen","Geografi"],a:0},
+            {t:"Range VLAN",img:"",o:["Skala kecil","Token ring","Default","Database","Manajemen"],a:0},
+            {t:"MAC based VLAN",img:"",o:["Port","MAC","Protocol","IP subnet","Auth"],a:1},
+            {t:"Protocol based VLAN",img:"",o:["Port","MAC","Protocol","IP subnet","Auth"],a:2},
+            {t:"Cara mematikan komputer",img:"gambar/pc.png",o:["Cabut listrik","Cabut kabel","Shutdown","Power monitor","Power CPU"],a:2}
+        ];
+
+        // LOGIKA ACAK SOAL & PILIHAN
+        function acakPilihan(item) {
+            let options = item.o.map((text, i) => ({ text, isCorrect: i === item.a }));
+            options.sort(() => Math.random() - 0.5);
+            item.o = options.map(opt => opt.text);
+            item.a = options.findIndex(opt => opt.isCorrect);
+        }
+
+        bankSoal.sort(() => Math.random() - 0.5);
+        let soalAktif = bankSoal.slice(0, 40);
+        soalAktif.forEach(acakPilihan);
+
+        let pos = 0;
+        let jawabanSiswa = [];
+        let sisaWaktu = 60 * 60;
+        let timerInterval;
+
+        function mulaiUjian() {
+            if(!document.getElementById("nama_user").value) return alert("Isi Nama Lengkap!");
+            document.getElementById("login-box").style.display = "none";
+            document.getElementById("ujian-section").style.display = "flex";
+            generateNomor();
+            tampilSoal();
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let m = Math.floor(sisaWaktu / 60);
+                let s = sisaWaktu % 60;
+                document.getElementById("timer_label").innerHTML = `⌛ Sisa Waktu : ${m}:${s < 10 ? '0'+s : s}`;
+                if(sisaWaktu <= 0) selesai();
+                sisaWaktu--;
+            }, 1000);
+        }
+
+        function generateNomor() {
+            let html = "";
+            for (let i = 0; i < 40; i++) {
+                html += `<div class="no-btn" id="no-${i}" onclick="lompat(${i})">${i + 1}</div>`;
+            }
+            document.getElementById("nomor-grid").innerHTML = html;
+        }
+
+        function tampilSoal() {
+            let s = soalAktif[pos];
+            document.getElementById("pertanyaan-text").innerHTML = `${pos + 1}. ${s.t}`;
+            document.getElementById("img-container").innerHTML = s.img ? `<img src="${s.img}" class="soal-img">` : "";
+            
+            let html = "";
+            s.o.forEach((opsi, i) => {
+                let isChecked = jawabanSiswa[pos] === i ? "checked" : "";
+                let isSelected = jawabanSiswa[pos] === i ? "selected" : "";
+                html += `
+                    <label class="option-label ${isSelected}">
+                        <input type="radio" name="pilihan" onchange="pilih(${i})" ${isChecked}>
+                        ${String.fromCharCode(65 + i)}. ${opsi}
+                    </label>
+                `;
+            });
+            document.getElementById("opsi-container").innerHTML = html;
+
+            // Update Navigasi
+            document.querySelectorAll(".no-btn").forEach(el => el.classList.remove("active"));
+            document.getElementById(`no-${pos}`).classList.add("active");
+        }
+
+        function pilih(idx) {
+            jawabanSiswa[pos] = idx;
+            document.getElementById(`no-${pos}`).classList.add("filled");
+            tampilSoal();
+        }
+
+        function next() { if(pos < 39) { pos++; tampilSoal(); } }
+        function prev() { if(pos > 0) { pos--; tampilSoal(); } }
+        function lompat(i) { pos = i; tampilSoal(); }
+
+        function selesai() {
+            let kosong = 40 - jawabanSiswa.filter(x => x !== undefined).length;
+            if(kosong > 0 && sisaWaktu > 0) {
+                if(!confirm(`Masih ada ${kosong} soal belum dijawab. Yakin selesai?`)) return;
+            }
+
+            clearInterval(timerInterval);
+            let benar = 0;
+            soalAktif.forEach((s, i) => { if(jawabanSiswa[i] === s.a) benar++; });
+            
+            let nilai = Math.round((benar / 40) * 100);
+            
+            // Simpan hasil ke localStorage
+            localStorage.setItem("hasil_tryout", JSON.stringify({
+                nama: document.getElementById("nama_user").value,
+                kelas: document.getElementById("kelas_user").value,
+                benar: benar,
+                salah: 40 - benar,
+                nilai: nilai
+            }));
+
+            // Kirim ke Google Sheets
+            fetch(scriptURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify({
+                    nama: document.getElementById("nama_user").value,
+                    kelas: document.getElementById("kelas_user").value,
+                    nilai: nilai
+                })
+            }).then(() => {
+                window.location = "hasil_minggu2.html";
+            });
+        }
+    </script>
 </body>
 </html>
