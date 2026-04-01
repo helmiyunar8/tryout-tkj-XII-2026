@@ -1,418 +1,350 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>TRYOUT UJIAN TKJ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tryout CBT TKJ - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --white: #ffffff;
+            --bg-soft: #f4f7f6;
+        }
 
-<style>
-.navbar{
-background:#1b5e20;
-padding:10px;
-text-align:center;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:10px;
-font-weight:bold;
-font-size:14px;
-}
+        body { background-color: var(--bg-soft); color: #333; }
 
-.navbar a:hover{
-text-decoration:underline;
-}
-body{
-font-family:Arial;
-background:#eef5ee;
-margin:0;
-}
+        /* NAVBAR */
+        .navbar {
+            background: var(--white); padding: 12px 5%; display: flex;
+            justify-content: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .navbar a { color: var(--primary-green); text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 15px; border-radius: 8px; transition: 0.3s; }
+        .navbar a:hover { background: var(--primary-green); color: white; }
 
-header{
-background:#2e7d32;
-color:white;
-padding:20px;
-text-align:center;
-}
+        /* HEADER */
+        header { background: var(--primary-green); color: white; padding: 25px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        header h2 { font-size: 24px; letter-spacing: 1px; }
 
-.container{
-max-width:1100px;
-margin:auto;
-background:white;
-padding:20px;
-margin-top:20px;
-border-radius:10px;
-display:flex;
-gap:30px;
-}
+        .container { max-width: 1200px; margin: 25px auto; padding: 0 20px; }
 
-.soal-area{
-flex:3;
-}
+        /* LOGIN BOX */
+        #login {
+            max-width: 450px; margin: 50px auto; background: white; padding: 40px;
+            border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center;
+            border-top: 8px solid var(--gold);
+        }
+        #login h3 { margin-bottom: 25px; color: var(--primary-green); }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 15px; }
 
-.nomor-area{
-flex:1;
-}
+        /* UJIAN LAYOUT */
+        #ujian { display: none; gap: 25px; align-items: flex-start; }
 
-.timer{
-color:red;
-font-weight:bold;
-margin-bottom:15px;
-}
+        .soal-area {
+            flex: 3; background: white; padding: 35px; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); min-height: 450px;
+        }
 
-.nomor-grid{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:6px;
-}
+        .timer-badge {
+            float: right; background: #ffebee; color: #c62828; padding: 8px 20px;
+            border-radius: 50px; font-weight: 800; border: 1px solid #ffcdd2;
+        }
 
-.nomor-grid div{
-padding:8px;
-background:#c8e6c9;
-text-align:center;
-border-radius:4px;
-cursor:pointer;
-}
+        #pertanyaan { font-size: 20px; color: var(--dark-green); margin: 40px 0 25px; line-height: 1.5; }
 
-.aktif{
-background:#2e7d32 !important;
-color:white;
-}
+        .opsi-container { display: flex; flex-direction: column; gap: 12px; }
+        .opsi-label {
+            display: block; padding: 15px 20px; background: #f9f9f9; border: 2px solid #eee;
+            border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: 500;
+        }
+        .opsi-label:hover { background: #fffcf0; border-color: var(--gold); }
+        .opsi-label input { margin-right: 15px; transform: scale(1.2); }
+        .opsi-label.selected { background: #e8f5e9; border-color: var(--primary-green); color: var(--dark-green); font-weight: 700; }
 
-button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:10px 16px;
-margin-top:10px;
-cursor:pointer;
-border-radius:6px;
-}
+        /* NOMOR GRID */
+        .nomor-area {
+            flex: 1; background: white; padding: 25px; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: sticky; top: 100px;
+        }
+        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .nomor-box {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background: #eee; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 14px;
+        }
+        .nomor-box.aktif { background: var(--gold) !important; color: white; border: 2px solid #b8860b; }
+        .nomor-box.sudah-jawab { background: var(--primary-green); color: white; }
 
-</style>
+        /* NAVIGATION BUTTONS */
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
+        button {
+            padding: 12px 25px; border: none; border-radius: 10px; font-weight: 700;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-prev { background: #6c757d; color: white; }
+        .btn-next { background: var(--primary-green); color: white; }
+        .btn-finish { background: #c62828; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
 
+        /* RESULT SCREEN */
+        .result-screen { text-align: center; padding: 40px; background: white; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--primary-green); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 25px auto; }
+        .score-circle h1 { font-size: 48px; line-height: 1; }
+
+        @media (max-width: 768px) {
+            #ujian { flex-direction: column; }
+            .nomor-area { position: static; width: 100%; order: 2; }
+            .soal-area { order: 1; width: 100%; }
+        }
+    </style>
 </head>
-
 <body>
+
 <div class="navbar">
-<a href="/index.html">🏠 Beranda</a>
-<a href="/materi/index.html">📚 Materi</a>
-<a href="/menu-utama-TKJ/tryout.html">📝 Tryout</a>
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
+    <a href="/index.html">🏠 BERANDA</a>
+    <a href="/materi/index.html">📚 MATERI</a>
+    <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
+    <a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 RANKING</a>
 </div>
+
 <header>
-<h2>TRYOUT UJIAN TKJ</h2>
-SMKN 7 LUWU
+    <h2>TRYOUT UJIAN TKJ</h2>
+    <p style="font-size: 14px; opacity: 0.9;">SMKN 7 LUWU • Jaringan Komputer & Telekomunikasi</p>
 </header>
 
 <div class="container">
 
-<div id="login">
+    <div id="login">
+        <i class="fas fa-user-circle" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
+        <h3>Konfirmasi Peserta</h3>
+        <div class="input-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama_input" placeholder="Masukkan nama...">
+        </div>
+        <div class="input-group">
+            <label>Kelas</label>
+            <select id="kelas_input">
+                <option value="">Pilih kelas...</option>
+                <option>X TKJ</option>
+                <option>XI TKJ</option>
+                <option>XII TKJ</option>
+            </select>
+        </div>
+        <button onclick="mulaiUjian()" style="width: 100%; justify-content: center; background: var(--gold); margin-top: 10px;">MULAI UJIAN SEKARANG</button>
+    </div>
 
-Nama<br> <input id="nama"><br><br>
+    <div id="ujian_area">
+        <div id="ujian">
+            <div class="soal-area">
+                <div class="timer-badge" id="timer_display">Sisa waktu : 55:00</div>
+                <div style="color: var(--gold); font-weight: 800; font-size: 14px;">PERTANYAAN</div>
+                <h3 id="pertanyaan_text"></h3>
+                <div id="opsi_area" class="opsi-container"></div>
 
-Kelas<br> <select id="kelas">
+                <div class="nav-btns">
+                    <button class="btn-prev" onclick="prevSoal()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
+                    <button class="btn-next" id="btn_next" onclick="nextSoal()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
+                    <button class="btn-finish" onclick="konfirmasiSelesai()"><i class="fas fa-check-double"></i> SELESAI</button>
+                </div>
+            </div>
 
-<option value="">Pilih kelas</option>
-<option>X TKJ</option>
-<option>XI TKJ</option>
-<option>XII TKJ</option>
-</select>
-
-<br><br>
-
-<button onclick="mulai()">Mulai Ujian</button>
-
-</div>
-
-<div id="ujian" style="display:none;width:100%;display:flex;gap:30px;">
-
-<div class="soal-area">
-
-<div class="timer" id="timer"></div>
-
-<h3 id="pertanyaan"></h3>
-
-<div id="opsi"></div>
-
-<br>
-
-<button onclick="prev()">Sebelumnya</button> <button onclick="next()">Selanjutnya</button> <button onclick="selesai()">Selesai Ujian</button>
-
-</div>
-
-<div class="nomor-area">
-
-<h4>NOMOR SOAL</h4>
-
-<div class="nomor-grid" id="nomor"></div>
-
-</div>
-
-</div>
-
+            <div class="nomor-area">
+                <h4 style="font-size: 14px; border-bottom: 2px solid #eee; padding-bottom: 10px;">NAVIGASI SOAL</h4>
+                <div class="nomor-grid" id="nomor_grid"></div>
+                <div style="margin-top: 20px; font-size: 12px; color: #777;">
+                    <p><span style="color: var(--primary-green)">■</span> Sudah dijawab</p>
+                    <p><span style="color: #eee">■</span> Belum dijawab</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+let scriptURL = "https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec";
 
-let scriptURL="https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec"
+let dataSoal = [
+    {t:"Perangkat penghubung jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:0},
+    {t:"Alamat website disebut",o:["URL","IP","DNS","MAC","FTP"],a:0},
+    {t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
+    {t:"Media transmisi kabel",o:["UTP","Wifi","Bluetooth","Infrared","Satelit"],a:0},
+    {t:"Kepanjangan LAN",o:["Local Area Network","Line Area Net","Long Area Net","Link Area Net","Large Area Net"],a:0},
+    {t:"Perangkat penyebar wifi",o:["Access Point","Monitor","CPU","Speaker","Keyboard"],a:0},
+    {t:"Lapisan OSI pertama",o:["Physical","Network","Session","Transport","Application"],a:0},
+    {t:"Topologi berbentuk bintang",o:["Star","Bus","Ring","Mesh","Tree"],a:0},
+    {t:"Topologi satu jalur",o:["Bus","Star","Ring","Mesh","Tree"],a:0},
+    {t:"Topologi melingkar",o:["Ring","Star","Bus","Mesh","Tree"],a:0},
+    {t:"NIC adalah",o:["Network Interface Card","Node Interface Card","Network Internal Card","Net Interface Cable","Network Input Card"],a:0},
+    {t:"Perangkat keamanan jaringan",o:["Firewall","Hub","Switch","Repeater","Bridge"],a:0},
+    {t:"Perangkat routing jaringan",o:["Router","Hub","Switch","Bridge","NIC"],a:0},
+    {t:"Media transmisi tanpa kabel",o:["Wireless","UTP","STP","Coaxial","Fiber"],a:0},
+    {t:"Sistem operasi jaringan",o:["Linux Server","Windows","Android","MacOS","IOS"],a:0},
+    {t:"Protokol internet",o:["TCP/IP","FTP","SMTP","POP3","HTTP"],a:0},
+    {t:"Perangkat penguat sinyal",o:["Repeater","Router","Switch","Bridge","Hub"],a:0},
+    {t:"Perangkat pembagi jaringan",o:["Switch","Monitor","CPU","Speaker","Keyboard"],a:0},
+    {t:"Alamat unik komputer jaringan",o:["IP Address","Hostname","DNS","MAC","Gateway"],a:0},
+    {t:"Konektor kabel LAN",o:["RJ45","RJ11","BNC","USB","VGA"],a:0},
+    {t:"Lapisan OSI ke-4",o:["Transport","Network","Session","Physical","Application"],a:0},
+    {t:"Lapisan OSI ke-7",o:["Application","Session","Transport","Network","Data link"],a:0},
+    {t:"Perangkat modem digunakan untuk",o:["Internet","Print","Scan","Copy","Audio"],a:0},
+    {t:"Switch bekerja pada layer",o:["Data Link","Network","Session","Transport","Application"],a:0},
+    {t:"DNS berfungsi untuk",o:["Menerjemahkan domain ke IP","Mengirim email","Transfer file","Mengatur IP","Keamanan jaringan"],a:0}
+];
 
-let dataSoal=[
+dataSoal = dataSoal.sort(() => Math.random() - 0.5);
 
-{t:"Perangkat penghubung jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:0},
-{t:"Alamat website disebut",o:["URL","IP","DNS","MAC","FTP"],a:0},
-{t:"Jumlah layer OSI",o:["5","6","7","8","9"],a:2},
-{t:"Media transmisi kabel",o:["UTP","Wifi","Bluetooth","Infrared","Satelit"],a:0},
-{t:"Kepanjangan LAN",o:["Local Area Network","Line Area Net","Long Area Net","Link Area Net","Large Area Net"],a:0},
+let posisi = 0;
+let jawaban = [];
+let waktu = 55 * 60;
+let timer;
+let userNama, userKelas;
 
-{t:"Perangkat penyebar wifi",o:["Access Point","Monitor","CPU","Speaker","Keyboard"],a:0},
-{t:"Lapisan OSI pertama",o:["Physical","Network","Session","Transport","Application"],a:0},
-{t:"Topologi berbentuk bintang",o:["Star","Bus","Ring","Mesh","Tree"],a:0},
-{t:"Topologi satu jalur",o:["Bus","Star","Ring","Mesh","Tree"],a:0},
-{t:"Topologi melingkar",o:["Ring","Star","Bus","Mesh","Tree"],a:0},
+function mulaiUjian() {
+    userNama = document.getElementById("nama_input").value;
+    userKelas = document.getElementById("kelas_input").value;
 
-{t:"NIC adalah",o:["Network Interface Card","Node Interface Card","Network Internal Card","Net Interface Cable","Network Input Card"],a:0},
-{t:"Perangkat keamanan jaringan",o:["Firewall","Hub","Switch","Repeater","Bridge"],a:0},
-{t:"Perangkat routing jaringan",o:["Router","Hub","Switch","Bridge","NIC"],a:0},
-{t:"Media transmisi tanpa kabel",o:["Wireless","UTP","STP","Coaxial","Fiber"],a:0},
-{t:"Sistem operasi jaringan",o:["Linux Server","Windows","Android","MacOS","IOS"],a:0},
+    if (userNama == "" || userKelas == "") {
+        alert("Harap isi Nama dan pilih Kelas terlebih dahulu!");
+        return;
+    }
 
-{t:"Protokol internet",o:["TCP/IP","FTP","SMTP","POP3","HTTP"],a:0},
-{t:"Perangkat penguat sinyal",o:["Repeater","Router","Switch","Bridge","Hub"],a:0},
-{t:"Perangkat pembagi jaringan",o:["Switch","Monitor","CPU","Speaker","Keyboard"],a:0},
-{t:"Alamat unik komputer jaringan",o:["IP Address","Hostname","DNS","MAC","Gateway"],a:0},
-{t:"Konektor kabel LAN",o:["RJ45","RJ11","BNC","USB","VGA"],a:0},
+    document.getElementById("login").style.display = "none";
+    document.getElementById("ujian").style.display = "flex";
 
-{t:"Lapisan OSI ke-4",o:["Transport","Network","Session","Physical","Application"],a:0},
-{t:"Lapisan OSI ke-7",o:["Application","Session","Transport","Network","Data link"],a:0},
-{t:"Perangkat modem digunakan untuk",o:["Internet","Print","Scan","Copy","Audio"],a:0},
-{t:"Switch bekerja pada layer",o:["Data Link","Network","Session","Transport","Application"],a:0},
-{t:"DNS berfungsi untuk",o:["Menerjemahkan domain ke IP","Mengirim email","Transfer file","Mengatur IP","Keamanan jaringan"],a:0}
-
-]
-
-dataSoal=dataSoal.sort(()=>Math.random()-0.5)
-
-let posisi=0
-let jawaban=[]
-let waktu=55*60
-let timer
-
-function mulai(){
-
-if(nama.value==""||kelas.value==""){
-alert("Isi nama dan kelas")
-return
+    buatNomorGrid();
+    tampilkanSoal();
+    jalankanTimer();
 }
 
-login.style.display="none"
-ujian.style.display="flex"
-
-buatNomor()
-tampil()
-startTimer()
-
+function jalankanTimer() {
+    timer = setInterval(function() {
+        let m = Math.floor(waktu / 60);
+        let s = waktu % 60;
+        document.getElementById("timer_display").innerHTML = "⌛ Sisa waktu : " + m + ":" + (s < 10 ? '0' : '') + s;
+        if (waktu <= 300) document.getElementById("timer_display").style.background = "#ffcdd2";
+        waktu--;
+        if (waktu < 0) { clearInterval(timer); selesaiUjian(); }
+    }, 1000);
 }
 
-function startTimer(){
-
-timer=setInterval(function(){
-
-let m=Math.floor(waktu/60)
-let s=waktu%60
-
-document.getElementById("timer").innerHTML="Sisa waktu : "+m+":"+s
-
-waktu--
-
-if(waktu<0){
-clearInterval(timer)
-selesai()
+function buatNomorGrid() {
+    let html = "";
+    for (let i = 0; i < dataSoal.length; i++) {
+        html += `<div class="nomor-box" id="no_${i}" onclick="lompatKeSoal(${i})">${i + 1}</div>`;
+    }
+    document.getElementById("nomor_grid").innerHTML = html;
 }
 
-},1000)
+function tampilkanSoal() {
+    let s = dataSoal[posisi];
+    document.getElementById("pertanyaan_text").innerHTML = (posisi + 1) + ". " + s.t;
 
+    let html = "";
+    s.o.forEach((o, i) => {
+        let isChecked = jawaban[posisi] == i ? "checked" : "";
+        let classSelected = jawaban[posisi] == i ? "selected" : "";
+        html += `
+            <label class="opsi-label ${classSelected}">
+                <input type="radio" name="opsi" value="${i}" onchange="simpanJawaban(${i})" ${isChecked}>
+                ${String.fromCharCode(65 + i)}. ${o}
+            </label>`;
+    });
+    document.getElementById("opsi_area").innerHTML = html;
+
+    // Update status nomor aktif
+    document.querySelectorAll(".nomor-box").forEach(el => el.classList.remove("aktif"));
+    document.getElementById("no_" + posisi).classList.add("aktif");
 }
 
-function buatNomor(){
-
-let html=""
-
-for(let i=0;i<dataSoal.length;i++){
-
-html+="<div id='no"+i+"' onclick='lompat("+i+")'>"+(i+1)+"</div>"
-
+function simpanJawaban(idx) {
+    jawaban[posisi] = idx;
+    document.getElementById("no_" + posisi).classList.add("sudah-jawab");
+    tampilkanSoal(); // Refresh warna pilihan
 }
 
-nomor.innerHTML=html
-
+function nextSoal() {
+    if (posisi < dataSoal.length - 1) { posisi++; tampilkanSoal(); }
 }
 
-function tampil(){
-
-let s=dataSoal[posisi]
-
-pertanyaan.innerHTML=(posisi+1)+". "+s.t
-
-let html=""
-
-s.o.forEach((o,i)=>{
-
-html+=`
-<label>
-<input type="radio" name="opsi" value="${i}" onchange="jawab(${i})" ${jawaban[posisi]==i?"checked":""}>
-${String.fromCharCode(65+i)}. ${o}
-</label><br>
-`
-
-})
-
-opsi.innerHTML=html
-
+function prevSoal() {
+    if (posisi > 0) { posisi--; tampilkanSoal(); }
 }
 
-function jawab(i){
-
-jawaban[posisi]=i
-document.getElementById("no"+posisi).classList.add("aktif")
-
+function lompatKeSoal(i) {
+    posisi = i; tampilkanSoal();
 }
 
-function next(){
-
-if(posisi<dataSoal.length-1){
-posisi++
-tampil()
+function konfirmasiSelesai() {
+    if (confirm("Apakah Anda yakin ingin mengakhiri ujian? Pastikan semua soal telah terjawab.")) {
+        selesaiUjian();
+    }
 }
 
+function selesaiUjian() {
+    clearInterval(timer);
+    let benar = 0;
+    dataSoal.forEach((s, i) => { if (jawaban[i] == s.a) benar++; });
+
+    let nilai = Math.round((benar / dataSoal.length) * 100);
+    let salah = dataSoal.length - benar;
+
+    document.getElementById("ujian_area").innerHTML = `
+        <div class="result-screen">
+            <i class="fas fa-check-circle" style="font-size: 60px; color: var(--primary-green);"></i>
+            <h2 style="margin: 15px 0;">TRYOUT SELESAI</h2>
+            <p>Terima kasih, <b>${userNama}</b> (${userKelas})</p>
+            <div class="score-circle">
+                <span>Skor</span>
+                <h1>${nilai}</h1>
+            </div>
+            <p>Benar: ${benar} | Salah: ${salah}</p>
+            <br>
+            <button onclick="buatSertifikatTryout('${userNama}', ${nilai})" style="background: var(--gold); margin: auto;">
+                <i class="fas fa-certificate"></i> DOWNLOAD SERTIFIKAT
+            </button>
+            <br>
+            <a href="ranking_tryout.html" style="color: var(--primary-green); text-decoration: none; font-weight: 700; display: block; margin-top: 15px;">LIHAT PAPAN PERINGKAT</a>
+        </div>`;
+
+    fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ nama: userNama, kelas: userKelas, benar: benar, salah: salah, nilai: nilai })
+    });
 }
 
-function prev(){
+function buatSertifikatTryout(nama, nilai) {
+    let canvas = document.createElement("canvas");
+    canvas.width = 1000; canvas.height = 700;
+    let ctx = canvas.getContext("2d");
 
-if(posisi>0){
-posisi--
-tampil()
+    ctx.fillStyle = "white"; ctx.fillRect(0,0,1000,700);
+    ctx.strokeStyle = "#D4AF37"; ctx.lineWidth = 20; ctx.strokeRect(30,30,940,640);
+    
+    ctx.textAlign = "center"; ctx.fillStyle = "#1b5e20";
+    ctx.font = "bold 45px Arial"; ctx.fillText("SERTIFIKAT HASIL TRYOUT", 500, 150);
+    
+    ctx.fillStyle = "#333"; ctx.font = "24px Arial"; ctx.fillText("Diberikan kepada:", 500, 240);
+    ctx.font = "bold 40px Georgia"; ctx.fillStyle = "#D4AF37"; ctx.fillText(nama.toUpperCase(), 500, 310);
+    
+    ctx.fillStyle = "#333"; ctx.font = "22px Arial"; ctx.fillText("Telah menyelesaikan Tryout Ujian TKJ", 500, 390);
+    ctx.font = "bold 60px Arial"; ctx.fillStyle = "#1b5e20"; ctx.fillText(nilai, 500, 480);
+    
+    ctx.font = "italic 20px Arial"; ctx.fillStyle = "#666"; ctx.fillText("SMKN 7 LUWU", 500, 560);
+    
+    let link = document.createElement("a");
+    link.download = "Sertifikat_" + nama + ".png";
+    link.href = canvas.toDataURL();
+    link.click();
 }
-
-}
-
-function lompat(i){
-
-posisi=i
-tampil()
-
-}
-
-function selesai(){
-
-clearInterval(timer)
-
-let benar=0
-
-dataSoal.forEach((s,i)=>{
-if(jawaban[i]==s.a) benar++
-})
-
-let salah=dataSoal.length-benar
-let nilai=Math.round((benar/dataSoal.length)*100)
-
-ujian.innerHTML=`
-
-<div style="text-align:center;padding:40px">
-
-<h2>HASIL TRYOUT TKJ</h2>
-
-<h3>${nama.value}</h3>
-<p>${kelas.value}</p>
-
-<br>
-
-<p>Benar : ${benar}</p>
-<p>Salah : ${salah}</p>
-
-<h2>Nilai : ${nilai}</h2>
-
-<br>
-
-<button onclick="buatSertifikat('${nama.value}',${nilai})">
-Download Sertifikat
-</button>
-
-<br><br>
-
-<a href="ranking_tryout.html">Lihat Ranking</a>
-
-</div>
-
-`
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify({
-nama:nama.value,
-kelas:kelas.value,
-benar:benar,
-salah:salah,
-nilai:nilai
-})
-})
-
-}
-function buatSertifikat(nama,nilai){
-
-var canvas=document.createElement("canvas")
-canvas.width=1200
-canvas.height=700
-
-var ctx=canvas.getContext("2d")
-
-// background
-ctx.fillStyle="#ffffff"
-ctx.fillRect(0,0,1200,700)
-
-// border emas
-ctx.strokeStyle="#d4af37"
-ctx.lineWidth=12
-ctx.strokeRect(30,30,1140,640)
-
-// judul
-ctx.textAlign="center"
-ctx.fillStyle="#000"
-
-ctx.font="bold 50px Arial"
-ctx.fillText("SERTIFIKAT TRYOUT TKJ",600,150)
-
-// teks
-ctx.font="24px Arial"
-ctx.fillText("Diberikan kepada",600,240)
-
-// nama siswa
-ctx.font="bold 40px Arial"
-ctx.fillText(nama,600,310)
-
-// keterangan
-ctx.font="24px Arial"
-ctx.fillText("Telah menyelesaikan Tryout TKJ",600,380)
-
-ctx.font="bold 30px Arial"
-ctx.fillText("Nilai : "+nilai,600,440)
-
-// sekolah
-ctx.font="24px Arial"
-ctx.fillText("SMKN 7 LUWU",600,520)
-
-// download
-var link=document.createElement("a")
-link.download="sertifikat_tryout.png"
-link.href=canvas.toDataURL()
-
-link.click()
-
-}
-
-
-
 </script>
 
 </body>
