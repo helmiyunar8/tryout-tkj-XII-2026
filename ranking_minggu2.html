@@ -1,205 +1,282 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking Tryout TKJ - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --dark: #1b5e20;
+            --gold: #D4AF37;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+            --white: #ffffff;
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
-<title>Ranking Tryout TKJ</title>
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
 
-<style>
+        /* NAVBAR MEWAH */
+        .navbar {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin-bottom: 30px;
+        }
 
-body{
-font-family:Arial;
-background:#eef5ee;
-text-align:center;
-margin:0;
-padding:20px;
-}
+        .navbar a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
 
-/* NAVBAR */
+        .navbar a:hover { background: var(--primary); color: white; }
 
-.navbar{
-background:#2c7a4b;
-padding:12px;
-text-align:center;
-}
+        /* HEADER SECTION */
+        .header-ranking {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-bottom: 5px solid var(--gold);
+            margin-bottom: 30px;
+        }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:6px;
-padding:8px 12px;
-display:inline-block;
-font-size:14px;
-border-radius:6px;
-}
+        .header-ranking i { font-size: 50px; color: var(--gold); margin-bottom: 15px; }
+        .header-ranking h2 { font-size: 30px; color: var(--primary); font-weight: 800; }
 
-.navbar a:hover{
-background:#1e5b37;
-}
+        /* STATISTIK BOX */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
 
-/* JUDUL */
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #eee;
+        }
 
-h2{
-margin-top:30px;
-}
+        .stat-card small { display: block; font-size: 11px; color: #999; font-weight: 700; text-transform: uppercase; }
+        .stat-card b { font-size: 20px; color: var(--primary); }
 
-/* STATISTIK */
+        /* TABLE LEADERBOARD */
+        .table-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
 
-#statistik{
-margin-top:10px;
-margin-bottom:25px;
-font-size:18px;
-}
+        table { width: 100%; border-collapse: collapse; }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: left;
+        }
 
-/* TABEL */
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 15px;
+        }
 
-table{
-margin:auto;
-border-collapse:collapse;
-width:420px;
-background:white;
-}
+        /* Styling Rank */
+        .rank-col { width: 70px; text-align: center; font-weight: 800; font-size: 18px; }
+        .score-col { width: 80px; text-align: center; font-weight: 800; color: var(--primary); }
 
-th,td{
-border:1px solid #ccc;
-padding:10px;
-}
+        /* Podium Colors */
+        .top-1 { background: #fffcf0 !important; color: var(--gold); }
+        .top-2 { background: #f8f9fa !important; color: var(--silver); }
+        .top-3 { background: #fdf5f0 !important; color: var(--bronze); }
 
-th{
-background:#2e7d32;
-color:white;
-}
+        /* BUTTONS */
+        .btn-group {
+            text-align: center;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
 
-/* TOMBOL */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+            width: 280px;
+            justify-content: center;
+        }
 
-.btn{
-display:inline-block;
-margin-top:20px;
-padding:10px 18px;
-background:#2e7d32;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-size:15px;
-}
+        .btn-home { background: #444; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
 
-.btn:hover{
-background:#1b5e20;
-}
-
-</style>
+        @media (max-width: 500px) {
+            .table-container { width: 95%; }
+            th:nth-child(3), td:nth-child(3) { display: none; } /* Sembunyikan kelas di HP */
+        }
+    </style>
 
 </head>
 
 <body>
 
-<!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="/index.html">🏠 BERANDA</a>
+        <a href="/materi/index.html">📚 MATERI</a>
+        <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
+        <a href="/lkpd/index.html">📄 LKPD</a>
+        <a href="/absen/index.html">📷 ABSEN</a>
+    </nav>
 
-<div class="navbar">
+    <div class="header-ranking">
+        <i class="fas fa-trophy"></i>
+        <h2>RANKING TRYOUT TKJ</h2>
+        <p style="color: #666; font-weight: 600;">Evaluasi Capaian Siswa - Minggu 2</p>
+    </div>
 
-<a href="/index.html">🏠 Beranda</a>
-<a href="/materi/index.html">📚 Materi</a>
-<a href="/menu-utama-TKJ/tryout.html">📝 Tryout</a>
-<a href="/lkpd/index.html">📄 LKPD</a>
-<a href="/absen/index.html">📷 Absen</a>
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
+    <div class="stats-grid" id="statistik-container">
+        <div class="stat-card">
+            <small>Total Peserta</small>
+            <b id="stat-peserta">0</b>
+        </div>
+        <div class="stat-card">
+            <small>Rata-rata</small>
+            <b id="stat-rata">0</b>
+        </div>
+        <div class="stat-card">
+            <small>Nilai Tertinggi</small>
+            <b id="stat-tinggi">0</b>
+        </div>
+    </div>
 
-</div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:center">Pos</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th style="text-align:center">Nilai</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body">
+                <tr>
+                    <td colspan="4" style="text-align:center; padding: 40px; color: #999;">
+                        <i class="fas fa-spinner fa-spin"></i> Menghitung peringkat...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<h2>🏆 Ranking Tryout TKJ</h2>
+    <div class="btn-group">
+        <a href="/menu-utama-TKJ/tryout.html" class="btn">
+            <i class="fas fa-arrow-left"></i> KEMBALI KE TRYOUT
+        </a>
+        <a href="/index.html" class="btn btn-home">
+            <i class="fas fa-home"></i> BERANDA LMS
+        </a>
+    </div>
 
-<div id="statistik"></div>
+    <script>
+        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRdV-1HI9fjOTONt0DwarFqdOlhlGBOCNIPWy9zoX0KxH98yFwmFIvvEBZtwLpRBwGBByl8gmK6KZ4S/pub?gid=1828634055&single=true&output=csv";
 
-<table id="ranking">
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                let rows = data.trim().split("\n").slice(1);
+                let siswa = [];
 
-<tr>
-<th>Rank</th>
-<th>Nama</th>
-<th>Kelas</th>
-<th>Nilai</th>
-</tr>
+                rows.forEach(r => {
+                    let c = r.split(/,|;/); // Antisipasi pemisah koma atau titik koma
+                    if(c.length >= 4) {
+                        siswa.push({
+                            nama: c[1].replace(/"/g, ""),
+                            kelas: c[2].replace(/"/g, ""),
+                            nilai: parseInt(c[3]) || 0
+                        });
+                    }
+                });
 
-</table>
+                // Urutkan nilai tertinggi
+                siswa.sort((a, b) => b.nilai - a.nilai);
 
-<br>
+                // Hitung Statistik
+                let total = siswa.reduce((sum, s) => sum + s.nilai, 0);
+                let rata = Math.round(total / siswa.length);
+                let tertinggi = siswa[0] ? siswa[0].nilai : 0;
 
-<a href="/menu-utama-TKJ/tryout.html" class="btn">
-⬅ Kembali ke Tryout kelas XII
-</a>
+                document.getElementById("stat-peserta").innerText = siswa.length;
+                document.getElementById("stat-rata").innerText = rata;
+                document.getElementById("stat-tinggi").innerText = tertinggi;
 
-<br><br>
+                // Render Tabel
+                let html = "";
+                siswa.forEach((s, i) => {
+                    let rankDisplay = i + 1;
+                    let rowClass = "";
 
-<a href="/index.html" class="btn">
-🏠 Kembali ke Beranda LMS
-</a>
+                    if(i === 0) { rankDisplay = "🥇"; rowClass = "top-1"; }
+                    else if(i === 1) { rankDisplay = "🥈"; rowClass = "top-2"; }
+                    else if(i === 2) { rankDisplay = "🥉"; rowClass = "top-3"; }
 
-<script>
+                    html += `
+                        <tr class="${rowClass}">
+                            <td class="rank-col">${rankDisplay}</td>
+                            <td style="font-weight: 600;">${s.nama.toUpperCase()}</td>
+                            <td style="color: #666;">${s.kelas}</td>
+                            <td class="score-col">${s.nilai}</td>
+                        </tr>
+                    `;
+                });
 
-let url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRdV-1HI9fjOTONt0DwarFqdOlhlGBOCNIPWy9zoX0KxH98yFwmFIvvEBZtwLpRBwGBByl8gmK6KZ4S/pub?gid=1828634055&single=true&output=csv"
-
-fetch(url)
-.then(res=>res.text())
-.then(data=>{
-
-let rows=data.split("\n").slice(1)
-
-let siswa=[]
-
-rows.forEach(r=>{
-
-let c=r.split(",")
-
-siswa.push({
-nama:c[1],
-kelas:c[2],
-nilai:parseInt(c[3])
-})
-
-})
-
-siswa.sort((a,b)=>b.nilai-a.nilai)
-
-let total=0
-
-siswa.forEach(s=>{
-total+=s.nilai
-})
-
-let rata=Math.round(total/siswa.length)
-
-let tertinggi=siswa[0].nilai
-
-document.getElementById("statistik").innerHTML=
-"📊 Peserta : "+siswa.length+
-" | 📈 Rata-rata : "+rata+
-" | 🥇 Nilai tertinggi : "+tertinggi
-
-let table=document.getElementById("ranking")
-
-siswa.forEach((s,i)=>{
-
-table.innerHTML+=`
-
-<tr>
-
-<td>${i+1}</td>
-<td>${s.nama}</td>
-<td>${s.kelas}</td>
-<td>${s.nilai}</td>
-
-</tr>
-
-`
-
-})
-
-})
-
-</script>
+                document.getElementById("ranking-body").innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById("ranking-body").innerHTML = "<tr><td colspan='4' style='text-align:center;'>Gagal memuat data peringkat.</td></tr>";
+            });
+    </script>
 
 </body>
-
 </html>
