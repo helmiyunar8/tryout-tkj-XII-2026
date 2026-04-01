@@ -3,103 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tryout CBT TKJ - Helmi Yunar</title>
+    <title>Tryout CBT TKJ - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
             --gold: #D4AF37;
-            --primary-green: #2e7d32;
-            --dark-green: #1b5e20;
             --white: #ffffff;
             --bg-soft: #f4f7f6;
+            --text-main: #333;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-soft); color: var(--text-main); min-height: 100vh; display: flex; overflow-x: hidden; }
 
-        body { background-color: var(--bg-soft); color: #333; }
-
-        /* NAVBAR */
-        .navbar {
-            background: var(--white); padding: 12px 5%; display: flex;
-            justify-content: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky; top: 0; z-index: 1000;
+        /* OVERLAY GELAP SMKN 7 */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
-        .navbar a { color: var(--primary-green); text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 15px; border-radius: 8px; transition: 0.3s; }
-        .navbar a:hover { background: var(--primary-green); color: white; }
+        .sidebar-overlay.active { display: block; }
 
-        /* HEADER */
-        header { background: var(--primary-green); color: white; padding: 25px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        header h2 { font-size: 24px; letter-spacing: 1px; }
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--white); height: 100vh;
+            position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
+            z-index: 1001; display: flex; flex-direction: column;
+        }
+        
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
+        }
 
-        .container { max-width: 1200px; margin: 25px auto; padding: 0 20px; }
+        .sidebar-header { 
+            padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
+        }
+        .sidebar-header img { width: 75px; margin-bottom: 12px; }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
+
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
+        .nav-item {
+            display: flex; align-items: center; padding: 18px 25px;
+            color: #444; text-decoration: none; font-size: 18px; font-weight: 600; transition: 0.3s;
+        }
+        .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; color: #777; }
+        .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 6px solid var(--gold); }
+
+        /* CONTENT AREA */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 0; width: 100%; transition: 0.3s; }
+
+        .topbar {
+            background: var(--white); padding: 20px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999;
+        }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); margin-right: 15px; }
+
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+        /* CARD STYLE */
+        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; border-top: 8px solid var(--gold); }
 
         /* LOGIN BOX */
-        #login {
-            max-width: 450px; margin: 50px auto; background: white; padding: 40px;
-            border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center;
-            border-top: 8px solid var(--gold);
-        }
-        #login h3 { margin-bottom: 25px; color: var(--primary-green); }
+        #login { max-width: 450px; margin: 50px auto; text-align: center; }
+        #login h3 { margin-bottom: 25px; color: var(--gold); font-weight: 800; }
         .input-group { text-align: left; margin-bottom: 15px; }
         .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 15px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 15px; outline: none; }
+        .input-group input:focus { border-color: var(--gold); }
 
         /* UJIAN LAYOUT */
-        #ujian { display: none; gap: 25px; align-items: flex-start; }
+        #ujian { display: none; gap: 25px; flex-wrap: wrap; }
+        .soal-area { flex: 3; min-width: 300px; }
+        .nomor-area { flex: 1; min-width: 250px; position: sticky; top: 100px; height: fit-content; }
 
-        .soal-area {
-            flex: 3; background: white; padding: 35px; border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); min-height: 450px;
+        .timer-badge { 
+            float: right; background: #fffcf0; color: var(--gold); padding: 8px 20px; 
+            border-radius: 50px; font-weight: 800; border: 1px solid #f1e0ac;
         }
 
-        .timer-badge {
-            float: right; background: #ffebee; color: #c62828; padding: 8px 20px;
-            border-radius: 50px; font-weight: 800; border: 1px solid #ffcdd2;
-        }
+        #pertanyaan_text { font-size: 20px; color: #444; margin: 40px 0 25px; line-height: 1.5; font-weight: 700; }
 
-        #pertanyaan { font-size: 20px; color: var(--dark-green); margin: 40px 0 25px; line-height: 1.5; }
-
+        /* OPTIONS */
         .opsi-container { display: flex; flex-direction: column; gap: 12px; }
         .opsi-label {
-            display: block; padding: 15px 20px; background: #f9f9f9; border: 2px solid #eee;
-            border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: 500;
+            display: block; padding: 15px 20px; background: #fdfdfd; border: 2px solid #eee;
+            border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: 600;
         }
-        .opsi-label:hover { background: #fffcf0; border-color: var(--gold); }
-        .opsi-label input { margin-right: 15px; transform: scale(1.2); }
-        .opsi-label.selected { background: #e8f5e9; border-color: var(--primary-green); color: var(--dark-green); font-weight: 700; }
+        .opsi-label:hover { background: #fffcf5; border-color: var(--gold); }
+        .opsi-label input { margin-right: 15px; transform: scale(1.2); accent-color: var(--gold); }
+        .opsi-label.selected { background: #fffcf0; border-color: var(--gold); color: #444; font-weight: 800; }
 
         /* NOMOR GRID */
-        .nomor-area {
-            flex: 1; background: white; padding: 25px; border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: sticky; top: 100px;
-        }
-        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
         .nomor-box {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background: #eee; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 14px;
+            background: #f0f0f0; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 14px;
         }
         .nomor-box.aktif { background: var(--gold) !important; color: white; border: 2px solid #b8860b; }
-        .nomor-box.sudah-jawab { background: var(--primary-green); color: white; }
+        .nomor-box.sudah-jawab { background: #333; color: white; }
 
         /* NAVIGATION BUTTONS */
-        .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; gap: 10px; }
         button {
             padding: 12px 25px; border: none; border-radius: 10px; font-weight: 700;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; text-transform: uppercase;
         }
         .btn-prev { background: #6c757d; color: white; }
-        .btn-next { background: var(--primary-green); color: white; }
+        .btn-next { background: var(--gold); color: white; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
         .btn-finish { background: #c62828; color: white; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
 
         /* RESULT SCREEN */
-        .result-screen { text-align: center; padding: 40px; background: white; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
-        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--primary-green); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 25px auto; }
+        .result-screen { text-align: center; padding: 40px; background: white; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-top: 10px solid var(--gold); }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--gold); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 25px auto; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
         .score-circle h1 { font-size: 48px; line-height: 1; }
 
         @media (max-width: 768px) {
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; }
             #ujian { flex-direction: column; }
             .nomor-area { position: static; width: 100%; order: 2; }
             .soal-area { order: 1; width: 100%; }
@@ -108,65 +143,82 @@
 </head>
 <body>
 
-<div class="navbar">
-    <a href="/index.html">🏠 BERANDA</a>
-    <a href="/materi/index.html">📚 MATERI</a>
-    <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
-    <a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 RANKING</a>
-</div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-<header>
-    <h2>TRYOUT UJIAN TKJ</h2>
-    <p style="font-size: 14px; opacity: 0.9;">SMKN 7 LUWU • Jaringan Komputer & Telekomunikasi</p>
-</header>
-
-<div class="container">
-
-    <div id="login">
-        <i class="fas fa-user-circle" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
-        <h3>Konfirmasi Peserta</h3>
-        <div class="input-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="nama_input" placeholder="Masukkan nama...">
+    <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <div class="sidebar-header">
+            <img src="gambar/logo.png" alt="Logo SMKN 7" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
+            <h3>LMS TKJ</h3>
+            <p>SMKN 7 LUWU</p>
         </div>
-        <div class="input-group">
-            <label>Kelas</label>
-            <select id="kelas_input">
-                <option value="">Pilih kelas...</option>
-                <option>X TKJ</option>
-                <option>XI TKJ</option>
-                <option>XII TKJ</option>
-            </select>
+        <div class="nav-menu">
+            <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book"></i> Materi</a>
+            <a href="index.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
         </div>
-        <button onclick="mulaiUjian()" style="width: 100%; justify-content: center; background: var(--gold); margin-top: 10px;">MULAI UJIAN SEKARANG</button>
-    </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
+        </div>
+    </nav>
 
-    <div id="ujian_area">
-        <div id="ujian">
-            <div class="soal-area">
-                <div class="timer-badge" id="timer_display">Sisa waktu : 55:00</div>
-                <div style="color: var(--gold); font-weight: 800; font-size: 14px;">PERTANYAAN</div>
-                <h3 id="pertanyaan_text"></h3>
-                <div id="opsi_area" class="opsi-container"></div>
+    <div class="main-content">
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 20px;">SMKN 7 LUWU</div>
+            </div>
+            <div style="font-size: 14px; font-weight: 700; color: #555;">TRYOUT MINGGU 1</div>
+        </div>
 
-                <div class="nav-btns">
-                    <button class="btn-prev" onclick="prevSoal()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
-                    <button class="btn-next" id="btn_next" onclick="nextSoal()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
-                    <button class="btn-finish" onclick="konfirmasiSelesai()"><i class="fas fa-check-double"></i> SELESAI</button>
+        <div class="container">
+            <div id="login" class="card">
+                <i class="fas fa-user-circle" style="font-size: 50px; color: var(--gold); margin-bottom: 15px;"></i>
+                <h3>Konfirmasi Peserta</h3>
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="nama_input" placeholder="Masukkan nama...">
                 </div>
+                <div class="input-group">
+                    <label>Kelas</label>
+                    <select id="kelas_input">
+                        <option value="">Pilih kelas...</option>
+                        <option>X TKJ</option>
+                        <option>XI TKJ</option>
+                        <option>XII TKJ</option>
+                    </select>
+                </div>
+                <button onclick="mulaiUjian()" style="width: 100%; justify-content: center; background: var(--gold); margin-top: 10px;">MULAI UJIAN SEKARANG</button>
             </div>
 
-            <div class="nomor-area">
-                <h4 style="font-size: 14px; border-bottom: 2px solid #eee; padding-bottom: 10px;">NAVIGASI SOAL</h4>
-                <div class="nomor-grid" id="nomor_grid"></div>
-                <div style="margin-top: 20px; font-size: 12px; color: #777;">
-                    <p><span style="color: var(--primary-green)">■</span> Sudah dijawab</p>
-                    <p><span style="color: #eee">■</span> Belum dijawab</p>
+            <div id="ujian_area">
+                <div id="ujian">
+                    <div class="soal-area card">
+                        <div class="timer-badge" id="timer_display">Sisa waktu : 55:00</div>
+                        <div style="color: var(--gold); font-weight: 800; font-size: 14px;">PERTANYAAN</div>
+                        <h3 id="pertanyaan_text"></h3>
+                        <div id="opsi_area" class="opsi-container"></div>
+
+                        <div class="nav-btns">
+                            <button class="btn-prev" onclick="prevSoal()"><i class="fas fa-chevron-left"></i> SEBELUMNYA</button>
+                            <button class="btn-next" id="btn_next" onclick="nextSoal()">SELANJUTNYA <i class="fas fa-chevron-right"></i></button>
+                            <button class="btn-finish" onclick="konfirmasiSelesai()"><i class="fas fa-check-double"></i> SELESAI</button>
+                        </div>
+                    </div>
+
+                    <div class="nomor-area card">
+                        <h4 style="font-size: 14px; border-bottom: 2px solid #eee; padding-bottom: 10px; font-weight: 800; color: var(--gold);">NAVIGASI SOAL</h4>
+                        <div class="nomor-grid" id="nomor_grid"></div>
+                        <div style="margin-top: 20px; font-size: 12px; color: #777;">
+                            <p><span style="color: #333">■</span> Sudah dijawab</p>
+                            <p><span style="color: #eee">■</span> Belum dijawab</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <script>
 let scriptURL = "https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec";
@@ -259,7 +311,6 @@ function tampilkanSoal() {
     });
     document.getElementById("opsi_area").innerHTML = html;
 
-    // Update status nomor aktif
     document.querySelectorAll(".nomor-box").forEach(el => el.classList.remove("aktif"));
     document.getElementById("no_" + posisi).classList.add("aktif");
 }
@@ -267,39 +318,28 @@ function tampilkanSoal() {
 function simpanJawaban(idx) {
     jawaban[posisi] = idx;
     document.getElementById("no_" + posisi).classList.add("sudah-jawab");
-    tampilkanSoal(); // Refresh warna pilihan
+    tampilkanSoal();
 }
 
-function nextSoal() {
-    if (posisi < dataSoal.length - 1) { posisi++; tampilkanSoal(); }
-}
-
-function prevSoal() {
-    if (posisi > 0) { posisi--; tampilkanSoal(); }
-}
-
-function lompatKeSoal(i) {
-    posisi = i; tampilkanSoal();
-}
+function nextSoal() { if (posisi < dataSoal.length - 1) { posisi++; tampilkanSoal(); } }
+function prevSoal() { if (posisi > 0) { posisi--; tampilkanSoal(); } }
+function lompatKeSoal(i) { posisi = i; tampilkanSoal(); }
 
 function konfirmasiSelesai() {
-    if (confirm("Apakah Anda yakin ingin mengakhiri ujian? Pastikan semua soal telah terjawab.")) {
-        selesaiUjian();
-    }
+    if (confirm("Yakin ingin mengakhiri ujian?")) { selesaiUjian(); }
 }
 
 function selesaiUjian() {
     clearInterval(timer);
     let benar = 0;
     dataSoal.forEach((s, i) => { if (jawaban[i] == s.a) benar++; });
-
     let nilai = Math.round((benar / dataSoal.length) * 100);
     let salah = dataSoal.length - benar;
 
     document.getElementById("ujian_area").innerHTML = `
         <div class="result-screen">
-            <i class="fas fa-check-circle" style="font-size: 60px; color: var(--primary-green);"></i>
-            <h2 style="margin: 15px 0;">TRYOUT SELESAI</h2>
+            <i class="fas fa-check-circle" style="font-size: 60px; color: var(--gold);"></i>
+            <h2 style="margin: 15px 0; color: var(--gold);">TRYOUT SELESAI</h2>
             <p>Terima kasih, <b>${userNama}</b> (${userKelas})</p>
             <div class="score-circle">
                 <span>Skor</span>
@@ -311,7 +351,7 @@ function selesaiUjian() {
                 <i class="fas fa-certificate"></i> DOWNLOAD SERTIFIKAT
             </button>
             <br>
-            <a href="ranking_tryout.html" style="color: var(--primary-green); text-decoration: none; font-weight: 700; display: block; margin-top: 15px;">LIHAT PAPAN PERINGKAT</a>
+            <a href="ranking_minggu2.html" style="color: var(--gold); text-decoration: none; font-weight: 700; display: block; margin-top: 15px;">LIHAT PAPAN PERINGKAT</a>
         </div>`;
 
     fetch(scriptURL, {
@@ -325,25 +365,24 @@ function buatSertifikatTryout(nama, nilai) {
     let canvas = document.createElement("canvas");
     canvas.width = 1000; canvas.height = 700;
     let ctx = canvas.getContext("2d");
-
     ctx.fillStyle = "white"; ctx.fillRect(0,0,1000,700);
     ctx.strokeStyle = "#D4AF37"; ctx.lineWidth = 20; ctx.strokeRect(30,30,940,640);
-    
     ctx.textAlign = "center"; ctx.fillStyle = "#1b5e20";
     ctx.font = "bold 45px Arial"; ctx.fillText("SERTIFIKAT HASIL TRYOUT", 500, 150);
-    
     ctx.fillStyle = "#333"; ctx.font = "24px Arial"; ctx.fillText("Diberikan kepada:", 500, 240);
     ctx.font = "bold 40px Georgia"; ctx.fillStyle = "#D4AF37"; ctx.fillText(nama.toUpperCase(), 500, 310);
-    
     ctx.fillStyle = "#333"; ctx.font = "22px Arial"; ctx.fillText("Telah menyelesaikan Tryout Ujian TKJ", 500, 390);
-    ctx.font = "bold 60px Arial"; ctx.fillStyle = "#1b5e20"; ctx.fillText(nilai, 500, 480);
-    
+    ctx.font = "bold 60px Arial"; ctx.fillStyle = "#D4AF37"; ctx.fillText(nilai, 500, 480);
     ctx.font = "italic 20px Arial"; ctx.fillStyle = "#666"; ctx.fillText("SMKN 7 LUWU", 500, 560);
-    
     let link = document.createElement("a");
-    link.download = "Sertifikat_" + nama + ".png";
-    link.href = canvas.toDataURL();
-    link.click();
+    link.download = "Sertifikat_" + nama + ".png"; link.href = canvas.toDataURL(); link.click();
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
 }
 </script>
 
