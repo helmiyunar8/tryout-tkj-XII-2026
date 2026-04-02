@@ -3,219 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Ujian Realtime - SMKN 7 LUWU</title>
+    <title>Monitor Ujian Realtime - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #2e7d32;
-            --accent: #D4AF37;
-            --dark: #121212;
-            --card-bg: #ffffff;
-            --text: #333;
+            --gold: #D4AF37;
+            --white: #ffffff;
+            --bg-soft: #f4f7f6;
+            --text-dark: #333;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-soft); color: var(--text-dark); min-height: 100vh; display: flex; overflow-x: hidden; }
 
-        body { 
-            background-color: #f0f4f1; 
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background: var(--primary);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
+        /* SIDEBAR OVERLAY */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
         }
+        .sidebar-overlay.active { display: block; }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* SIDEBAR NAVIGATION (SMKN 7 MASTER) */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--white); height: 100vh;
+            position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
+            z-index: 1001; display: flex; flex-direction: column;
+        }
+        
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
         }
 
-        .navbar a:hover { color: var(--accent); }
-
-        /* HEADER & STATS */
-        .header-admin {
-            background: white;
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--accent);
+        .sidebar-header { 
+            padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
         }
+        .sidebar-header img { width: 75px; margin-bottom: 12px; }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
 
-        .header-admin h1 { color: var(--primary); font-size: 28px; font-weight: 800; }
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
+        .nav-item {
+            display: flex; align-items: center; padding: 18px 25px;
+            color: #444; text-decoration: none; font-size: 18px; font-weight: 600; transition: 0.3s;
+        }
+        .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; color: #777; }
+        .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 6px solid var(--gold); }
 
+        /* MAIN CONTENT AREA */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 0; width: 100%; transition: 0.3s; }
+
+        .topbar {
+            background: var(--white); padding: 20px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999;
+        }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); margin-right: 15px; }
+
+        /* MONITORING UI */
+        .header-monitor { background: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--gold); }
         .live-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 800;
-            margin-top: 10px;
+            display: inline-flex; align-items: center; gap: 8px; background: #fffcf0; 
+            color: var(--gold); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: 800; margin-top: 10px;
         }
-
-        .dot {
-            height: 10px; width: 10px;
-            background-color: #2e7d32;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-
+        .dot { height: 10px; width: 10px; background-color: var(--gold); border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: -30px auto 30px;
-            padding: 0 20px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1100px; margin: -30px auto 30px; padding: 0 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid var(--gold); }
+        .stat-card h3 { font-size: 28px; color: #444; margin: 10px 0; }
 
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            text-align: center;
-            border-bottom: 4px solid var(--primary);
-        }
-
-        .stat-card i { font-size: 24px; color: var(--accent); margin-bottom: 10px; }
-        .stat-card h3 { font-size: 28px; color: var(--primary); }
-        .stat-card p { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 700; }
-
-        /* TABLE */
-        .table-container {
-            max-width: 1100px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
+        .table-container { max-width: 1100px; margin: 20px auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 1px solid #eee; }
         table { width: 100%; border-collapse: collapse; }
-        
-        th {
-            background: var(--primary);
-            color: white;
-            padding: 18px;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-align: left;
-        }
+        th { background: #fffcf0; color: var(--gold); padding: 18px; text-transform: uppercase; font-size: 13px; text-align: left; }
+        td { padding: 15px 18px; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+        tr:hover td { background-color: #fffcf5; }
 
-        td {
-            padding: 15px 18px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 15px;
-        }
-
-        tr:hover td { background-color: #f9fff9; }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .badge-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        
-        .score-box {
-            font-weight: 800;
-            font-size: 16px;
-        }
-
+        .badge-success { background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; border: 1px solid #c8e6c9; }
+        .score-box { font-weight: 800; font-size: 16px; }
         .low-score { color: #d32f2f; }
-        .high-score { color: #2e7d32; }
+        .high-score { color: var(--gold); }
 
-        @media (max-width: 600px) {
-            th:nth-child(3), td:nth-child(3) { display: none; } /* Sembunyikan kolom Kelas di HP */
-            .header-admin h1 { font-size: 20px; }
+        @media (max-width: 768px) {
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; }
+            th:nth-child(3), td:nth-child(3) { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/index.html"><i class="fas fa-home"></i> BERANDA</a>
-        <a href="/menu-utama-TKJ/tryout.html"><i class="fas fa-edit"></i> MENU TRYOUT</a>
-        <a href="/tryout-tkj-XII-2026/ranking_minggu2.html"><i class="fas fa-trophy"></i> RANKING</a>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <div class="sidebar-header">
+            <img src="gambar/logo.png" alt="Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
+            <h3>LMS TKJ</h3>
+            <p>SMKN 7 LUWU</p>
+        </div>
+        <div class="nav-menu">
+            <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book-open"></i> Materi</a>
+            <a href="https://helmiyunar8.github.io/menu-utama-TKJ/tryout.html" class="nav-item"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/lkpd/index.html" class="nav-item"><i class="fas fa-file-signature"></i> LKPD</a>
+            <a href="https://helmiyunar8.github.io/absen/index.html" class="nav-item"><i class="fas fa-camera-retro"></i> Absen</a>
+            <a href="ranking_minggu2.html" class="nav-item"><i class="fas fa-award"></i> Ranking</a>
+            <a href="https://helmiyunar8.github.io/cbt/index.html" class="nav-item"><i class="fas fa-vial"></i> CBT Ujian</a>
+            <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
+        </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
+        </div>
     </nav>
 
-    <div class="header-admin">
-        <h1>MONITORING REAL-TIME</h1>
-        <p style="color: #666; font-weight: 600;">Tryout Minggu 1 • XII TKJ • SMKN 7 LUWU</p>
-        <div class="live-indicator">
-            <span class="dot"></span> SISTEM PEMANTAU AKTIF
+    <div class="main-content">
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 20px;">SMKN 7 LUWU</div>
+            </div>
+            <div style="font-size: 14px; font-weight: 700; color: #555;">MONITORING LIVE</div>
         </div>
-    </div>
 
-    <div class="stats-container">
-        <div class="stat-card">
-            <i class="fas fa-users"></i>
-            <h3 id="total-peserta">0</h3>
-            <p>Total Peserta</p>
+        <div class="header-monitor">
+            <h1 style="color: var(--gold); font-weight: 900;">MONITORING REAL-TIME</h1>
+            <p style="color: #666; font-weight: 600;">Tryout Minggu 1 • XII TKJ</p>
+            <div class="live-indicator">
+                <span class="dot"></span> SISTEM PEMANTAU AKTIF
+            </div>
         </div>
-        <div class="stat-card">
-            <i class="fas fa-chart-line"></i>
-            <h3 id="rata-rata">0</h3>
-            <p>Rata-rata Nilai</p>
-        </div>
-        <div class="stat-card">
-            <i class="fas fa-clock"></i>
-            <h3 id="last-update">-</h3>
-            <p>Update Terakhir</p>
-        </div>
-    </div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Siswa</th>
-                    <th>Kelas</th>
-                    <th>Status</th>
-                    <th>Skor</th>
-                </tr>
-            </thead>
-            <tbody id="tabel-body">
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 50px; color: #888;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 10px;"></i><br>
-                        Sedang menyinkronkan data...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-users" style="color: var(--gold);"></i>
+                <h3 id="total-peserta">0</h3>
+                <p style="font-size: 11px; font-weight: 800; color: #999;">PESERTA</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line" style="color: var(--gold);"></i>
+                <h3 id="rata-rata">0</h3>
+                <p style="font-size: 11px; font-weight: 800; color: #999;">RATA-RATA</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-history" style="color: var(--gold);"></i>
+                <h3 id="last-update">-</h3>
+                <p style="font-size: 11px; font-weight: 800; color: #999;">UPDATE</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Status</th>
+                        <th>Skor</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-body">
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 50px; color: #888;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 10px; color: var(--gold);"></i><br>
+                            Menyinkronkan Data...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -231,25 +205,20 @@
                     data.forEach((s, i) => {
                         let nilai = parseInt(s.nilai) || 0;
                         totalNilai += nilai;
-                        
-                        // Cek skor untuk warna
-                        let scoreClass = nilai < 70 ? "low-score" : "high-score";
+                        let scoreClass = nilai < 75 ? "low-score" : "high-score";
 
                         html += `
                             <tr>
                                 <td>${i + 1}</td>
                                 <td style="font-weight: 600; color: #2c3e50;">${s.nama.toUpperCase()}</td>
                                 <td><span style="color: #666;">${s.kelas}</span></td>
-                                <td><span class="badge badge-success"><i class="fas fa-check"></i> Selesai</span></td>
+                                <td><span class="badge-success"><i class="fas fa-check"></i> Selesai</span></td>
                                 <td class="score-box ${scoreClass}">${nilai}</td>
                             </tr>
                         `;
                     });
 
-                    // Update Tabel
                     document.getElementById("tabel-body").innerHTML = html;
-
-                    // Update Statistik
                     document.getElementById("total-peserta").innerText = data.length;
                     let rata = data.length > 0 ? (totalNilai / data.length).toFixed(1) : 0;
                     document.getElementById("rata-rata").innerText = rata;
@@ -257,17 +226,16 @@
                     let now = new Date();
                     document.getElementById("last-update").innerText = now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes();
                 })
-                .catch(err => {
-                    console.error("Gagal memuat data:", err);
-                });
+                .catch(err => console.error("Gagal memuat data:", err));
         }
 
-        // Load pertama kali
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
         loadData();
-
-        // Refresh otomatis setiap 5 detik (Sesuai keinginan Bapak)
-        setInterval(loadData, 5000);
+        setInterval(loadData, 5000); // Sinkronisasi otomatis setiap 5 detik
     </script>
-
 </body>
 </html>
