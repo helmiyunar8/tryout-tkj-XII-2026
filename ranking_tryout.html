@@ -3,146 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard Tryout TKJ - Helmi Yunar</title>
+    <title>Leaderboard Tryout TKJ - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #2e7d32;
-            --dark: #1b5e20;
             --gold: #D4AF37;
-            --silver: #C0C0C0;
-            --bronze: #CD7F32;
             --white: #ffffff;
-            --bg: #f4f7f6;
+            --bg-soft: #f4f7f6;
+            --text-dark: #333;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-soft); color: var(--text-dark); min-height: 100vh; display: flex; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg);
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 50px;
+        /* SIDEBAR OVERLAY */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
+        .sidebar-overlay.active { display: block; }
 
-        /* HEADER */
-        .header-section {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            padding: 50px 20px;
-            text-align: center;
-            border-bottom: 8px solid var(--gold);
-            margin-bottom: 40px;
+        /* SIDEBAR NAVIGATION (SMKN 7 MASTER) */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--white); height: 100vh;
+            position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
+            z-index: 1001; display: flex; flex-direction: column;
         }
-        .header-section i { font-size: 50px; color: var(--gold); margin-bottom: 15px; }
-        .header-section h2 { font-size: 32px; font-weight: 900; letter-spacing: 1px; }
-
-        /* TABLE CONTAINER */
-        .leaderboard-card {
-            width: 90%;
-            max-width: 700px;
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
-            border: 1px solid #eee;
-        }
-
-        table { width: 100%; border-collapse: collapse; }
         
-        th {
-            background: #f8f9fa;
-            color: #888;
-            padding: 20px;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1.5px;
-            text-align: left;
-            border-bottom: 2px solid #eee;
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
         }
 
+        .sidebar-header { 
+            padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
+        }
+        .sidebar-header img { width: 75px; margin-bottom: 12px; }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
+
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
+        .nav-item {
+            display: flex; align-items: center; padding: 18px 25px;
+            color: #444; text-decoration: none; font-size: 18px; font-weight: 600; transition: 0.3s;
+        }
+        .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; color: #777; }
+        .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 6px solid var(--gold); }
+
+        /* MAIN CONTENT AREA */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 0; width: 100%; transition: 0.3s; }
+
+        .topbar {
+            background: var(--white); padding: 20px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 999;
+        }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); margin-right: 15px; }
+
+        /* LEADERBOARD UI */
+        .header-section { text-align: center; padding: 50px 20px; background: white; border-bottom: 8px solid var(--gold); margin-bottom: 40px; }
+        .header-section i { font-size: 50px; color: var(--gold); margin-bottom: 15px; }
+        .header-section h2 { font-size: 32px; font-weight: 900; letter-spacing: 1px; color: #333; }
+
+        .leaderboard-card { width: 90%; max-width: 800px; background: white; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin: 0 auto; overflow: hidden; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #fffcf0; color: var(--gold); padding: 20px; text-transform: uppercase; font-size: 12px; letter-spacing: 1.5px; text-align: left; border-bottom: 2px solid #eee; }
         td { padding: 18px 20px; border-bottom: 1px solid #f1f1f1; font-size: 16px; }
 
-        /* RANKING STYLES */
         .rank-col { width: 80px; text-align: center; font-weight: 800; font-size: 18px; }
         .name-col { font-weight: 700; color: #2c3e50; }
-        .score-col { width: 100px; text-align: center; font-weight: 900; color: var(--primary); font-size: 18px; }
+        .score-col { width: 100px; text-align: center; font-weight: 900; color: var(--gold); font-size: 18px; }
 
-        /* HIGHLIGHT TOP 3 */
         .top-1 { background: #fffcf0 !important; }
-        .top-1 .rank-col { color: var(--gold); font-size: 24px; }
-        
+        .top-1 .rank-col { font-size: 24px; }
         .top-2 { background: #f8f9fa !important; }
-        .top-2 .rank-col { color: var(--silver); }
-        
         .top-3 { background: #fdf5f0 !important; }
-        .top-3 .rank-col { color: var(--bronze); }
 
-        /* BUTTONS */
-        .btn-back {
-            margin-top: 30px;
-            padding: 12px 25px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s;
-        }
-        .btn-back:hover { background: var(--dark); transform: translateY(-3px); }
-
-        /* LOADING SPINNER */
-        .loading { padding: 40px; text-align: center; color: #999; font-style: italic; }
-
-        @media (max-width: 500px) {
+        @media (max-width: 768px) {
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; }
             .leaderboard-card { width: 95%; }
-            th:nth-child(3), td:nth-child(3) { display: none; } /* Sembunyikan kelas di HP */
+            th:nth-child(3), td:nth-child(3) { display: none; }
             td { padding: 15px 10px; font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-section">
-        <i class="fas fa-trophy"></i>
-        <h2>RANKING TRYOUT TKJ</h2>
-        <p style="opacity: 0.8; font-weight: 500; margin-top: 5px;">SMKN 7 LUWU • Jaringan Komputer & Telekomunikasi</p>
-    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <div class="leaderboard-card">
-        <table>
-            <thead>
-                <tr>
-                    <th style="text-align:center">Pos</th>
-                    <th>Nama Siswa</th>
-                    <th>Kelas</th>
-                    <th style="text-align:center">Skor</th>
-                </tr>
-            </thead>
-            <tbody id="ranking-body">
-                <tr>
-                    <td colspan="4" class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> Menghitung peringkat siswa...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <div class="sidebar-header">
+            <img src="gambar/logo.png" alt="Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
+            <h3>LMS TKJ</h3>
+            <p>SMKN 7 LUWU</p>
+        </div>
+        <div class="nav-menu">
+            <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book-open"></i> Materi</a>
+            <a href="https://helmiyunar8.github.io/menu-utama-TKJ/tryout.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/lkpd/index.html" class="nav-item"><i class="fas fa-file-signature"></i> LKPD</a>
+            <a href="https://helmiyunar8.github.io/absen/index.html" class="nav-item"><i class="fas fa-camera-retro"></i> Absen</a>
+            <a href="ranking_minggu2.html" class="nav-item"><i class="fas fa-award"></i> Ranking</a>
+            <a href="https://helmiyunar8.github.io/cbt/index.html" class="nav-item"><i class="fas fa-vial"></i> CBT Ujian</a>
+            <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
+        </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
+        </div>
+    </nav>
 
-    <a href="minggu1.html" class="btn-back">
-        <i class="fas fa-arrow-left"></i> KEMBALI KE HALAMAN UJIAN
-    </a>
+    <div class="main-content">
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 20px;">SMKN 7 LUWU</div>
+            </div>
+            <div style="font-size: 14px; font-weight: 700; color: #555;">LEADERBOARD</div>
+        </div>
+
+        <div class="header-section">
+            <i class="fas fa-trophy"></i>
+            <h2>RANKING TRYOUT TKJ</h2>
+            <p style="opacity: 0.8; font-weight: 500; margin-top: 5px;">SMKN 7 LUWU • Jaringan Komputer & Telekomunikasi</p>
+        </div>
+
+        <div class="leaderboard-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Pos</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th style="text-align:center">Skor</th>
+                    </tr>
+                </thead>
+                <tbody id="ranking-body">
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-spinner fa-spin" style="color: var(--gold);"></i> Menghitung peringkat siswa...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="text-align: center; padding: 40px;">
+            <p style="font-size: 12px; color: #bbb;">Data otomatis diperbarui dari repositori tryout-tkj-XII-2026.</p>
+        </div>
+    </div>
 
     <script>
-        // URL Sesuai Kode Bapak
         const url = "https://api.allorigins.win/raw?url=https://docs.google.com/spreadsheets/d/e/2PACX-1vQZDMdaC8pbL27aaOkWfNKG73AZg120HUUGiJA7X5oPn1xKrQUEKuRAShEgJrUtikOn5ky5Fv2A5LKy/pub?output=csv";
 
         fetch(url)
@@ -150,9 +175,8 @@
             .then(data => {
                 let rows = data.trim().split("\n").slice(1);
                 let siswa = [];
-
                 rows.forEach(r => {
-                    let c = r.split(/,|;/); // Antisipasi koma atau titik koma
+                    let c = r.split(/,|;/);
                     if(c.length >= 4) {
                         siswa.push({
                             nama: c[1].replace(/"/g, ""),
@@ -162,15 +186,12 @@
                     }
                 });
 
-                // Urutkan nilai tertinggi
                 siswa.sort((a, b) => b.nilai - a.nilai);
 
                 let html = "";
                 siswa.forEach((s, i) => {
                     let rankIcon = i + 1;
                     let rowClass = "";
-
-                    // Logika Medali
                     if(i === 0) { rankIcon = "🥇"; rowClass = "top-1"; }
                     else if(i === 1) { rankIcon = "🥈"; rowClass = "top-2"; }
                     else if(i === 2) { rankIcon = "🥉"; rowClass = "top-3"; }
@@ -184,13 +205,16 @@
                         </tr>
                     `;
                 });
-
                 document.getElementById("ranking-body").innerHTML = html;
             })
             .catch(err => {
                 document.getElementById("ranking-body").innerHTML = "<tr><td colspan='4' style='text-align:center;'>Gagal mengambil data peringkat.</td></tr>";
             });
-    </script>
 
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
