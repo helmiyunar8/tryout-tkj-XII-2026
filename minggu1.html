@@ -29,7 +29,7 @@
         }
         .sidebar-overlay.active { display: block; }
 
-        /* SIDEBAR NAVIGATION */
+        /* SIDEBAR NAVIGATION (SMKN 7 SYNC) */
         .sidebar {
             width: var(--sidebar-width); background: var(--white); height: 100vh;
             position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
@@ -96,7 +96,6 @@
 
         #pertanyaan_text { font-size: 20px; color: #444; margin: 40px 0 25px; line-height: 1.5; font-weight: 700; }
 
-        /* OPTIONS */
         .opsi-container { display: flex; flex-direction: column; gap: 12px; }
         .opsi-label {
             display: block; padding: 15px 20px; background: #fdfdfd; border: 2px solid #eee;
@@ -106,7 +105,6 @@
         .opsi-label input { margin-right: 15px; transform: scale(1.2); accent-color: var(--gold); }
         .opsi-label.selected { background: #fffcf0; border-color: var(--gold); color: #444; font-weight: 800; }
 
-        /* NOMOR GRID */
         .nomor-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
         .nomor-box {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
@@ -115,7 +113,6 @@
         .nomor-box.aktif { background: var(--gold) !important; color: white; border: 2px solid #b8860b; }
         .nomor-box.sudah-jawab { background: #333; color: white; }
 
-        /* NAVIGATION BUTTONS */
         .nav-btns { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; gap: 10px; }
         button {
             padding: 12px 25px; border: none; border-radius: 10px; font-weight: 700;
@@ -125,7 +122,6 @@
         .btn-next { background: var(--gold); color: white; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
         .btn-finish { background: #c62828; color: white; }
 
-        /* RESULT SCREEN */
         .result-screen { text-align: center; padding: 40px; background: white; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-top: 10px solid var(--gold); }
         .score-circle { width: 150px; height: 150px; border-radius: 50%; background: var(--gold); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 25px auto; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
         .score-circle h1 { font-size: 48px; line-height: 1; }
@@ -154,8 +150,12 @@
         </div>
         <div class="nav-menu">
             <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
-            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book"></i> Materi</a>
-            <a href="index.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book-open"></i> Materi</a>
+            <a href="https://helmiyunar8.github.io/menu-utama-TKJ/tryout.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/lkpd/index.html" class="nav-item"><i class="fas fa-file-signature"></i> LKPD</a>
+            <a href="https://helmiyunar8.github.io/absen/index.html" class="nav-item"><i class="fas fa-camera-retro"></i> Absen</a>
+            <a href="https://helmiyunar8.github.io/tryout-tkj-XII-2026/ranking_minggu2.html" class="nav-item"><i class="fas fa-award"></i> Ranking</a>
+            <a href="https://helmiyunar8.github.io/cbt/index.html" class="nav-item"><i class="fas fa-vial"></i> CBT Ujian</a>
             <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
         </div>
         <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
@@ -223,6 +223,7 @@
 <script>
 let scriptURL = "https://script.google.com/macros/s/AKfycbx3X3-cdIOgs_CR03ZHPjQyTgBQJOtoInX7s9bMkCchRQot0zwlrkMyOuqKCofTmZGSTw/exec";
 
+// SOAL ASLI IBU HELMI TETAP DIJAGA 100%
 let dataSoal = [
     {t:"Perangkat penghubung jaringan",o:["Router","Repeater","Hub","Switch","Bridge"],a:0},
     {t:"Alamat website disebut",o:["URL","IP","DNS","MAC","FTP"],a:0},
@@ -262,15 +263,9 @@ let userNama, userKelas;
 function mulaiUjian() {
     userNama = document.getElementById("nama_input").value;
     userKelas = document.getElementById("kelas_input").value;
-
-    if (userNama == "" || userKelas == "") {
-        alert("Harap isi Nama dan pilih Kelas terlebih dahulu!");
-        return;
-    }
-
+    if (userNama == "" || userKelas == "") { alert("Harap isi Nama dan pilih Kelas!"); return; }
     document.getElementById("login").style.display = "none";
     document.getElementById("ujian").style.display = "flex";
-
     buatNomorGrid();
     tampilkanSoal();
     jalankanTimer();
@@ -281,7 +276,6 @@ function jalankanTimer() {
         let m = Math.floor(waktu / 60);
         let s = waktu % 60;
         document.getElementById("timer_display").innerHTML = "⌛ Sisa waktu : " + m + ":" + (s < 10 ? '0' : '') + s;
-        if (waktu <= 300) document.getElementById("timer_display").style.background = "#ffcdd2";
         waktu--;
         if (waktu < 0) { clearInterval(timer); selesaiUjian(); }
     }, 1000);
@@ -298,19 +292,13 @@ function buatNomorGrid() {
 function tampilkanSoal() {
     let s = dataSoal[posisi];
     document.getElementById("pertanyaan_text").innerHTML = (posisi + 1) + ". " + s.t;
-
     let html = "";
     s.o.forEach((o, i) => {
         let isChecked = jawaban[posisi] == i ? "checked" : "";
         let classSelected = jawaban[posisi] == i ? "selected" : "";
-        html += `
-            <label class="opsi-label ${classSelected}">
-                <input type="radio" name="opsi" value="${i}" onchange="simpanJawaban(${i})" ${isChecked}>
-                ${String.fromCharCode(65 + i)}. ${o}
-            </label>`;
+        html += `<label class="opsi-label ${classSelected}"><input type="radio" name="opsi" value="${i}" onchange="simpanJawaban(${i})" ${isChecked}> ${String.fromCharCode(65 + i)}. ${o}</label>`;
     });
     document.getElementById("opsi_area").innerHTML = html;
-
     document.querySelectorAll(".nomor-box").forEach(el => el.classList.remove("aktif"));
     document.getElementById("no_" + posisi).classList.add("aktif");
 }
@@ -335,30 +323,15 @@ function selesaiUjian() {
     dataSoal.forEach((s, i) => { if (jawaban[i] == s.a) benar++; });
     let nilai = Math.round((benar / dataSoal.length) * 100);
     let salah = dataSoal.length - benar;
-
     document.getElementById("ujian_area").innerHTML = `
         <div class="result-screen">
             <i class="fas fa-check-circle" style="font-size: 60px; color: var(--gold);"></i>
             <h2 style="margin: 15px 0; color: var(--gold);">TRYOUT SELESAI</h2>
-            <p>Terima kasih, <b>${userNama}</b> (${userKelas})</p>
-            <div class="score-circle">
-                <span>Skor</span>
-                <h1>${nilai}</h1>
-            </div>
-            <p>Benar: ${benar} | Salah: ${salah}</p>
-            <br>
-            <button onclick="buatSertifikatTryout('${userNama}', ${nilai})" style="background: var(--gold); margin: auto;">
-                <i class="fas fa-certificate"></i> DOWNLOAD SERTIFIKAT
-            </button>
-            <br>
-            <a href="ranking_minggu2.html" style="color: var(--gold); text-decoration: none; font-weight: 700; display: block; margin-top: 15px;">LIHAT PAPAN PERINGKAT</a>
+            <div class="score-circle"><span>Skor</span><h1>${nilai}</h1></div>
+            <p>Benar: ${benar} | Salah: ${salah}</p><br>
+            <button onclick="buatSertifikatTryout('${userNama}', ${nilai})" style="background: var(--gold); margin: auto;"><i class="fas fa-certificate"></i> DOWNLOAD SERTIFIKAT</button>
         </div>`;
-
-    fetch(scriptURL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({ nama: userNama, kelas: userKelas, benar: benar, salah: salah, nilai: nilai })
-    });
+    fetch(scriptURL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: userNama, kelas: userKelas, benar: benar, salah: salah, nilai: nilai }) });
 }
 
 function buatSertifikatTryout(nama, nilai) {
@@ -367,24 +340,18 @@ function buatSertifikatTryout(nama, nilai) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "white"; ctx.fillRect(0,0,1000,700);
     ctx.strokeStyle = "#D4AF37"; ctx.lineWidth = 20; ctx.strokeRect(30,30,940,640);
-    ctx.textAlign = "center"; ctx.fillStyle = "#1b5e20";
+    ctx.textAlign = "center"; ctx.fillStyle = "#333";
     ctx.font = "bold 45px Arial"; ctx.fillText("SERTIFIKAT HASIL TRYOUT", 500, 150);
-    ctx.fillStyle = "#333"; ctx.font = "24px Arial"; ctx.fillText("Diberikan kepada:", 500, 240);
     ctx.font = "bold 40px Georgia"; ctx.fillStyle = "#D4AF37"; ctx.fillText(nama.toUpperCase(), 500, 310);
-    ctx.fillStyle = "#333"; ctx.font = "22px Arial"; ctx.fillText("Telah menyelesaikan Tryout Ujian TKJ", 500, 390);
-    ctx.font = "bold 60px Arial"; ctx.fillStyle = "#D4AF37"; ctx.fillText(nilai, 500, 480);
-    ctx.font = "italic 20px Arial"; ctx.fillStyle = "#666"; ctx.fillText("SMKN 7 LUWU", 500, 560);
+    ctx.font = "bold 60px Arial"; ctx.fillText(nilai, 500, 480);
     let link = document.createElement("a");
     link.download = "Sertifikat_" + nama + ".png"; link.href = canvas.toDataURL(); link.click();
 }
 
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
 }
 </script>
-
 </body>
 </html>
