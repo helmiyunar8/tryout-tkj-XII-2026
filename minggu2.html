@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBT Tryout Minggu 2 - SMKN 7 LUWU</title>
+    <title>CBT Tryout Minggu 2 - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -29,7 +29,7 @@
         }
         .sidebar-overlay.active { display: block; }
 
-        /* SIDEBAR NAVIGATION */
+        /* SIDEBAR NAVIGATION (SMKN 7 SYNC) */
         .sidebar {
             width: var(--sidebar-width); background: var(--white); height: 100vh;
             position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
@@ -49,7 +49,6 @@
         .sidebar-header { 
             padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
         }
-        /* PEMANGGILAN LOGO SESUAI STRUKTUR BARU */
         .sidebar-header img { width: 75px; margin-bottom: 12px; }
         .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
         .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
@@ -75,7 +74,7 @@
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 
         /* CARD STYLE */
-        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; border-top: 5px solid var(--gold); }
+        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 20px; border-top: 8px solid var(--gold); }
 
         /* LOGIN BOX */
         #login-box { max-width: 450px; margin: 50px auto; text-align: center; }
@@ -99,7 +98,7 @@
         .options-grid { display: flex; flex-direction: column; gap: 12px; }
         .option-label {
             display: flex; align-items: center; padding: 18px 25px; background: #fdfdfd; 
-            border: 2px solid #eee; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 500;
+            border: 2px solid #eee; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 600;
         }
         .option-label:hover { border-color: var(--gold); background: #fffcf5; }
         .option-label.selected { border-color: var(--gold); background: #fffcf0; font-weight: 800; }
@@ -145,8 +144,12 @@
         </div>
         <div class="nav-menu">
             <a href="https://helmiyunar8.github.io/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
-            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book"></i> Materi</a>
-            <a href="index.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/materi/index.html" class="nav-item"><i class="fas fa-book-open"></i> Materi</a>
+            <a href="https://helmiyunar8.github.io/menu-utama-TKJ/tryout.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="https://helmiyunar8.github.io/lkpd/index.html" class="nav-item"><i class="fas fa-file-signature"></i> LKPD</a>
+            <a href="https://helmiyunar8.github.io/absen/index.html" class="nav-item"><i class="fas fa-camera-retro"></i> Absen</a>
+            <a href="https://helmiyunar8.github.io/tryout-tkj-XII-2026/ranking_minggu2.html" class="nav-item"><i class="fas fa-award"></i> Ranking</a>
+            <a href="https://helmiyunar8.github.io/cbt/index.html" class="nav-item"><i class="fas fa-vial"></i> CBT Ujian</a>
             <a href="https://helmiyunar8.github.io/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
         </div>
         <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
@@ -280,7 +283,7 @@
             document.getElementById("login-box").style.display = "none";
             document.getElementById("ujian-section").style.display = "flex";
             generateNomor();
-            tampilSoal();
+            tampilkanSoal();
             startTimer();
         }
 
@@ -325,11 +328,11 @@
         function pilih(idx) {
             jawabanSiswa[pos] = idx;
             document.getElementById(`no-${pos}`).classList.add("filled");
-            tampilSoal();
+            tampilkanSoal();
         }
 
         function next() { if(pos < 39) { pos++; tampilSoal(); } }
-        function prev() { if(pos > 0) { pos--; tampilSoal(); } }
+        function prev() { if(pos > 0) { pos--; tampilkanSoal(); } }
         function lompat(i) { pos = i; tampilSoal(); }
 
         function selesai() {
